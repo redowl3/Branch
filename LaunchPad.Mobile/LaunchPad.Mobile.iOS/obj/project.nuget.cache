@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "z4bZM35mfxG/9jeEB5HtGCBarCoXe+1jVPeZ3GuOs03b8zEdaJ0RW1TnBUTbA71EgdkwMToM6nEp1WYaOUyxPg==",
+  "success": true,
+  "projectFilePath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
+  "expectedPackageFiles": [
+    "C:\\Microsoft\\Xamarin\\NuGet\\xamarin.essentials\\1.5.3.2\\xamarin.essentials.1.5.3.2.nupkg.sha512",
+    "C:\\Users\\Amit Kumar\\.nuget\\packages\\xamarin.forms\\4.8.0.1687\\xamarin.forms.4.8.0.1687.nupkg.sha512"
+  ],
+  "logs": []
+}
