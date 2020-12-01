@@ -11,8 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\LaunchPad.Client\LaunchPad.Client.csproj" />
+    <ProjectReference Include="..\..\LaunchPad.Model\LaunchPad.Model.csproj" />
+    <ProjectReference Include="..\LaunchPad.Repository\LaunchPad.Repository.csproj" />
   </ItemGroup>
 
   <ItemGroup>

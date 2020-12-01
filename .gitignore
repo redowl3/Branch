@@ -8,3 +8,6 @@
 /LaunchPad.Client/obj
 /LaunchPad.Model/bin
 /LaunchPad.Model/obj
+/LaunchPad.Mobile/LaunchPad.Repository/obj
+/LaunchPad.Mobile/LaunchPad.Repository/bin
+/LaunchPad.Mobile/.vs/LaunchPad.Mobile/DesignTimeBuild
