@@ -1,14 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "rQUHKwYBjPtV57dC7U2CMfGNoNvTl/nXkd8voAULuetBC7ACd91O4/R9RRTIcy29q1Q/h2+Rnpx6Uq49X4KbTw==",
+  "dgSpecHash": "gnsEp4QKHCIpE63EQ9ciMtLQG9QcaBX/UVRnhv17HR1knUKU8x/kpc2f8DWd5lwl/Zj9v0dV/Y77QfTVeUtNiw==",
   "success": true,
   "projectFilePath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Amit Kumar\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\sqlite-net-pcl\\1.7.335\\sqlite-net-pcl.1.7.335.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\sqlitepclraw.bundle_green\\2.0.3\\sqlitepclraw.bundle_green.2.0.3.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\sqlitepclraw.core\\2.0.3\\sqlitepclraw.core.2.0.3.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\sqlitepclraw.provider.dynamic_cdecl\\2.0.3\\sqlitepclraw.provider.dynamic_cdecl.2.0.3.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\system.buffers\\4.4.0\\system.buffers.4.4.0.nupkg.sha512",
+    "C:\\Users\\Amit Kumar\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.2\\system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512",
     "C:\\Microsoft\\Xamarin\\NuGet\\xamarin.essentials\\1.5.3.2\\xamarin.essentials.1.5.3.2.nupkg.sha512",
