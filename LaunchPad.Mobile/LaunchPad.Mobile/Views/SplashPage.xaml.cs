@@ -17,7 +17,7 @@ namespace LaunchPad.Mobile.Views
         {
             base.OnAppearing();
             await Task.Delay(3000);
-            Application.Current.MainPage = new NavigationPage(new MainPage());
+            Application.Current.MainPage = new NavigationPage(new UserHealthPlanPage());
         }
     }
 }

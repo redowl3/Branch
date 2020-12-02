@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LaunchPad.Mobile.Views.UserHealthPlanPage">
+    <NavigationPage.TitleView>
+        <Grid ColumnDefinitions="*,*">
+            <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Sara's Skin Health Plan" HorizontalTextAlignment="Center" FontSize="18" TextColor="White"/>
+            <Label Grid.Column="1" Text="Sarah Smith" HorizontalTextAlignment="End" FontSize="16" TextColor="White"/>
+        </Grid>
+    </NavigationPage.TitleView>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style TargetType="Label" x:Key="BaseLabelStyle">
+                <Setter Property="TextColor" Value="#000000"/>
+            </Style>
+            <Style TargetType="Label" x:Key="BaseTabLabelStyle" BasedOn="{StaticResource BaseLabelStyle}">
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+            <Style TargetType="Label" x:Key="TabTitleLabelStyle" BasedOn="{StaticResource BaseTabLabelStyle}">
+                <Setter Property="FontSize" Value="22"/>
+            </Style>
+            <Style TargetType="Label" x:Key="TabSubTitleLabelStyle" BasedOn="{StaticResource BaseTabLabelStyle}">
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="56"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Frame HasShadow="False"/>
+            <Grid ColumnDefinitions="*,1,*,1,*" ColumnSpacing="0">
+                <Grid x:Name="FeedTab"  BackgroundColor="White">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Feed_tapped" NumberOfTapsRequired="1"/>
+                    </Grid.GestureRecognizers>
+                    <StackLayout Grid.Column="0" VerticalOptions="Center" Spacing="0">
+                        <Label Text="Feed" Style="{StaticResource TabTitleLabelStyle}"/>
+                        <Label Style="{StaticResource TabSubTitleLabelStyle}" TextType="Html">
+                            <![CDATA[
+    Advanced Nutrition Programme<sup><small>TM</small></sup>
+    ]]>
+                        </Label>
+                    </StackLayout>
+                </Grid>
+                <BoxView Grid.Column="1" BackgroundColor="#ffffff"/>
+                <Grid x:Name="FortifyTab" Grid.Column="2" BackgroundColor="#a6a6a6">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="fortify_tapped" NumberOfTapsRequired="1"/>
+                    </Grid.GestureRecognizers>
+                    <StackLayout VerticalOptions="Center" Spacing="0">
+                        <Label Text="Fortify" Style="{StaticResource TabTitleLabelStyle}"/>
+                        <Label Style="{StaticResource TabSubTitleLabelStyle}" TextType="Html">
+                            <![CDATA[
+    Environ<sup><small>TM</small></sup>
+    ]]>
+                        </Label>
+                    </StackLayout>
+                </Grid>
+
+                <BoxView Grid.Column="3" BackgroundColor="#ffffff"/>
+                <Grid x:Name="FinishTab" Grid.Column="4" BackgroundColor="#a6a6a6">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="finish_tapped" NumberOfTapsRequired="1"/>
+                    </Grid.GestureRecognizers>
+                    <StackLayout VerticalOptions="Center" Spacing="0">
+                        <Label Text="Finish" Style="{StaticResource TabTitleLabelStyle}"/>
+                        <Label Style="{StaticResource TabSubTitleLabelStyle}" TextType="Html">
+                            <![CDATA[
+    Jane Iredale<sup><small>TM</small></sup>
+    ]]>
+                        </Label>
+                    </StackLayout>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1" Padding="10">
+                <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Refine" HorizontalTextAlignment="End"/>
+            </Grid>
+            <ContentView Grid.Row="2" x:Name="FeedContentView"/>
+            <ContentView Grid.Row="2" x:Name="FortifyContentView"/>
+            <ContentView Grid.Row="2" x:Name="FinishContentView"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
