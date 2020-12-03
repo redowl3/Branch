@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="LaunchPad.Mobile.CustomLayouts.ProductLayoutView">
+    <ContentView.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="46"/>
+                <RowDefinition Height="75"/>
+            </Grid.RowDefinitions>
+            <Grid ColumnDefinitions="*,2*">
+                <forms:CachedImage Source="{Binding ImageUrl}" WidthRequest="150" HeightRequest="150" HorizontalOptions="Start"/>
+                <Grid Grid.Column="1" HorizontalOptions="Start">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="75"/>
+                    </Grid.RowDefinitions>
+                    <StackLayout  Margin="0,0,20,0">
+                        <Label Text="{Binding Product.Name}" FontSize="18" HorizontalTextAlignment="Start" TextColor="#000000"/>
+                        <Label FontSize="14" Text="{Binding Product.Summary}" HorizontalTextAlignment="Start" TextColor="#000000"/>
+                    </StackLayout>                 
+                    <Image Grid.Row="0" Source="icon_doc" HorizontalOptions="End" VerticalOptions="Start"/>
+                   
+                    <StackLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding Product.Properties}" Orientation="Horizontal">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <forms:CachedImage Source="{Binding ImageUrl}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </Grid>
+            </Grid>
+            <StackLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding Product.SkinConcerns}" Orientation="Horizontal" Spacing="10">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <StackLayout Orientation="Horizontal" Spacing="2">
+                                <Image Source="icon_checkmark" WidthRequest="20" HeightRequest="20"/>
+                                <Label FontSize="13" Text="{Binding .}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="#000000"/>
+                            </StackLayout>                            
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+            <StackLayout Grid.Row="2">
+                <BoxView HeightRequest="2" VerticalOptions="Start" BackgroundColor="Gray"/>
+                <Grid ColumnDefinitions="*,*,*" VerticalOptions="Center" Padding="15,0">
+                    <Label Text="Benefits" FontSize="16" HorizontalTextAlignment="Start" TextColor="#000000"/>
+                    <Label Grid.Column="1" Text="Directions" FontSize="16" HorizontalTextAlignment="Start" TextColor="#000000"/>
+                    <Label Grid.Column="2" Text="Key Ingredients" FontSize="16" HorizontalTextAlignment="Start" TextColor="#000000"/>
+                </Grid>
+                <BoxView HeightRequest="2" VerticalOptions="End" BackgroundColor="Gray"/>
+            </StackLayout>
+        </Grid>
+        
+    </ContentView.Content>
+</ContentView>

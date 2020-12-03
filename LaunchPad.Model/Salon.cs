@@ -11,7 +11,7 @@ namespace IIAADataModels.Transfer
 		public Guid Id { get; set; }
 		public string Name { get; set; }	
 		
-		public List<Transfer.ProductCategory> Products { get; set; }
+		public List<ProductCategory> Products { get; set; }
 
 	}
 }

@@ -1,33 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:customlayouts="clr-namespace:LaunchPad.Mobile.CustomLayouts" xmlns:viewmodels="clr-namespace:LaunchPad.Mobile.ViewModels"
              x:Class="LaunchPad.Mobile.Views.UserHealthPlanPage">
     <NavigationPage.TitleView>
         <Grid ColumnDefinitions="*,*">
-            <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Sara's Skin Health Plan" HorizontalTextAlignment="Center" FontSize="18" TextColor="White"/>
-            <Label Grid.Column="1" Text="Sarah Smith" HorizontalTextAlignment="End" FontSize="16" TextColor="White"/>
+            <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Sarah's Skin Health Plan" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="18" TextColor="White"/>
+            <StackLayout Grid.Column="1" HorizontalOptions="End" Padding="10,0" Spacing="20" Orientation="Horizontal">
+                <StackLayout Orientation="Horizontal" Spacing="10">
+                    <Label Text="Sarah Smith" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="18" TextColor="White"/>
+                    <Image Source="icon_user" WidthRequest="32" HeightRequest="32"/>
+                </StackLayout>
+                <Image Source="icon_list" WidthRequest="36" HeightRequest="36"/>
+            </StackLayout>
+           
         </Grid>
     </NavigationPage.TitleView>
-    <ContentPage.Resources>
-        <ResourceDictionary>
-
-            <Style TargetType="Label" x:Key="BaseLabelStyle">
-                <Setter Property="TextColor" Value="#000000"/>
-            </Style>
-            <Style TargetType="Label" x:Key="BaseTabLabelStyle" BasedOn="{StaticResource BaseLabelStyle}">
-                <Setter Property="HorizontalOptions" Value="Center"/>
-                <Setter Property="HorizontalTextAlignment" Value="Center"/>
-            </Style>
-            <Style TargetType="Label" x:Key="TabTitleLabelStyle" BasedOn="{StaticResource BaseTabLabelStyle}">
-                <Setter Property="FontSize" Value="22"/>
-            </Style>
-            <Style TargetType="Label" x:Key="TabSubTitleLabelStyle" BasedOn="{StaticResource BaseTabLabelStyle}">
-                <Setter Property="FontSize" Value="14"/>
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid BackgroundColor="White">
+        <Grid BackgroundColor="White" RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="80"/>
                 <RowDefinition Height="56"/>
@@ -49,7 +38,7 @@
                     </StackLayout>
                 </Grid>
                 <BoxView Grid.Column="1" BackgroundColor="#ffffff"/>
-                <Grid x:Name="FortifyTab" Grid.Column="2" BackgroundColor="#a6a6a6">
+                <Grid x:Name="FortifyTab" Grid.Column="2" BackgroundColor="#bdbdbd">
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Tapped="fortify_tapped" NumberOfTapsRequired="1"/>
                     </Grid.GestureRecognizers>
@@ -62,9 +51,8 @@
                         </Label>
                     </StackLayout>
                 </Grid>
-
                 <BoxView Grid.Column="3" BackgroundColor="#ffffff"/>
-                <Grid x:Name="FinishTab" Grid.Column="4" BackgroundColor="#a6a6a6">
+                <Grid x:Name="FinishTab" Grid.Column="4" BackgroundColor="#bdbdbd">
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Tapped="finish_tapped" NumberOfTapsRequired="1"/>
                     </Grid.GestureRecognizers>
@@ -72,18 +60,45 @@
                         <Label Text="Finish" Style="{StaticResource TabTitleLabelStyle}"/>
                         <Label Style="{StaticResource TabSubTitleLabelStyle}" TextType="Html">
                             <![CDATA[
-    Jane Iredale<sup><small>TM</small></sup>
-    ]]>
+    Jane Iredale]]>
                         </Label>
                     </StackLayout>
                 </Grid>
             </Grid>
             <Grid Grid.Row="1" Padding="10">
-                <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Refine" HorizontalTextAlignment="End"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                    <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Refine" VerticalTextAlignment="Center" Style="{StaticResource BaseLabelStyle}" FontSize="16"/>
+                    <ImageButton Source="icon_filter" BackgroundColor="Transparent" WidthRequest="56" HeightRequest="56"/>
+                </StackLayout>
+               
             </Grid>
-            <ContentView Grid.Row="2" x:Name="FeedContentView"/>
-            <ContentView Grid.Row="2" x:Name="FortifyContentView"/>
-            <ContentView Grid.Row="2" x:Name="FinishContentView"/>
+            <ContentView Grid.Row="2" x:Name="FeedContentView">
+                <ContentView.BindingContext>
+                    <viewmodels:UserHealthPlanPageViewModel/>
+                </ContentView.BindingContext>
+                <ScrollView>
+                    <FlexLayout BindableLayout.ItemsSource="{Binding Products}" 
+                                x:Name="FeedsList"
+                                Wrap="Wrap"
+                                Direction="Row"
+                                JustifyContent="Start"
+                                AlignItems="Start"
+                                AlignContent="Start"
+                                Padding="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="10"
+                      FlexLayout.Basis="{OnIdiom Tablet='50%'}"
+                      FlexLayout.AlignSelf="Start">
+                                    <customlayouts:ProductLayoutView/>
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
+                </ScrollView>
+            </ContentView>
+            <!--<ContentView Grid.Row="2" x:Name="FortifyContentView"/>
+            <ContentView Grid.Row="2" x:Name="FinishContentView"/>-->
         </Grid>
     </ContentPage.Content>
 </ContentPage>

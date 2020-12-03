@@ -8,6 +8,19 @@
                 <Setter Property="BarBackgroundColor" Value="#000000"/>
                 <Setter Property="BarTextColor" Value="White"/>
             </Style>
+            <Style TargetType="Label" x:Key="BaseLabelStyle">
+                <Setter Property="TextColor" Value="#000a12"/>
+            </Style>
+            <Style TargetType="Label" x:Key="BaseTabLabelStyle" BasedOn="{StaticResource BaseLabelStyle}">
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+            <Style TargetType="Label" x:Key="TabTitleLabelStyle" BasedOn="{StaticResource BaseTabLabelStyle}">
+                <Setter Property="FontSize" Value="22"/>
+            </Style>
+            <Style TargetType="Label" x:Key="TabSubTitleLabelStyle" BasedOn="{StaticResource BaseTabLabelStyle}">
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
