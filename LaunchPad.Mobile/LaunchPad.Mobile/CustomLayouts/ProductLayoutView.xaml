@@ -8,6 +8,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="46"/>
                 <RowDefinition Height="75"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid ColumnDefinitions="*,2*">
                 <forms:CachedImage Source="{Binding ImageUrl}" WidthRequest="150" HeightRequest="150" HorizontalOptions="Start"/>
@@ -16,12 +17,19 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="75"/>
                     </Grid.RowDefinitions>
-                    <StackLayout  Margin="0,0,20,0">
-                        <Label Text="{Binding Product.Name}" FontSize="18" HorizontalTextAlignment="Start" TextColor="#000000"/>
-                        <Label FontSize="14" Text="{Binding Product.Summary}" HorizontalTextAlignment="Start" TextColor="#000000"/>
-                    </StackLayout>                 
-                    <Image Grid.Row="0" Source="icon_doc" HorizontalOptions="End" VerticalOptions="Start"/>
+                    <Grid ColumnSpacing="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="56"/>
+                        </Grid.ColumnDefinitions>
+                        <StackLayout  Margin="0,0,20,0">
+                            <Label Text="{Binding Product.Name}" FontSize="18" HorizontalTextAlignment="Start" TextColor="#000000"/>
+                            <Label FontSize="14" Text="{Binding Product.Summary}" HorizontalTextAlignment="Start" TextColor="#000000"/>
+                        </StackLayout>
+                        <Image Grid.Column="1" Source="icon_doc" HorizontalOptions="End" VerticalOptions="Start" WidthRequest="46" HeightRequest="46"/>
+                    </Grid>
                    
+                    
                     <StackLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding Product.Properties}" Orientation="Horizontal">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
@@ -40,21 +48,59 @@
                             <StackLayout Orientation="Horizontal" Spacing="2">
                                 <Image Source="icon_checkmark" WidthRequest="20" HeightRequest="20"/>
                                 <Label FontSize="13" Text="{Binding .}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="#000000"/>
-                            </StackLayout>                            
+                            </StackLayout>
                         </Grid>
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
             </StackLayout>
             <StackLayout Grid.Row="2">
                 <BoxView HeightRequest="2" VerticalOptions="Start" BackgroundColor="Gray"/>
-                <Grid ColumnDefinitions="*,*,*" VerticalOptions="Center" Padding="15,0">
-                    <Label Text="Benefits" FontSize="16" HorizontalTextAlignment="Start" TextColor="#000000"/>
-                    <Label Grid.Column="1" Text="Directions" FontSize="16" HorizontalTextAlignment="Start" TextColor="#000000"/>
-                    <Label Grid.Column="2" Text="Key Ingredients" FontSize="16" HorizontalTextAlignment="Start" TextColor="#000000"/>
+                <Grid RowDefinitions="36,2" ColumnDefinitions="*,*,*" ColumnSpacing="0" VerticalOptions="Center">
+                    <Grid Padding="15,0">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tappedbenefits" NumberOfTapsRequired="1"/>
+                        </Grid.GestureRecognizers>
+                        <Label Text="Benefits" FontSize="16" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="#000000"/>                        
+                    </Grid>
+                    <Grid Grid.Column="1" Padding="15,0">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tappeddirections" NumberOfTapsRequired="1"/>
+                        </Grid.GestureRecognizers>
+                        <Label  Text="Directions" FontSize="16" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="#000000"/>
+                    </Grid>
+                    <Grid Grid.Column="2" Padding="15,0">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_TappedKey" NumberOfTapsRequired="1"/>
+                        </Grid.GestureRecognizers>
+                        <Label  Text="Key Ingredients" FontSize="16" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="#000000"/>
+                    </Grid>
+                    <BoxView Grid.Row="1" Grid.Column="0" x:Name="BenefitBoxView" HeightRequest="2" VerticalOptions="End" BackgroundColor="Gray"/>
+                    <BoxView Grid.Row="1" Grid.Column="1" x:Name="DirectionBoxView" HeightRequest="2" VerticalOptions="End" BackgroundColor="Gray"/>
+                    <BoxView Grid.Row="1" Grid.Column="2" x:Name="KeyBoxView" HeightRequest="2" VerticalOptions="End" BackgroundColor="Gray"/>
                 </Grid>
-                <BoxView HeightRequest="2" VerticalOptions="End" BackgroundColor="Gray"/>
             </StackLayout>
+            <Grid Grid.Row="3" x:Name="BenefitsDetailsGridView" IsVisible="False">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                </Grid.RowDefinitions>
+                <Label Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse porttitor erat et sodales congue. Morbi nec nisl id nisl molestie pulvinar. Nunc nunc orci, venenatis eu ante ut, mollis feugiat sapien. Pellentesque sagittis metus et lacus interdum bibendum. Praesent faucibus cursus nulla, a pharetra tellus efficitur ut. Morbi tempor consectetur luctus. Vivamus sollicitudin sapien nec neque porttitor fermentum. Donec eu ultrices nibh. In porttitor venenatis urna, non euismod lectus. In condimentum ultricies dui, finibus semper ligula placerat vel. Etiam cursus dignissim cursus. Nulla eu ligula pretium, ultricies neque tempus, rutrum neque. Fusce elementum pretium lectus, ac hendrerit nibh iaculis non." FontSize="15" TextColor="#000000"/>
+            </Grid>
+            <Grid Grid.Row="3" x:Name="DirectionDetailsGridView" IsVisible="False">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                </Grid.RowDefinitions>
+                <Label Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse porttitor erat et sodales congue. Morbi nec nisl id nisl molestie pulvinar. Nunc nunc orci, venenatis eu ante ut, mollis feugiat sapien. Pellentesque sagittis metus et lacus interdum bibendum. Praesent faucibus cursus nulla, a pharetra tellus efficitur ut. Morbi tempor consectetur luctus. Vivamus sollicitudin sapien nec neque porttitor fermentum. Donec eu ultrices nibh. In porttitor venenatis urna, non euismod lectus. In condimentum ultricies dui, finibus semper ligula placerat vel. Etiam cursus dignissim cursus. Nulla eu ligula pretium, ultricies neque tempus, rutrum neque. Fusce elementum pretium lectus, ac hendrerit nibh iaculis non." FontSize="15" TextColor="#000000"/>
+            </Grid>
+            <Grid Grid.Row="3" x:Name="KeyDetailsGridView" IsVisible="False">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                </Grid.RowDefinitions>
+                <Label Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse porttitor erat et sodales congue. Morbi nec nisl id nisl molestie pulvinar. Nunc nunc orci, venenatis eu ante ut, mollis feugiat sapien. Pellentesque sagittis metus et lacus interdum bibendum. Praesent faucibus cursus nulla, a pharetra tellus efficitur ut. Morbi tempor consectetur luctus. Vivamus sollicitudin sapien nec neque porttitor fermentum. Donec eu ultrices nibh. In porttitor venenatis urna, non euismod lectus. In condimentum ultricies dui, finibus semper ligula placerat vel. Etiam cursus dignissim cursus. Nulla eu ligula pretium, ultricies neque tempus, rutrum neque. Fusce elementum pretium lectus, ac hendrerit nibh iaculis non." FontSize="15" TextColor="#000000"/>
+            </Grid>
         </Grid>
-        
+
     </ContentView.Content>
 </ContentView>

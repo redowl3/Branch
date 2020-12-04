@@ -1,4 +1,5 @@
 ﻿using IIAADataModels.Transfer;
+using LaunchPad.Mobile.ViewModels;
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
@@ -25,31 +26,21 @@ namespace LaunchPad.Mobile.Views
         {
             FeedTab.BackgroundColor = Color.White;
             FortifyTab.BackgroundColor = FinishTab.BackgroundColor = Color.FromHex("#bdbdbd");
-            Products = new List<Product>
-            {
-                new Product
-                {
-                    Id=Guid.NewGuid(),
-                    Name="Skin Accumax &trade;",
-                    Summary="A nutritional supplement which works from within for clear, flawless skin.",
-                    ImageUrls=new List<string>
-                    {
-                        "https://via.placeholder.com/150"
-                    }
-                }
-            };
+            (this.BindingContext as UserHealthPlanPageViewModel)?.FeedCommand.Execute(null);
         }
 
         private void fortify_tapped(object sender, System.EventArgs e)
         {
             FortifyTab.BackgroundColor = Color.White;
             FeedTab.BackgroundColor = FinishTab.BackgroundColor = Color.FromHex("#bdbdbd");
+            (this.BindingContext as UserHealthPlanPageViewModel)?.FortifyCommand.Execute(null);
         }
 
         private void finish_tapped(object sender, System.EventArgs e)
         {
             FinishTab.BackgroundColor = Color.White;
             FortifyTab.BackgroundColor = FeedTab.BackgroundColor = Color.FromHex("#bdbdbd");
+            (this.BindingContext as UserHealthPlanPageViewModel)?.FinishCommand.Execute(null);
         }
     }
 }

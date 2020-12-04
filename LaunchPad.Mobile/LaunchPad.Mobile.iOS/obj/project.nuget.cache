@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Tv0cWCkceHWAbSdvVhJRPAG4YVsaPZALgV4Pv+0RKtv5ihW4dq6QDB/XxSHwJDtmt2wlE1AAZlwoxXYHMrR1Yg==",
+  "dgSpecHash": "lcp4Qcdwu+zrZVn44yOaoMGDNirJkE8NVtimLrSPlTF8Go2rNSCuEBh69FSsgffwTv9ywtTuFCiaekmnb0lcfw==",
   "success": true,
   "projectFilePath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\Amit Kumar\\.nuget\\packages\\polly\\7.2.1\\polly.7.2.1.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\sqlite-net-pcl\\1.7.335\\sqlite-net-pcl.1.7.335.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\sqlitepclraw.bundle_green\\2.0.3\\sqlitepclraw.bundle_green.2.0.3.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\sqlitepclraw.core\\2.0.3\\sqlitepclraw.core.2.0.3.nupkg.sha512",

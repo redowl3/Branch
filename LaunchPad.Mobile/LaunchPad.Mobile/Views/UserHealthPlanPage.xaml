@@ -12,9 +12,11 @@
                 </StackLayout>
                 <Image Source="icon_list" WidthRequest="36" HeightRequest="36"/>
             </StackLayout>
-           
         </Grid>
     </NavigationPage.TitleView>
+    <ContentPage.BindingContext>
+        <viewmodels:UserHealthPlanPageViewModel/>
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <Grid BackgroundColor="White" RowSpacing="0">
             <Grid.RowDefinitions>
@@ -30,11 +32,7 @@
                     </Grid.GestureRecognizers>
                     <StackLayout Grid.Column="0" VerticalOptions="Center" Spacing="0">
                         <Label Text="Feed" Style="{StaticResource TabTitleLabelStyle}"/>
-                        <Label Style="{StaticResource TabSubTitleLabelStyle}" TextType="Html">
-                            <![CDATA[
-    Advanced Nutrition Programme<sup><small>TM</small></sup>
-    ]]>
-                        </Label>
+                        <Label Style="{StaticResource TabSubTitleLabelStyle}" Text="Advanced Nutrition Programme &amp; Trade"/>
                     </StackLayout>
                 </Grid>
                 <BoxView Grid.Column="1" BackgroundColor="#ffffff"/>
@@ -44,11 +42,7 @@
                     </Grid.GestureRecognizers>
                     <StackLayout VerticalOptions="Center" Spacing="0">
                         <Label Text="Fortify" Style="{StaticResource TabTitleLabelStyle}"/>
-                        <Label Style="{StaticResource TabSubTitleLabelStyle}" TextType="Html">
-                            <![CDATA[
-    Environ<sup><small>TM</small></sup>
-    ]]>
-                        </Label>
+                        <Label Style="{StaticResource TabSubTitleLabelStyle}" Text="Environ &amp; Trade"/>
                     </StackLayout>
                 </Grid>
                 <BoxView Grid.Column="3" BackgroundColor="#ffffff"/>
@@ -70,14 +64,15 @@
                     <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Refine" VerticalTextAlignment="Center" Style="{StaticResource BaseLabelStyle}" FontSize="16"/>
                     <ImageButton Source="icon_filter" BackgroundColor="Transparent" WidthRequest="56" HeightRequest="56"/>
                 </StackLayout>
-               
+
             </Grid>
-            <ContentView Grid.Row="2" x:Name="FeedContentView">
-                <ContentView.BindingContext>
-                    <viewmodels:UserHealthPlanPageViewModel/>
-                </ContentView.BindingContext>
-                <ScrollView>
-                    <FlexLayout BindableLayout.ItemsSource="{Binding Products}" 
+            <AbsoluteLayout Grid.Row="2">
+                <Grid AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                  AbsoluteLayout.LayoutFlags= "All"
+                  CompressedLayout.IsHeadless="True">
+                    <ContentView x:Name="FeedContentView" IsVisible="{Binding FeedContentVisible}">                        
+                        <ScrollView>
+                            <FlexLayout BindableLayout.ItemsSource="{Binding FeedsProducts}" 
                                 x:Name="FeedsList"
                                 Wrap="Wrap"
                                 Direction="Row"
@@ -85,20 +80,43 @@
                                 AlignItems="Start"
                                 AlignContent="Start"
                                 Padding="8">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Margin="10"
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="10"
                       FlexLayout.Basis="{OnIdiom Tablet='50%'}"
                       FlexLayout.AlignSelf="Start">
-                                    <customlayouts:ProductLayoutView/>
-                                </Grid>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </FlexLayout>
-                </ScrollView>
-            </ContentView>
-            <!--<ContentView Grid.Row="2" x:Name="FortifyContentView"/>
-            <ContentView Grid.Row="2" x:Name="FinishContentView"/>-->
+                                            <customlayouts:ProductLayoutView/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </FlexLayout>
+                        </ScrollView>
+                    </ContentView>
+                    <ContentView x:Name="FortifyContentView" IsVisible="{Binding FortifyContentVisible}">
+                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center" Padding="10,0">
+                            <Label Text="Empty" HorizontalOptions="Center" TextColor="#000000" FontSize="22" FontAttributes="Bold"/>
+                            <Label Text="There are no items to display right now" WidthRequest="220" LineHeight="1.5" HorizontalTextAlignment="Center" HorizontalOptions="Center" TextColor="#000000" FontSize="15"/>
+                        </StackLayout>
+                    </ContentView>
+                    <ContentView x:Name="FinishContentView" IsVisible="{Binding FinishContentVisible}">
+                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center" Padding="10,0">
+                            <Label Text="Empty" HorizontalOptions="Center" TextColor="#000000" FontSize="22" FontAttributes="Bold"/>
+                            <Label Text="There are no items to display right now" WidthRequest="220" LineHeight="1.5" HorizontalTextAlignment="Center" HorizontalOptions="Center" TextColor="#000000" FontSize="15"/>
+                        </StackLayout>
+                    </ContentView>
+                    <StackLayout AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                                 AbsoluteLayout.LayoutFlags= "All"
+                                 IsVisible="{Binding IsLoading}"
+                                 BackgroundColor="#ffffff" >
+                        <ActivityIndicator x:Name="actWebRequest"
+                                       Color="#000000"
+                 IsVisible="{Binding IsLoading}"
+                 IsRunning="{Binding IsLoading}"
+                 HorizontalOptions="CenterAndExpand"
+                 VerticalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                </Grid>
+            </AbsoluteLayout>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
