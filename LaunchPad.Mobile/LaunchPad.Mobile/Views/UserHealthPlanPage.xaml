@@ -70,27 +70,30 @@
                 <Grid AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
                   AbsoluteLayout.LayoutFlags= "All"
                   CompressedLayout.IsHeadless="True">
-                    <ContentView x:Name="FeedContentView" IsVisible="{Binding FeedContentVisible}">                        
+                    <ContentView x:Name="FeedContentView" IsVisible="{Binding FeedContentVisible}">   
                         <ScrollView>
-                            <FlexLayout BindableLayout.ItemsSource="{Binding FeedsProducts}" 
-                                x:Name="FeedsList"
-                                Wrap="Wrap"
-                                Direction="Row"
-                                JustifyContent="Start"
-                                AlignItems="Start"
-                                AlignContent="Start"
-                                Padding="8">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Margin="10"
-                      FlexLayout.Basis="{OnIdiom Tablet='50%'}"
-                      FlexLayout.AlignSelf="Start">
-                                            <customlayouts:ProductLayoutView/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </FlexLayout>
+                            <Grid ColumnDefinitions="*,*">
+                                <StackLayout Grid.Column="0" BindableLayout.ItemsSource="{Binding FeedsEvenProducts}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="10">
+                                                <customlayouts:ProductLayoutView/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
+                                <StackLayout Grid.Column="1" BindableLayout.ItemsSource="{Binding FeedsOddsProducts}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="10">
+                                                <customlayouts:ProductLayoutView/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
+                            </Grid>
                         </ScrollView>
+                        
                     </ContentView>
                     <ContentView x:Name="FortifyContentView" IsVisible="{Binding FortifyContentVisible}">
                         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center" Padding="10,0">

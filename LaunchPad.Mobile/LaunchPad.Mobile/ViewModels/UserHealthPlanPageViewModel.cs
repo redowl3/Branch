@@ -2,8 +2,10 @@
 using LaunchPad.Client;
 using LaunchPad.Mobile.Models;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace LaunchPad.Mobile.ViewModels
@@ -11,11 +13,17 @@ namespace LaunchPad.Mobile.ViewModels
     public class UserHealthPlanPageViewModel : ViewModelBase
     {
         private Salon Salon = new Salon();
-        private ObservableCollection<CustomProduct> _feedsProducts;
-        public ObservableCollection<CustomProduct> FeedsProducts
+        private ObservableCollection<CustomProduct> _feedsEvenProducts;
+        public ObservableCollection<CustomProduct> FeedsEvenProducts
         {
-            get => _feedsProducts;
-            set => SetProperty(ref _feedsProducts, value);
+            get => _feedsEvenProducts;
+            set => SetProperty(ref _feedsEvenProducts, value);
+        }
+        private ObservableCollection<CustomProduct> _feedsOddsProducts;
+        public ObservableCollection<CustomProduct> FeedsOddsProducts
+        {
+            get => _feedsOddsProducts;
+            set => SetProperty(ref _feedsOddsProducts, value);
         }
         private ObservableCollection<CustomProduct> _fortifyProducts;
         public ObservableCollection<CustomProduct> FortifyProducts
@@ -70,7 +78,8 @@ namespace LaunchPad.Mobile.ViewModels
                FeedContentVisible = false;
                FinishContentVisible = false;
                FetchFortifyContentAsync();
-               FeedsProducts?.Clear();
+               FeedsEvenProducts?.Clear();
+               FeedsOddsProducts?.Clear();
                FinishProducts?.Clear();
            }); 
         public Command FinishCommand => new Command(() =>
@@ -80,11 +89,13 @@ namespace LaunchPad.Mobile.ViewModels
                FinishContentVisible = true;
                FetchFinishContentsAsync();
                FinishProducts?.Clear();
-               FeedsProducts?.Clear();
+               FeedsEvenProducts?.Clear();
+               FeedsOddsProducts?.Clear();
            });
         public UserHealthPlanPageViewModel()
         {
-            FeedsProducts = new ObservableCollection<CustomProduct>();
+            FeedsEvenProducts = new ObservableCollection<CustomProduct>();
+            FeedsOddsProducts = new ObservableCollection<CustomProduct>();
             FortifyProducts = new ObservableCollection<CustomProduct>();
             FinishProducts = new ObservableCollection<CustomProduct>();
             FetchFeedContentAsync();
@@ -94,294 +105,323 @@ namespace LaunchPad.Mobile.ViewModels
         {
             try
             {
-                if (Salon == null || Salon.Id==Guid.Empty)
-                {
-                    Salon = await ApiServices.Client.GetAsync<Salon>("salon");
-                }
-                if (Salon.Products != null && Salon.Products.Count > 0)
-                {
-                    foreach (var item in Salon.Products)
-                    {
-                        if (item.Name.ToLower() == "feed")
-                        {
-                            foreach (var product in item.Products)
-                            {
-                                FeedsProducts.Add(new CustomProduct
-                                {
-                                    Product = product,
-                                    ImageUrl = product.ImageUrls.FirstOrDefault() != null ? new Uri(product.ImageUrls.FirstOrDefault()) : null
-                                });
-                            }
+                //if (Salon == null || Salon.Id==Guid.Empty)
+                //{
+                //    Salon = await ApiServices.Client.GetAsync<Salon>("salon");
+                //}
+                //if (Salon.Products != null && Salon.Products.Count > 0)
+                //{
+                //    foreach (var item in Salon.Products)
+                //    {
+                //        if (item.Name.ToLower() == "feed")
+                //        {
+                //            foreach (var product in item.Products)
+                //            {
+                //                var index = item.Products.IndexOf(product);
+                //                if (index % 2 == 0)
+                //                {
+                //                    FeedsEvenProducts.Add(new CustomProduct
+                //                    {
+                //                        Product = product,
+                //                        ImageUrl = product.ImageUrls.FirstOrDefault() != null ? new Uri(product.ImageUrls.FirstOrDefault()) : null
+                //                    });
+                //                }
+                //                else
+                //                {
+                //                    FeedsOddsProducts.Add(new CustomProduct
+                //                    {
+                //                        Product = product,
+                //                        ImageUrl = product.ImageUrls.FirstOrDefault() != null ? new Uri(product.ImageUrls.FirstOrDefault()) : null
+                //                    });
+                //                }
 
-                            FeedContentVisible = true;
+                //            }
+
+                //            FeedContentVisible = true;
+                //        }
+                //    }
+                //}
+
+                IsLoading = true;
+                await Task.Delay(2000);
+                var products = new ObservableCollection<CustomProduct>
+                {
+                        new CustomProduct
+                        {
+                             Product=new Product
+                            {
+                                Id=Guid.NewGuid(),
+                                Name="Skin Accumax & Trade",
+                                Summary="A nutritional supplement which works from within for clear, flawless skin.",
+                                ImageUrls=new List<string>
+                                {
+                                    "https://via.placeholder.com/150"
+                                },
+                                Properties=new List<ProductProperty>
+                                {
+                                    new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                     new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                      new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                       new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    }
+
+                                },
+                                SkinConcerns=new List<string>
+                                {
+                                     "Redness/Sensitivity",
+                            "Lack of Radiance"
+                                }
+                            },
+
+                             ImageUrl=new Uri("https://via.placeholder.com/150")
+                        },
+                         new CustomProduct
+                        {
+                             Product=new Product
+                            {
+                                Id=Guid.NewGuid(),
+                                Name="Hydrating Clay Masque",
+                                Summary="Assists in absorbing excess oils and micro-exfoliating the skin.",
+                                ImageUrls=new List<string>
+                                {
+                                    "https://via.placeholder.com/150"
+                                },
+                                Properties=new List<ProductProperty>
+                                {
+                                    new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                     new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                      new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                       new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    }
+                                },
+                                SkinConcerns=new List<string>
+                                {
+                                     "Redness/Sensitivity",
+                            "Lack of Radiance"
+                                }
+                            },
+
+                             ImageUrl=new Uri("https://via.placeholder.com/150")
                         }
+                         ,
+                          new CustomProduct
+                        {
+                             Product=new Product
+                            {
+                                Id=Guid.NewGuid(),
+                                Name="Skin Accumax & Trade",
+                                Summary="A nutritional supplement which works from within for clear, flawless skin.",
+                                ImageUrls=new List<string>
+                                {
+                                    "https://via.placeholder.com/150"
+                                },
+                                Properties=new List<ProductProperty>
+                                {
+                                    new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                     new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                      new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                       new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    }
+
+                                },
+                                SkinConcerns=new List<string>
+                                {
+                                     "Redness/Sensitivity",
+                            "Lack of Radiance"
+                                }
+                            },
+
+                             ImageUrl=new Uri("https://via.placeholder.com/150")
+                        },
+                         new CustomProduct
+                        {
+                             Product=new Product
+                            {
+                                Id=Guid.NewGuid(),
+                                Name="Hydrating Clay Masque",
+                                Summary="Assists in absorbing excess oils and micro-exfoliating the skin.",
+                                ImageUrls=new List<string>
+                                {
+                                    "https://via.placeholder.com/150"
+                                },
+                                Properties=new List<ProductProperty>
+                                {
+                                    new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                     new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                      new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                       new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    }
+                                },
+                                SkinConcerns=new List<string>
+                                {
+                                     "Redness/Sensitivity",
+                            "Lack of Radiance"
+                                }
+                            },
+
+                             ImageUrl=new Uri("https://via.placeholder.com/150")
+                        },
+                          new CustomProduct
+                        {
+                             Product=new Product
+                            {
+                                Id=Guid.NewGuid(),
+                                Name="Skin Accumax & Trade",
+                                Summary="A nutritional supplement which works from within for clear, flawless skin.",
+                                ImageUrls=new List<string>
+                                {
+                                    "https://via.placeholder.com/150"
+                                },
+                                Properties=new List<ProductProperty>
+                                {
+                                    new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                     new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                      new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                       new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    }
+
+                                },
+                                SkinConcerns=new List<string>
+                                {
+                                     "Redness/Sensitivity",
+                            "Lack of Radiance"
+                                }
+                            },
+
+                             ImageUrl=new Uri("https://via.placeholder.com/150")
+                        },
+                         new CustomProduct
+                        {
+                             Product=new Product
+                            {
+                                Id=Guid.NewGuid(),
+                                Name="Hydrating Clay Masque",
+                                Summary="Assists in absorbing excess oils and micro-exfoliating the skin.",
+                                ImageUrls=new List<string>
+                                {
+                                    "https://via.placeholder.com/150"
+                                },
+                                Properties=new List<ProductProperty>
+                                {
+                                    new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                     new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                      new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    },
+                                       new ProductProperty
+                                    {
+                                        ImageUrl="https://via.placeholder.com/64",
+                                        Detail="Vegan"
+                                    }
+                                },
+                                SkinConcerns=new List<string>
+                                {
+                                     "Redness/Sensitivity",
+                            "Lack of Radiance"
+                                }
+                            },
+
+                             ImageUrl=new Uri("https://via.placeholder.com/150")
+                        }
+                };
+
+                foreach (var item in products)
+                {
+                    var index = products.IndexOf(item);
+                    if (index % 2 == 0)
+                    {
+                        FeedsEvenProducts.Add(item);
+                    }
+                    else
+                    {
+                        FeedsOddsProducts.Add(item);
                     }
                 }
-                //    Products = new ObservableCollection<CustomProduct>
-                //{
-                //        new CustomProduct
-                //        {
-                //             Product=new Product
-                //            {
-                //                Id=Guid.NewGuid(),
-                //                Name="Skin Accumax & Trade",
-                //                Summary="A nutritional supplement which works from within for clear, flawless skin.",
-                //                ImageUrls=new List<string>
-                //                {
-                //                    "https://via.placeholder.com/150"
-                //                },
-                //                Properties=new List<ProductProperty>
-                //                {
-                //                    new ProductProperty
-                //                    {
-                //                        ImageUrl="https://via.placeholder.com/64",
-                //                        Detail="Vegan"
-                //                    },
-                //                     new ProductProperty
-                //                    {
-                //                        ImageUrl="https://via.placeholder.com/64",
-                //                        Detail="Vegan"
-                //                    },
-                //                      new ProductProperty
-                //                    {
-                //                        ImageUrl="https://via.placeholder.com/64",
-                //                        Detail="Vegan"
-                //                    },
-                //                       new ProductProperty
-                //                    {
-                //                        ImageUrl="https://via.placeholder.com/64",
-                //                        Detail="Vegan"
-                //                    }
-
-                //                },
-                //                SkinConcerns=new List<string>
-                //                {
-                //                     "Redness/Sensitivity",
-                //            "Lack of Radiance"
-                //                }
-                //            },
-
-                //             ImageUrl=new Uri("https://via.placeholder.com/150")
-                //        },
-                //         new CustomProduct
-                //        {
-                //             Product=new Product
-                //            {
-                //                Id=Guid.NewGuid(),
-                //                Name="Hydrating Clay Masque",
-                //                Summary="Assists in absorbing excess oils and micro-exfoliating the skin.",
-                //                ImageUrls=new List<string>
-                //                {
-                //                    "https://via.placeholder.com/150"
-                //                },
-                //                Properties=new List<ProductProperty>
-                //                {
-                //                    new ProductProperty
-                //                    {
-                //                        ImageUrl="https://via.placeholder.com/64",
-                //                        Detail="Vegan"
-                //                    },
-                //                     new ProductProperty
-                //                    {
-                //                        ImageUrl="https://via.placeholder.com/64",
-                //                        Detail="Vegan"
-                //                    },
-                //                      new ProductProperty
-                //                    {
-                //                        ImageUrl="https://via.placeholder.com/64",
-                //                        Detail="Vegan"
-                //                    },
-                //                       new ProductProperty
-                //                    {
-                //                        ImageUrl="https://via.placeholder.com/64",
-                //                        Detail="Vegan"
-                //                    }
-                //                },
-                //                SkinConcerns=new List<string>
-                //                {
-                //                     "Redness/Sensitivity",
-                //            "Lack of Radiance"
-                //                }
-                //            },
-
-                //             ImageUrl=new Uri("https://via.placeholder.com/150")
-                //        }
-                //        // ,
-                //        //  new CustomProduct
-                //        //{
-                //        //     Product=new Product
-                //        //    {
-                //        //        Id=Guid.NewGuid(),
-                //        //        Name="Skin Accumax & Trade",
-                //        //        Summary="A nutritional supplement which works from within for clear, flawless skin.",
-                //        //        ImageUrls=new List<string>
-                //        //        {
-                //        //            "https://via.placeholder.com/150"
-                //        //        },
-                //        //        Properties=new List<ProductProperty>
-                //        //        {
-                //        //            new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            },
-                //        //             new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            },
-                //        //              new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            },
-                //        //               new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            }
-
-                //        //        },
-                //        //        SkinConcerns=new List<string>
-                //        //        {
-                //        //             "Redness/Sensitivity",
-                //        //    "Lack of Radiance"
-                //        //        }
-                //        //    },
-
-                //        //     ImageUrl=new Uri("https://via.placeholder.com/150")
-                //        //},
-                //        // new CustomProduct
-                //        //{
-                //        //     Product=new Product
-                //        //    {
-                //        //        Id=Guid.NewGuid(),
-                //        //        Name="Hydrating Clay Masque",
-                //        //        Summary="Assists in absorbing excess oils and micro-exfoliating the skin.",
-                //        //        ImageUrls=new List<string>
-                //        //        {
-                //        //            "https://via.placeholder.com/150"
-                //        //        },
-                //        //        Properties=new List<ProductProperty>
-                //        //        {
-                //        //            new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            },
-                //        //             new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            },
-                //        //              new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            },
-                //        //               new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            }
-                //        //        },
-                //        //        SkinConcerns=new List<string>
-                //        //        {
-                //        //             "Redness/Sensitivity",
-                //        //    "Lack of Radiance"
-                //        //        }
-                //        //    },
-
-                //        //     ImageUrl=new Uri("https://via.placeholder.com/150")
-                //        //},
-                //        //  new CustomProduct
-                //        //{
-                //        //     Product=new Product
-                //        //    {
-                //        //        Id=Guid.NewGuid(),
-                //        //        Name="Skin Accumax & Trade",
-                //        //        Summary="A nutritional supplement which works from within for clear, flawless skin.",
-                //        //        ImageUrls=new List<string>
-                //        //        {
-                //        //            "https://via.placeholder.com/150"
-                //        //        },
-                //        //        Properties=new List<ProductProperty>
-                //        //        {
-                //        //            new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            },
-                //        //             new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            },
-                //        //              new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            },
-                //        //               new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            }
-
-                //        //        },
-                //        //        SkinConcerns=new List<string>
-                //        //        {
-                //        //             "Redness/Sensitivity",
-                //        //    "Lack of Radiance"
-                //        //        }
-                //        //    },
-
-                //        //     ImageUrl=new Uri("https://via.placeholder.com/150")
-                //        //},
-                //        // new CustomProduct
-                //        //{
-                //        //     Product=new Product
-                //        //    {
-                //        //        Id=Guid.NewGuid(),
-                //        //        Name="Hydrating Clay Masque",
-                //        //        Summary="Assists in absorbing excess oils and micro-exfoliating the skin.",
-                //        //        ImageUrls=new List<string>
-                //        //        {
-                //        //            "https://via.placeholder.com/150"
-                //        //        },
-                //        //        Properties=new List<ProductProperty>
-                //        //        {
-                //        //            new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            },
-                //        //             new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            },
-                //        //              new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            },
-                //        //               new ProductProperty
-                //        //            {
-                //        //                ImageUrl="https://via.placeholder.com/64",
-                //        //                Detail="Vegan"
-                //        //            }
-                //        //        },
-                //        //        SkinConcerns=new List<string>
-                //        //        {
-                //        //             "Redness/Sensitivity",
-                //        //    "Lack of Radiance"
-                //        //        }
-                //        //    },
-
-                //        //     ImageUrl=new Uri("https://via.placeholder.com/150")
-                //        //}
-                //};
             }
             catch (Exception ex)
             {
@@ -389,6 +429,7 @@ namespace LaunchPad.Mobile.ViewModels
             }
 
             IsLoading = false;
+            FeedContentVisible = true;
         }
         private async void FetchFortifyContentAsync()
         {
@@ -702,11 +743,11 @@ namespace LaunchPad.Mobile.ViewModels
                         {
                             foreach (var product in item.Products)
                             {
-                                FeedsProducts.Add(new CustomProduct
-                                {
-                                    Product = product,
-                                    ImageUrl = product.ImageUrls.FirstOrDefault() != null ? new Uri(product.ImageUrls.FirstOrDefault()) : null
-                                });
+                                //FeedsProducts.Add(new CustomProduct
+                                //{
+                                //    Product = product,
+                                //    ImageUrl = product.ImageUrls.FirstOrDefault() != null ? new Uri(product.ImageUrls.FirstOrDefault()) : null
+                                //});
                             }
 
                             FeedContentVisible = true;
