@@ -62,7 +62,7 @@
             <Grid Grid.Row="1" Padding="10">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="End">
                     <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Refine" VerticalTextAlignment="Center" Style="{StaticResource BaseLabelStyle}" FontSize="16"/>
-                    <ImageButton Source="icon_filter" BackgroundColor="Transparent" WidthRequest="56" HeightRequest="56"/>
+                    <ImageButton Source="icon_filter" Command="{Binding FilterOptionCommand}" BackgroundColor="Transparent" WidthRequest="56" HeightRequest="56"/>
                 </StackLayout>
 
             </Grid>
@@ -70,41 +70,90 @@
                 <Grid AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
                   AbsoluteLayout.LayoutFlags= "All"
                   CompressedLayout.IsHeadless="True">
-                    <ContentView x:Name="FeedContentView" IsVisible="{Binding FeedContentVisible}">   
-                        <ScrollView>
-                            <Grid ColumnDefinitions="*,*">
-                                <StackLayout Grid.Column="0" BindableLayout.ItemsSource="{Binding FeedsEvenProducts}">
-                                    <BindableLayout.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid Margin="10">
-                                                <customlayouts:ProductLayoutView/>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </BindableLayout.ItemTemplate>
-                                </StackLayout>
-                                <StackLayout Grid.Column="1" BindableLayout.ItemsSource="{Binding FeedsOddsProducts}">
-                                    <BindableLayout.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid Margin="10">
-                                                <customlayouts:ProductLayoutView/>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </BindableLayout.ItemTemplate>
-                                </StackLayout>
-                            </Grid>
-                        </ScrollView>
+                    <ContentView x:Name="FeedContentView" IsVisible="{Binding FeedContentVisible}">
+                        <StackLayout>
+                            <Label IsVisible="{Binding NoFeedsFound}" Text="Empty" HorizontalOptions="Center" TextColor="#000000" FontSize="22" FontAttributes="Bold" />
+                            <Label IsVisible="{Binding NoFeedsFound}" Text="There are no items to display right now" WidthRequest="220" LineHeight="1.5" HorizontalTextAlignment="Center" HorizontalOptions="Center" TextColor="#000000" FontSize="15"/>
+                            <ScrollView>
+                                <Grid ColumnDefinitions="*,*" IsVisible="{Binding NoFeedsFound,Converter={StaticResource InverseConverter}}">
+                                    <StackLayout Grid.Column="0" BindableLayout.ItemsSource="{Binding FeedsEvenProducts}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="10">
+                                                    <customlayouts:ProductLayoutView/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="1" BindableLayout.ItemsSource="{Binding FeedsOddsProducts}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="10">
+                                                    <customlayouts:ProductLayoutView/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </StackLayout>
+                                </Grid>
+                            </ScrollView>
+                        </StackLayout>
+                        
                         
                     </ContentView>
                     <ContentView x:Name="FortifyContentView" IsVisible="{Binding FortifyContentVisible}">
                         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center" Padding="10,0">
-                            <Label Text="Empty" HorizontalOptions="Center" TextColor="#000000" FontSize="22" FontAttributes="Bold"/>
-                            <Label Text="There are no items to display right now" WidthRequest="220" LineHeight="1.5" HorizontalTextAlignment="Center" HorizontalOptions="Center" TextColor="#000000" FontSize="15"/>
+                            <Label Text="Empty" HorizontalOptions="Center" TextColor="#000000" FontSize="22" FontAttributes="Bold" IsVisible="{Binding NoFortifyFound}"/>
+                            <Label IsVisible="{Binding NoFortifyFound}" Text="There are no items to display right now" WidthRequest="220" LineHeight="1.5" HorizontalTextAlignment="Center" HorizontalOptions="Center" TextColor="#000000" FontSize="15"/>
+                            <ScrollView>
+                                <Grid ColumnDefinitions="*,*" IsVisible="{Binding NoFortifyFound,Converter={StaticResource InverseConverter}}">
+                                    <StackLayout Grid.Column="0" BindableLayout.ItemsSource="{Binding FortifyEvenProducts}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="10">
+                                                    <customlayouts:ProductLayoutView/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="1" BindableLayout.ItemsSource="{Binding FortifyOddProducts}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="10">
+                                                    <customlayouts:ProductLayoutView/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </StackLayout>
+                                </Grid>
+                            </ScrollView>
                         </StackLayout>
                     </ContentView>
-                    <ContentView x:Name="FinishContentView" IsVisible="{Binding FinishContentVisible}">
+                    <ContentView x:Name="FinishContentView" IsVisible="{Binding FinishContentVisible}">                        
                         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center" Padding="10,0">
-                            <Label Text="Empty" HorizontalOptions="Center" TextColor="#000000" FontSize="22" FontAttributes="Bold"/>
-                            <Label Text="There are no items to display right now" WidthRequest="220" LineHeight="1.5" HorizontalTextAlignment="Center" HorizontalOptions="Center" TextColor="#000000" FontSize="15"/>
+                            <Label IsVisible="{Binding NoFinishFound}" Text="Empty" HorizontalOptions="Center" TextColor="#000000" FontSize="22" FontAttributes="Bold"/>
+                            <Label IsVisible="{Binding NoFinishFound}" Text="There are no items to display right now" WidthRequest="220" LineHeight="1.5" HorizontalTextAlignment="Center" HorizontalOptions="Center" TextColor="#000000" FontSize="15"/>
+                            <ScrollView>
+                                <Grid ColumnDefinitions="*,*" IsVisible="{Binding NoFinishFound,Converter={StaticResource InverseConverter}}">
+                                    <StackLayout Grid.Column="0" BindableLayout.ItemsSource="{Binding FinishEvenProducts}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="10">
+                                                    <customlayouts:ProductLayoutView/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="1" BindableLayout.ItemsSource="{Binding FinishOddProducts}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="10">
+                                                    <customlayouts:ProductLayoutView/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </StackLayout>
+                                </Grid>
+                            </ScrollView>
                         </StackLayout>
                     </ContentView>
                     <StackLayout AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
