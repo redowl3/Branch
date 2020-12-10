@@ -1,13 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:customlayouts="clr-namespace:LaunchPad.Mobile.CustomLayouts" xmlns:viewmodels="clr-namespace:LaunchPad.Mobile.ViewModels"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:customlayouts="clr-namespace:LaunchPad.Mobile.CustomLayouts"
+             xmlns:viewmodels="clr-namespace:LaunchPad.Mobile.ViewModels"
              x:Class="LaunchPad.Mobile.Views.UserHealthPlanPage">
     <NavigationPage.TitleView>
         <Grid ColumnDefinitions="*,*">
-            <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Sarah's Skin Health Plan" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="18" TextColor="White"/>
+            <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Sarah's Skin Health Plan" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
             <StackLayout Grid.Column="1" HorizontalOptions="End" Padding="10,0" Spacing="20" Orientation="Horizontal">
                 <StackLayout Orientation="Horizontal" Spacing="10">
-                    <Label Text="Sarah Smith" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="18" TextColor="White"/>
+                    <Label Text="Sarah Smith" HorizontalTextAlignment="End" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
                     <Image Source="icon_user" WidthRequest="32" HeightRequest="32"/>
                 </StackLayout>
                 <Image Source="icon_list" WidthRequest="36" HeightRequest="36"/>
@@ -61,7 +63,7 @@
             </Grid>
             <Grid Grid.Row="1" Padding="10">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-                    <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Refine" VerticalTextAlignment="Center" Style="{StaticResource BaseLabelStyle}" FontSize="16"/>
+                    <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Refine" VerticalTextAlignment="Center" Style="{StaticResource ContentAdditionalInfoTitle}"/>
                     <ImageButton Source="icon_filter" Command="{Binding FilterOptionCommand}" BackgroundColor="Transparent" WidthRequest="56" HeightRequest="56"/>
                 </StackLayout>
 
@@ -72,8 +74,8 @@
                   CompressedLayout.IsHeadless="True">
                     <ContentView x:Name="FeedContentView" IsVisible="{Binding FeedContentVisible}">
                         <StackLayout>
-                            <Label IsVisible="{Binding NoFeedsFound}" Text="Empty" HorizontalOptions="Center" TextColor="#000000" FontSize="22" FontAttributes="Bold" />
-                            <Label IsVisible="{Binding NoFeedsFound}" Text="There are no items to display right now" WidthRequest="220" LineHeight="1.5" HorizontalTextAlignment="Center" HorizontalOptions="Center" TextColor="#000000" FontSize="15"/>
+                            <Label IsVisible="{Binding NoFeedsFound}" Text="Empty" HorizontalOptions="Center" Style="{StaticResource TabTitleLabelStyle}"/>
+                            <Label IsVisible="{Binding NoFeedsFound}" Text="There are no items to display right now" WidthRequest="220" LineHeight="1.5" HorizontalTextAlignment="Center" HorizontalOptions="Center" Style="{StaticResource ContentTitle}"/>
                             <ScrollView>
                                 <Grid ColumnDefinitions="*,*" IsVisible="{Binding NoFeedsFound,Converter={StaticResource InverseConverter}}">
                                     <StackLayout Grid.Column="0" BindableLayout.ItemsSource="{Binding FeedsEvenProducts}">
@@ -101,9 +103,9 @@
                         
                     </ContentView>
                     <ContentView x:Name="FortifyContentView" IsVisible="{Binding FortifyContentVisible}">
-                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center" Padding="10,0">
-                            <Label Text="Empty" HorizontalOptions="Center" TextColor="#000000" FontSize="22" FontAttributes="Bold" IsVisible="{Binding NoFortifyFound}"/>
-                            <Label IsVisible="{Binding NoFortifyFound}" Text="There are no items to display right now" WidthRequest="220" LineHeight="1.5" HorizontalTextAlignment="Center" HorizontalOptions="Center" TextColor="#000000" FontSize="15"/>
+                        <StackLayout>
+                            <Label Text="Empty" HorizontalOptions="Center" IsVisible="{Binding NoFortifyFound}" Style="{StaticResource TabTitleLabelStyle}"/>
+                            <Label IsVisible="{Binding NoFortifyFound}" Text="There are no items to display right now" WidthRequest="220" LineHeight="1.5" HorizontalTextAlignment="Center" HorizontalOptions="Center" Style="{StaticResource ContentAdditionalInfoTitle}"/>
                             <ScrollView>
                                 <Grid ColumnDefinitions="*,*" IsVisible="{Binding NoFortifyFound,Converter={StaticResource InverseConverter}}">
                                     <StackLayout Grid.Column="0" BindableLayout.ItemsSource="{Binding FortifyEvenProducts}">
@@ -129,12 +131,12 @@
                         </StackLayout>
                     </ContentView>
                     <ContentView x:Name="FinishContentView" IsVisible="{Binding FinishContentVisible}">                        
-                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center" Padding="10,0">
-                            <Label IsVisible="{Binding NoFinishFound}" Text="Empty" HorizontalOptions="Center" TextColor="#000000" FontSize="22" FontAttributes="Bold"/>
-                            <Label IsVisible="{Binding NoFinishFound}" Text="There are no items to display right now" WidthRequest="220" LineHeight="1.5" HorizontalTextAlignment="Center" HorizontalOptions="Center" TextColor="#000000" FontSize="15"/>
+                        <StackLayout>
+                            <Label IsVisible="{Binding NoFinishFound}" Text="Empty" HorizontalOptions="Center" Style="{StaticResource TabTitleLabelStyle}"/>
+                            <Label IsVisible="{Binding NoFinishFound}" Text="There are no items to display right now" WidthRequest="220" LineHeight="1.5" HorizontalTextAlignment="Center" HorizontalOptions="Center" Style="{StaticResource ContentAdditionalInfoTitle}"/>
                             <ScrollView>
                                 <Grid ColumnDefinitions="*,*" IsVisible="{Binding NoFinishFound,Converter={StaticResource InverseConverter}}">
-                                    <StackLayout Grid.Column="0" BindableLayout.ItemsSource="{Binding FinishEvenProducts}">
+                                    <StackLayout Grid.Column="0" BindableLayout.ItemsSource="{Binding FinishEvenProducts,Mode=TwoWay}">
                                         <BindableLayout.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid Margin="10">
@@ -143,7 +145,7 @@
                                             </DataTemplate>
                                         </BindableLayout.ItemTemplate>
                                     </StackLayout>
-                                    <StackLayout Grid.Column="1" BindableLayout.ItemsSource="{Binding FinishOddProducts}">
+                                    <StackLayout Grid.Column="1" BindableLayout.ItemsSource="{Binding FinishOddProducts,Mode=TwoWay}">
                                         <BindableLayout.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid Margin="10">

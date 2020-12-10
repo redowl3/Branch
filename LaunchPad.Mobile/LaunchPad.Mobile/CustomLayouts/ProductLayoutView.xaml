@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="LaunchPad.Mobile.CustomLayouts.ProductLayoutView">
     <ContentView.Content>
-        <Grid Margin="0,10">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="150"/>
                 <RowDefinition Height="36"/>
@@ -22,8 +23,8 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <StackLayout>
-                            <Label Text="{Binding Product.Name}" FontSize="18" HorizontalTextAlignment="Start" TextColor="#000000"/>
-                            <Label FontSize="14" Text="{Binding Product.Summary}" HorizontalTextAlignment="Start" TextColor="#000000"/>
+                            <Label Text="{Binding Product.Name}" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}"/>
+                            <Label FontSize="14" Text="{Binding Product.Summary}" HorizontalTextAlignment="Start" Style="{StaticResource ContentDescription}"/>
                         </StackLayout>
                         <Image Grid.Column="1" Source="icon_doc" HorizontalOptions="End" VerticalOptions="Start" WidthRequest="46" HeightRequest="46"/>
                     </Grid>
@@ -44,7 +45,7 @@
                         <Grid>
                             <StackLayout Orientation="Horizontal" Spacing="2">
                                 <Image Source="icon_checkmark" WidthRequest="20" HeightRequest="20"/>
-                                <Label FontSize="13" Text="{Binding .}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="#000000"/>
+                                <Label Text="{Binding .}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Style="{StaticResource ContentProperty}"/>
                             </StackLayout>
                         </Grid>
                     </DataTemplate>
@@ -58,21 +59,36 @@
                                 <BoxView HeightRequest="2" VerticalOptions="End" BackgroundColor="Gray"/>
                                 <Grid ColumnDefinitions="*" Padding="0,10">
                                     <Grid.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="benefits_close_clicked" NumberOfTapsRequired="1"/>
+                                        <TapGestureRecognizer Command="{Binding ViewCommand}" Tapped="itemTapped" CommandParameter="{Binding .}" NumberOfTapsRequired="1"/>
                                     </Grid.GestureRecognizers>
-                                    <Label Text="{Binding AdditionalInformation.Title}" FontSize="16" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="#000000"/>
+                                    <Label Text="{Binding AdditionalInformation.Title}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Style="{StaticResource ContentAdditionalInfoTitle}"/>
                                 </Grid>
-                                <BoxView HeightRequest="2" VerticalOptions="End" BackgroundColor="Gray"/>                                
+                                <BoxView HeightRequest="2" VerticalOptions="End">
+                                    <BoxView.Triggers>
+                                        <MultiTrigger TargetType="BoxView">
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding IsSelected}" Value="True"/>                                                
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="BackgroundColor" Value="#ffffff"/>
+                                        </MultiTrigger>
+                                        <MultiTrigger TargetType="BoxView">
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding IsSelected}" Value="False"/>                                                
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="BackgroundColor" Value="Gray"/>
+                                        </MultiTrigger>
+                                    </BoxView.Triggers>
+                                </BoxView>
                             </StackLayout>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </FlexLayout>
-                <Grid x:Name="DetailStack" IsVisible="False" BackgroundColor="Red">
+                <Grid x:Name="DetailStack" IsVisible="False">                  
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="20"/>
                     </Grid.RowDefinitions>
-                    <Label Text="{Binding Detail}" FontSize="15" TextColor="#000000"/>
+                    <Label x:Name="DetailLabel" Style="{StaticResource ContentDescription}"/>
                 </Grid>
             </StackLayout>
         </Grid>

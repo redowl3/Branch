@@ -11,6 +11,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Fonts\UniNeueBook.ttf" />
+    <None Remove="Resources\Fonts\UniNeueRegular.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Fonts\UniNeueBook.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Fonts\UniNeueRegular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="akavache" Version="7.1.1" />
     <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
@@ -20,10 +35,18 @@
   <ItemGroup>
     <ProjectReference Include="..\..\LaunchPad.Client\LaunchPad.Client.csproj" />
     <ProjectReference Include="..\..\LaunchPad.Model\LaunchPad.Model.csproj" />
-    <ProjectReference Include="..\LaunchPad.Repository\LaunchPad.Repository.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\FinishFilterPage.xaml.cs">
+      <DependentUpon>FinishFilterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\FortifyFilterPage.xaml.cs">
+      <DependentUpon>FortifyFilterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\FeedFilterPage.xaml.cs">
+      <DependentUpon>FeedFilterPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\UserHealthPlanPage.xaml.cs">
       <DependentUpon>UserHealthPlanPage.xaml</DependentUpon>
     </Compile>
@@ -33,7 +56,7 @@
     <EmbeddedResource Update="CustomLayouts\ProductLayoutView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\FilterPage.xaml">
+    <EmbeddedResource Update="Views\FeedFilterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\UserHealthPlanPage.xaml">

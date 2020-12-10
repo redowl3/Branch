@@ -14,13 +14,8 @@ namespace LaunchPad.Mobile.Views
         public UserHealthPlanPage()
         {
             InitializeComponent();
-        }
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
             FeedTab.BackgroundColor = Color.White;
             FortifyTab.BackgroundColor = FinishTab.BackgroundColor = Color.FromHex("#bdbdbd");
-            
         }
         private void Feed_tapped(object sender, System.EventArgs e)
         {

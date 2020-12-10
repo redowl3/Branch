@@ -3,9 +3,9 @@ using Xamarin.Forms.Xaml;
 namespace LaunchPad.Mobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class FilterPage : ContentPage
+    public partial class FortifyFilterPage : ContentPage
     {
-        public FilterPage(ViewModels.UserHealthPlanPageViewModel userHealthPlanPageViewModel)
+        public FortifyFilterPage(ViewModels.UserHealthPlanPageViewModel userHealthPlanPageViewModel)
         {
             InitializeComponent();
             this.BindingContext = userHealthPlanPageViewModel;

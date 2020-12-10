@@ -4,5 +4,6 @@
     <SelectedDevice>nexus_9_pie_9_0_-_api_28</SelectedDevice>
     <AndroidDesignerPreferredTheme>MainTheme</AndroidDesignerPreferredTheme>
     <DefaultDevice>nexus_9_pie_9_0_-_api_28</DefaultDevice>
+    <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
 </Project>

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using LaunchPad.Mobile.Models;
+using LaunchPad.Mobile.ViewModels;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,15 +9,16 @@ namespace LaunchPad.Mobile.CustomLayouts
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ProductLayoutView : ContentView
     {
+        private CustomProductAdditionalInfo OldParam;
         public ProductLayoutView()
         {
             InitializeComponent();
         }
-        private void benefits_close_clicked(object sender, EventArgs e)
+        private void benefits_close_clicked(object sender, TappedEventArgs e)
         {
             //BenefitsDetailsGridView.IsVisible = false;
             //BenefitBoxView.BackgroundColor = Color.Gray;
-            DetailStack.IsVisible = true;
+            DetailStack.IsVisible = !DetailStack.IsVisible;
         }
 
         private void TapGestureRecognizer_Tappedbenefits(object sender, EventArgs e)
@@ -71,6 +69,27 @@ namespace LaunchPad.Mobile.CustomLayouts
             //}
 
 
+        }
+
+        private void itemTapped(object sender, EventArgs e)
+        {
+            DetailStack.IsVisible = true;
+            var param = ((e as TappedEventArgs)?.Parameter as CustomProductAdditionalInfo);
+            if (OldParam!=null && OldParam.Id == param.Id)
+            {
+                DetailStack.IsVisible = false;
+                OldParam = null;
+            }
+            else
+            {
+                DetailLabel.Text = param.AdditionalInformation.Detail;
+                OldParam = param;
+            }
+        }
+
+        private void CloseStack(object sender, EventArgs e)
+        {
+            DetailStack.IsVisible = false;
         }
     }
 }

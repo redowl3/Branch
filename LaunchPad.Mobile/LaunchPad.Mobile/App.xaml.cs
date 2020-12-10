@@ -1,20 +1,11 @@
 ﻿using LaunchPad.Mobile.Views;
-using LaunchPad.Repository;
-using SQLite;
-using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
+[assembly: ExportFont("UniNeueBook.ttf", Alias = "BoldFont")]
+[assembly: ExportFont("UniNeueRegular.ttf", Alias = "RegularFont")]
 namespace LaunchPad.Mobile
 {
     public partial class App : Application
     {
-        static readonly Lazy<SQLiteAsyncConnection> lazyInitializer = new Lazy<SQLiteAsyncConnection>(() =>
-        {
-            return new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
-        });
-
-        public static SQLiteAsyncConnection DbConnection => lazyInitializer.Value;
         public App()
         {
             InitializeComponent();
