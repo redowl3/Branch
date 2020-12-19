@@ -113,6 +113,10 @@
       "frameworks": {
         "xamarinios10": {
           "dependencies": {
+            "XForms.Plugin.AnimationNavigationPage": {
+              "target": "Package",
+              "version": "[1.0.8, )"
+            },
             "Xamarin.Essentials": {
               "target": "Package",
               "version": "[1.5.3.2, )"
@@ -124,10 +128,6 @@
             "akavache": {
               "target": "Package",
               "version": "[7.1.1, )"
-            },
-            "sqlite-net-pcl": {
-              "target": "Package",
-              "version": "[1.7.335, )"
             }
           }
         }
@@ -173,9 +173,6 @@
             "projectReferences": {
               "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Client\\LaunchPad.Client.csproj": {
                 "projectPath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Client\\LaunchPad.Client.csproj"
-              },
-              "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Model\\LaunchPad.Model.csproj": {
-                "projectPath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Model\\LaunchPad.Model.csproj"
               }
             }
           }
@@ -195,6 +192,10 @@
               "version": "[2.0.3, )",
               "autoReferenced": true
             },
+            "XForms.Plugin.AnimationNavigationPage": {
+              "target": "Package",
+              "version": "[1.0.8, )"
+            },
             "Xamarin.Essentials": {
               "target": "Package",
               "version": "[1.5.3.2, )"
@@ -210,10 +211,6 @@
             "akavache": {
               "target": "Package",
               "version": "[7.1.1, )"
-            },
-            "sqlite-net-pcl": {
-              "target": "Package",
-              "version": "[1.7.335, )"
             }
           },
           "imports": [

@@ -11,7 +11,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid ColumnDefinitions="*,2*">
-                <forms:CachedImage Source="{Binding ImageUrl}" WidthRequest="150" HeightRequest="150" HorizontalOptions="Start"/>
+                <forms:CachedImage Source="{Binding ImageUrl}" WidthRequest="150" HeightRequest="150" Aspect="AspectFill"/>
                 <Grid Grid.Column="1" HorizontalOptions="Start">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -26,13 +26,13 @@
                             <Label Text="{Binding Product.Name}" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}"/>
                             <Label FontSize="14" Text="{Binding Product.Summary}" HorizontalTextAlignment="Start" Style="{StaticResource ContentDescription}"/>
                         </StackLayout>
-                        <Image Grid.Column="1" Source="icon_doc" HorizontalOptions="End" VerticalOptions="Start" WidthRequest="46" HeightRequest="46"/>
+                        <ImageButton Command="{Binding AddPlanCommand}" CommandParameter="{Binding .}" Grid.Column="1" Source="icon_doc" HorizontalOptions="End" VerticalOptions="Start" WidthRequest="46" HeightRequest="46"/>
                     </Grid>
-                    <StackLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding Product.Properties}" Orientation="Horizontal" VerticalOptions="End">
+                    <StackLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding Product.Properties}" Orientation="Horizontal" Spacing="10" VerticalOptions="End">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
                                 <Grid VerticalOptions="End" Padding="0,5">
-                                    <forms:CachedImage Source="{Binding ImageUrl}" VerticalOptions="End"/>
+                                    <forms:CachedImage Source="{Binding ImageUrl}" WidthRequest="30" HeightRequest="30" VerticalOptions="End"/>
                                 </Grid>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>

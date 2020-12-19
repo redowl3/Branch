@@ -3,6 +3,7 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
 using FFImageLoading.Forms.Platform;
+using Plugin.CurrentActivity;
 
 namespace LaunchPad.Mobile.Droid
 {
@@ -20,6 +21,8 @@ namespace LaunchPad.Mobile.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             CachedImageRenderer.Init(true);
             CachedImageRenderer.InitImageViewHandler();
+            FormsControls.Droid.Main.Init(this);
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             LoadApplication(new App());
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

@@ -16,6 +16,14 @@ namespace LaunchPad.Mobile.ViewModels
     public class UserHealthPlanPageViewModel : ViewModelBase
     {
         private IDatabaseServices DatabaseServices => DependencyService.Get<IDatabaseServices>();
+        public static Action<int> CartItemAdded;
+        public static void OnCartItemAdded(int param)
+        {
+            if (CartItemAdded != null)
+            {
+                CartItemAdded(param);
+            }
+        }
         private Salon Salon = new Salon();
         private ObservableCollection<CustomProduct> _feedsEvenProducts;
         public ObservableCollection<CustomProduct> FeedsEvenProducts
@@ -23,6 +31,7 @@ namespace LaunchPad.Mobile.ViewModels
             get => _feedsEvenProducts;
             set => SetProperty(ref _feedsEvenProducts, value);
         }
+
         private ObservableCollection<CustomProduct> _feedsOddsProducts;
         public ObservableCollection<CustomProduct> FeedsOddsProducts
         {
@@ -166,6 +175,9 @@ namespace LaunchPad.Mobile.ViewModels
             if (FinishContentVisible) FilterFinishsAsync();
         });
 
+        public Command AddToPlanCommand => new Command<CustomProduct>((param) =>AddToHealthPlanAsync(param));
+        public Command ViewPlanCommand => new Command(() =>ViewHealthPlanAsync());
+
         public UserHealthPlanPageViewModel()
         {
             FeedsEvenProducts = new ObservableCollection<CustomProduct>();
@@ -176,6 +188,26 @@ namespace LaunchPad.Mobile.ViewModels
             FinishEvenProducts = new ObservableCollection<CustomProduct>();
             FinishOddProducts = new ObservableCollection<CustomProduct>();
             FetchFeedContentAsync();
+        }
+
+        internal void RefreshBadgeCountAsync()
+        {
+            GetCartItemAsync();
+        }
+        private async void GetCartItemAsync()
+        {
+            try
+            {
+                var cartItems = await DatabaseServices.Get<List<Product>>("cartitems");
+                if (cartItems.Count > 0)
+                {
+                    CartItemAdded?.Invoke(cartItems.Count);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private async void FetchFeedContentAsync()
@@ -192,10 +224,10 @@ namespace LaunchPad.Mobile.ViewModels
                     }
                   
                 }
-                if (Salon.Products != null && Salon.Products.Count > 0)
+                if (Salon.ProductCategories != null && Salon.ProductCategories.Count > 0)
                 {
                     NoFeedsFound = false;
-                    foreach (var item in Salon.Products)
+                    foreach (var item in Salon.ProductCategories)
                     {
                         if (item.Name.ToLower() == "feed")
                         {
@@ -212,7 +244,8 @@ namespace LaunchPad.Mobile.ViewModels
                                         {
                                             AdditionalInformation = a,
                                             ItemSelectedCommand = new Command<CustomProductAdditionalInfo>((param) => RefreshFeedProductListAsync(param, false))
-                                        }).ToList()
+                                        }).ToList(),
+                                        AddPlanCommand = new Command<CustomProduct>((param) => AddToHealthPlanAsync(param))
                                     });
                                 }
                                 else
@@ -225,7 +258,8 @@ namespace LaunchPad.Mobile.ViewModels
                                         {
                                             AdditionalInformation = a,
                                             ItemSelectedCommand = new Command<CustomProductAdditionalInfo>((param) => RefreshFeedProductListAsync(param, true))
-                                        }).ToList()
+                                        }).ToList(),
+                                        AddPlanCommand = new Command<CustomProduct>((param) => AddToHealthPlanAsync(param))
                                     });
                                 }
 
@@ -280,10 +314,10 @@ namespace LaunchPad.Mobile.ViewModels
                     }
 
                 }
-                if (Salon.Products != null && Salon.Products.Count > 0)
+                if (Salon.ProductCategories != null && Salon.ProductCategories.Count > 0)
                 {
                     NoFortifyFound = false;
-                    foreach (var item in Salon.Products.Where(item => item.Name.ToLower() == "fortify"))
+                    foreach (var item in Salon.ProductCategories.Where(item => item.Name.ToLower() == "fortify"))
                     {
                         foreach (var product in item.Products)
                         {
@@ -298,7 +332,8 @@ namespace LaunchPad.Mobile.ViewModels
                                     {
                                         AdditionalInformation = a,
                                         ItemSelectedCommand = new Command<CustomProductAdditionalInfo>((param) => RefreshFortifyProductListAsync(param, false))
-                                    }).ToList()
+                                    }).ToList(),
+                                    AddPlanCommand = new Command<CustomProduct>((param) => AddToHealthPlanAsync(param))
                                 });
                             }
                             else
@@ -311,7 +346,8 @@ namespace LaunchPad.Mobile.ViewModels
                                     {
                                         AdditionalInformation = a,
                                         ItemSelectedCommand = new Command<CustomProductAdditionalInfo>((param) => RefreshFortifyProductListAsync(param, true))
-                                    }).ToList()
+                                    }).ToList(),
+                                    AddPlanCommand = new Command<CustomProduct>((param) => AddToHealthPlanAsync(param))
                                 });
                             }
 
@@ -360,10 +396,10 @@ namespace LaunchPad.Mobile.ViewModels
                         await DatabaseServices.InsertData("salon", Salon);
                     }
                 }
-                if (Salon.Products != null && Salon.Products.Count > 0)
+                if (Salon.ProductCategories != null && Salon.ProductCategories.Count > 0)
                 {
                     NoFinishFound = false;
-                    foreach (var item in Salon.Products.Where(item => item.Name.ToLower() == "finish"))
+                    foreach (var item in Salon.ProductCategories.Where(item => item.Name.ToLower() == "finish"))
                     {
                         foreach (var product in item.Products)
                         {
@@ -378,7 +414,8 @@ namespace LaunchPad.Mobile.ViewModels
                                     {
                                         AdditionalInformation = a,
                                         ItemSelectedCommand = new Command<CustomProductAdditionalInfo>((param) => RefreshFinishProductListAsync(param, false))
-                                    }).ToList()
+                                    }).ToList(),
+                                    AddPlanCommand=new Command<CustomProduct>((param)=>AddToHealthPlanAsync(param))
                                 });
                             }
                             else
@@ -391,7 +428,8 @@ namespace LaunchPad.Mobile.ViewModels
                                     {
                                         AdditionalInformation = a,
                                         ItemSelectedCommand = new Command<CustomProductAdditionalInfo>((param) => RefreshFinishProductListAsync(param, true))
-                                    }).ToList()
+                                    }).ToList(),
+                                    AddPlanCommand = new Command<CustomProduct>((param) => AddToHealthPlanAsync(param))
                                 });
                             }
 
@@ -436,7 +474,7 @@ namespace LaunchPad.Mobile.ViewModels
                     if (FeedFilterOptionList == null)
                     {
                         var filterOptions = new List<FilterOption>();
-                        foreach (var item in Salon.Products.Where(x => x.Name.ToLower() == "feed"))
+                        foreach (var item in Salon.ProductCategories.Where(x => x.Name.ToLower() == "feed"))
                         {
                             foreach (var product in item.Products)
                             {
@@ -465,7 +503,7 @@ namespace LaunchPad.Mobile.ViewModels
                         if (FortifyFilterOptionList == null)
                         {
                             var filterOptions = new List<FilterOption>();
-                            foreach (var item in Salon.Products.Where(x => x.Name.ToLower() == "fortify"))
+                            foreach (var item in Salon.ProductCategories.Where(x => x.Name.ToLower() == "fortify"))
                             {
                                 foreach (var product in item.Products)
                                 {
@@ -494,7 +532,7 @@ namespace LaunchPad.Mobile.ViewModels
                         else
                         {
                             var filterOptions = new List<FilterOption>();
-                            foreach (var item in Salon.Products.Where(x => x.Name.ToLower() == "finish"))
+                            foreach (var item in Salon.ProductCategories.Where(x => x.Name.ToLower() == "finish"))
                             {
                                 foreach (var product in item.Products)
                                 {
@@ -536,7 +574,7 @@ namespace LaunchPad.Mobile.ViewModels
                 }
                 else
                 {
-                    var salonProduct = Salon.Products.First(a => a.Name.ToLower() == "finish");
+                    var salonProduct = Salon.ProductCategories.First(a => a.Name.ToLower() == "finish");
                     FinishEvenProducts = new ObservableCollection<CustomProduct>();
                     FinishOddProducts = new ObservableCollection<CustomProduct>();
                     var filteredList = new List<Product>();
@@ -562,7 +600,8 @@ namespace LaunchPad.Mobile.ViewModels
                                 {
                                     AdditionalInformation = a,
                                     ItemSelectedCommand = new Command<CustomProductAdditionalInfo>((param) => RefreshFeedProductListAsync(param, false))
-                                }).ToList()
+                                }).ToList(),
+                                AddPlanCommand = new Command<CustomProduct>((param) => AddToHealthPlanAsync(param))
                             });
                         }
                         else
@@ -575,7 +614,8 @@ namespace LaunchPad.Mobile.ViewModels
                                 {
                                     AdditionalInformation = a,
                                     ItemSelectedCommand = new Command<CustomProductAdditionalInfo>((param) => RefreshFeedProductListAsync(param, true))
-                                }).ToList()
+                                }).ToList(),
+                                AddPlanCommand = new Command<CustomProduct>((param) => AddToHealthPlanAsync(param))
                             });
                         }
                     }
@@ -601,7 +641,7 @@ namespace LaunchPad.Mobile.ViewModels
                 }
                 else
                 {
-                    var salonProduct = Salon.Products.First(a => a.Name.ToLower() == "fortify");
+                    var salonProduct = Salon.ProductCategories.First(a => a.Name.ToLower() == "fortify");
                     FortifyEvenProducts = new ObservableCollection<CustomProduct>();
                     FortifyOddProducts = new ObservableCollection<CustomProduct>();
                     var filteredList = new List<Product>();
@@ -627,7 +667,8 @@ namespace LaunchPad.Mobile.ViewModels
                                 {
                                     AdditionalInformation = a,
                                     ItemSelectedCommand = new Command<CustomProductAdditionalInfo>((param) => RefreshFeedProductListAsync(param, false))
-                                }).ToList()
+                                }).ToList(),
+                                AddPlanCommand = new Command<CustomProduct>((param) => AddToHealthPlanAsync(param))
                             });
                         }
                         else
@@ -640,7 +681,8 @@ namespace LaunchPad.Mobile.ViewModels
                                 {
                                     AdditionalInformation = a,
                                     ItemSelectedCommand = new Command<CustomProductAdditionalInfo>((param) => RefreshFeedProductListAsync(param, true))
-                                }).ToList()
+                                }).ToList(),
+                                AddPlanCommand = new Command<CustomProduct>((param) => AddToHealthPlanAsync(param))
                             });
                         }
                     }
@@ -666,7 +708,7 @@ namespace LaunchPad.Mobile.ViewModels
                 }
                 else
                 {
-                    var salonProduct = Salon.Products.First(a => a.Name.ToLower() == "feed");
+                    var salonProduct = Salon.ProductCategories.First(a => a.Name.ToLower() == "feed");
                     FeedsEvenProducts = new ObservableCollection<CustomProduct>();
                     FeedsOddsProducts = new ObservableCollection<CustomProduct>();
                     var filteredList = new List<Product>();
@@ -692,7 +734,8 @@ namespace LaunchPad.Mobile.ViewModels
                                 {
                                     AdditionalInformation = a,
                                     ItemSelectedCommand = new Command<CustomProductAdditionalInfo>((param) => RefreshFeedProductListAsync(param, false))
-                                }).ToList()
+                                }).ToList(),
+                                AddPlanCommand = new Command<CustomProduct>((param) => AddToHealthPlanAsync(param))
                             });
                         }
                         else
@@ -705,7 +748,8 @@ namespace LaunchPad.Mobile.ViewModels
                                 {
                                     AdditionalInformation = a,
                                     ItemSelectedCommand = new Command<CustomProductAdditionalInfo>((param) => RefreshFeedProductListAsync(param, true))
-                                }).ToList()
+                                }).ToList(),
+                                AddPlanCommand = new Command<CustomProduct>((param) => AddToHealthPlanAsync(param))
                             });
                         }
                     }
@@ -717,5 +761,39 @@ namespace LaunchPad.Mobile.ViewModels
             }
             IsLoading = false;
         }
+
+
+        private async void AddToHealthPlanAsync(CustomProduct product)
+        {
+            try
+            {
+                var cartItems = await DatabaseServices.Get<List<Product>>("cartitems");
+                if (cartItems.Count > 0)
+                {
+                    if (cartItems.Count(async => async.Id == product.Product.Id) ==0)
+                    {
+                        cartItems.Add(product.Product);
+                        await DatabaseServices.InsertData("cartitems", cartItems);
+                    }
+                }
+                else
+                {
+                    cartItems.Add(product.Product);
+                    await DatabaseServices.InsertData("cartitems", cartItems);
+                }
+
+                CartItemAdded?.Invoke(cartItems.Count);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message + "/n/n" + ex.StackTrace);
+            }
+        }
+
+        private void ViewHealthPlanAsync()
+        {
+            Application.Current.MainPage.Navigation.PushAsync(new HealthPlanBasketPage());
+        }
+
     }
 }

@@ -100,18 +100,6 @@
           "lib/netstandard2.0/Splat.dll": {}
         }
       },
-      "sqlite-net-pcl/1.7.335": {
-        "type": "package",
-        "dependencies": {
-          "SQLitePCLRaw.bundle_green": "2.0.3"
-        },
-        "compile": {
-          "lib/netstandard2.0/SQLite-net.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/SQLite-net.dll": {}
-        }
-      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.0.4": {
         "type": "package",
         "dependencies": {
@@ -124,21 +112,6 @@
         },
         "runtime": {
           "lib/Xamarin.iOS10/SQLitePCLRaw.batteries_v2.dll": {}
-        }
-      },
-      "SQLitePCLRaw.bundle_green/2.0.3": {
-        "type": "package",
-        "dependencies": {
-          "SQLitePCLRaw.core": "2.0.3",
-          "SQLitePCLRaw.provider.dynamic_cdecl": "2.0.3"
-        },
-        "compile": {
-          "lib/Xamarin.iOS10/SQLitePCLRaw.batteries_v2.dll": {},
-          "lib/Xamarin.iOS10/SQLitePCLRaw.nativelibrary.dll": {}
-        },
-        "runtime": {
-          "lib/Xamarin.iOS10/SQLitePCLRaw.batteries_v2.dll": {},
-          "lib/Xamarin.iOS10/SQLitePCLRaw.nativelibrary.dll": {}
         }
       },
       "SQLitePCLRaw.core/2.0.4": {
@@ -163,18 +136,6 @@
         },
         "runtime": {
           "lib/xamarinios10/SQLitePCLRaw.lib.e_sqlite3.ios.dll": {}
-        }
-      },
-      "SQLitePCLRaw.provider.dynamic_cdecl/2.0.3": {
-        "type": "package",
-        "dependencies": {
-          "SQLitePCLRaw.core": "2.0.3"
-        },
-        "compile": {
-          "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll": {}
         }
       },
       "SQLitePCLRaw.provider.internal/2.0.4": {
@@ -541,6 +502,20 @@
           "buildTransitive/Xamarin.Forms.targets": {}
         }
       },
+      "XForms.Plugin.AnimationNavigationPage/1.0.8": {
+        "type": "package",
+        "dependencies": {
+          "Xamarin.Forms": "3.4.0.1008975"
+        },
+        "compile": {
+          "lib/Xamarin.iOS10/FormsControls.Base.dll": {},
+          "lib/Xamarin.iOS10/FormsControls.Touch.dll": {}
+        },
+        "runtime": {
+          "lib/Xamarin.iOS10/FormsControls.Base.dll": {},
+          "lib/Xamarin.iOS10/FormsControls.Touch.dll": {}
+        }
+      },
       "LaunchPad.Client/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
@@ -561,12 +536,11 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "LaunchPad.Client": "1.0.0",
-          "LaunchPad.Model": "1.0.0",
+          "XForms.Plugin.AnimationNavigationPage": "1.0.8",
           "Xamarin.Essentials": "1.5.3.2",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.8.0.1687",
-          "akavache": "7.1.1",
-          "sqlite-net-pcl": "1.7.335"
+          "akavache": "7.1.1"
         },
         "compile": {
           "bin/placeholder/LaunchPad.Mobile.dll": {}
@@ -688,18 +662,6 @@
           "lib/netstandard2.0/Splat.dll": {}
         }
       },
-      "sqlite-net-pcl/1.7.335": {
-        "type": "package",
-        "dependencies": {
-          "SQLitePCLRaw.bundle_green": "2.0.3"
-        },
-        "compile": {
-          "lib/netstandard2.0/SQLite-net.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/SQLite-net.dll": {}
-        }
-      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.0.4": {
         "type": "package",
         "dependencies": {
@@ -712,21 +674,6 @@
         },
         "runtime": {
           "lib/Xamarin.iOS10/SQLitePCLRaw.batteries_v2.dll": {}
-        }
-      },
-      "SQLitePCLRaw.bundle_green/2.0.3": {
-        "type": "package",
-        "dependencies": {
-          "SQLitePCLRaw.core": "2.0.3",
-          "SQLitePCLRaw.provider.dynamic_cdecl": "2.0.3"
-        },
-        "compile": {
-          "lib/Xamarin.iOS10/SQLitePCLRaw.batteries_v2.dll": {},
-          "lib/Xamarin.iOS10/SQLitePCLRaw.nativelibrary.dll": {}
-        },
-        "runtime": {
-          "lib/Xamarin.iOS10/SQLitePCLRaw.batteries_v2.dll": {},
-          "lib/Xamarin.iOS10/SQLitePCLRaw.nativelibrary.dll": {}
         }
       },
       "SQLitePCLRaw.core/2.0.4": {
@@ -751,18 +698,6 @@
         },
         "runtime": {
           "lib/xamarinios10/SQLitePCLRaw.lib.e_sqlite3.ios.dll": {}
-        }
-      },
-      "SQLitePCLRaw.provider.dynamic_cdecl/2.0.3": {
-        "type": "package",
-        "dependencies": {
-          "SQLitePCLRaw.core": "2.0.3"
-        },
-        "compile": {
-          "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll": {}
         }
       },
       "SQLitePCLRaw.provider.internal/2.0.4": {
@@ -1129,6 +1064,20 @@
           "buildTransitive/Xamarin.Forms.targets": {}
         }
       },
+      "XForms.Plugin.AnimationNavigationPage/1.0.8": {
+        "type": "package",
+        "dependencies": {
+          "Xamarin.Forms": "3.4.0.1008975"
+        },
+        "compile": {
+          "lib/Xamarin.iOS10/FormsControls.Base.dll": {},
+          "lib/Xamarin.iOS10/FormsControls.Touch.dll": {}
+        },
+        "runtime": {
+          "lib/Xamarin.iOS10/FormsControls.Base.dll": {},
+          "lib/Xamarin.iOS10/FormsControls.Touch.dll": {}
+        }
+      },
       "LaunchPad.Client/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
@@ -1149,12 +1098,11 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "LaunchPad.Client": "1.0.0",
-          "LaunchPad.Model": "1.0.0",
+          "XForms.Plugin.AnimationNavigationPage": "1.0.8",
           "Xamarin.Essentials": "1.5.3.2",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.8.0.1687",
-          "akavache": "7.1.1",
-          "sqlite-net-pcl": "1.7.335"
+          "akavache": "7.1.1"
         },
         "compile": {
           "bin/placeholder/LaunchPad.Mobile.dll": {}
@@ -1276,18 +1224,6 @@
           "lib/netstandard2.0/Splat.dll": {}
         }
       },
-      "sqlite-net-pcl/1.7.335": {
-        "type": "package",
-        "dependencies": {
-          "SQLitePCLRaw.bundle_green": "2.0.3"
-        },
-        "compile": {
-          "lib/netstandard2.0/SQLite-net.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/SQLite-net.dll": {}
-        }
-      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.0.4": {
         "type": "package",
         "dependencies": {
@@ -1300,21 +1236,6 @@
         },
         "runtime": {
           "lib/Xamarin.iOS10/SQLitePCLRaw.batteries_v2.dll": {}
-        }
-      },
-      "SQLitePCLRaw.bundle_green/2.0.3": {
-        "type": "package",
-        "dependencies": {
-          "SQLitePCLRaw.core": "2.0.3",
-          "SQLitePCLRaw.provider.dynamic_cdecl": "2.0.3"
-        },
-        "compile": {
-          "lib/Xamarin.iOS10/SQLitePCLRaw.batteries_v2.dll": {},
-          "lib/Xamarin.iOS10/SQLitePCLRaw.nativelibrary.dll": {}
-        },
-        "runtime": {
-          "lib/Xamarin.iOS10/SQLitePCLRaw.batteries_v2.dll": {},
-          "lib/Xamarin.iOS10/SQLitePCLRaw.nativelibrary.dll": {}
         }
       },
       "SQLitePCLRaw.core/2.0.4": {
@@ -1339,18 +1260,6 @@
         },
         "runtime": {
           "lib/xamarinios10/SQLitePCLRaw.lib.e_sqlite3.ios.dll": {}
-        }
-      },
-      "SQLitePCLRaw.provider.dynamic_cdecl/2.0.3": {
-        "type": "package",
-        "dependencies": {
-          "SQLitePCLRaw.core": "2.0.3"
-        },
-        "compile": {
-          "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll": {}
         }
       },
       "SQLitePCLRaw.provider.internal/2.0.4": {
@@ -1717,6 +1626,20 @@
           "buildTransitive/Xamarin.Forms.targets": {}
         }
       },
+      "XForms.Plugin.AnimationNavigationPage/1.0.8": {
+        "type": "package",
+        "dependencies": {
+          "Xamarin.Forms": "3.4.0.1008975"
+        },
+        "compile": {
+          "lib/Xamarin.iOS10/FormsControls.Base.dll": {},
+          "lib/Xamarin.iOS10/FormsControls.Touch.dll": {}
+        },
+        "runtime": {
+          "lib/Xamarin.iOS10/FormsControls.Base.dll": {},
+          "lib/Xamarin.iOS10/FormsControls.Touch.dll": {}
+        }
+      },
       "LaunchPad.Client/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
@@ -1737,12 +1660,11 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "LaunchPad.Client": "1.0.0",
-          "LaunchPad.Model": "1.0.0",
+          "XForms.Plugin.AnimationNavigationPage": "1.0.8",
           "Xamarin.Essentials": "1.5.3.2",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.8.0.1687",
-          "akavache": "7.1.1",
-          "sqlite-net-pcl": "1.7.335"
+          "akavache": "7.1.1"
         },
         "compile": {
           "bin/placeholder/LaunchPad.Mobile.dll": {}
@@ -1864,18 +1786,6 @@
           "lib/netstandard2.0/Splat.dll": {}
         }
       },
-      "sqlite-net-pcl/1.7.335": {
-        "type": "package",
-        "dependencies": {
-          "SQLitePCLRaw.bundle_green": "2.0.3"
-        },
-        "compile": {
-          "lib/netstandard2.0/SQLite-net.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/SQLite-net.dll": {}
-        }
-      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.0.4": {
         "type": "package",
         "dependencies": {
@@ -1888,21 +1798,6 @@
         },
         "runtime": {
           "lib/Xamarin.iOS10/SQLitePCLRaw.batteries_v2.dll": {}
-        }
-      },
-      "SQLitePCLRaw.bundle_green/2.0.3": {
-        "type": "package",
-        "dependencies": {
-          "SQLitePCLRaw.core": "2.0.3",
-          "SQLitePCLRaw.provider.dynamic_cdecl": "2.0.3"
-        },
-        "compile": {
-          "lib/Xamarin.iOS10/SQLitePCLRaw.batteries_v2.dll": {},
-          "lib/Xamarin.iOS10/SQLitePCLRaw.nativelibrary.dll": {}
-        },
-        "runtime": {
-          "lib/Xamarin.iOS10/SQLitePCLRaw.batteries_v2.dll": {},
-          "lib/Xamarin.iOS10/SQLitePCLRaw.nativelibrary.dll": {}
         }
       },
       "SQLitePCLRaw.core/2.0.4": {
@@ -1927,18 +1822,6 @@
         },
         "runtime": {
           "lib/xamarinios10/SQLitePCLRaw.lib.e_sqlite3.ios.dll": {}
-        }
-      },
-      "SQLitePCLRaw.provider.dynamic_cdecl/2.0.3": {
-        "type": "package",
-        "dependencies": {
-          "SQLitePCLRaw.core": "2.0.3"
-        },
-        "compile": {
-          "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll": {}
         }
       },
       "SQLitePCLRaw.provider.internal/2.0.4": {
@@ -2305,6 +2188,20 @@
           "buildTransitive/Xamarin.Forms.targets": {}
         }
       },
+      "XForms.Plugin.AnimationNavigationPage/1.0.8": {
+        "type": "package",
+        "dependencies": {
+          "Xamarin.Forms": "3.4.0.1008975"
+        },
+        "compile": {
+          "lib/Xamarin.iOS10/FormsControls.Base.dll": {},
+          "lib/Xamarin.iOS10/FormsControls.Touch.dll": {}
+        },
+        "runtime": {
+          "lib/Xamarin.iOS10/FormsControls.Base.dll": {},
+          "lib/Xamarin.iOS10/FormsControls.Touch.dll": {}
+        }
+      },
       "LaunchPad.Client/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
@@ -2325,12 +2222,11 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "LaunchPad.Client": "1.0.0",
-          "LaunchPad.Model": "1.0.0",
+          "XForms.Plugin.AnimationNavigationPage": "1.0.8",
           "Xamarin.Essentials": "1.5.3.2",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.8.0.1687",
-          "akavache": "7.1.1",
-          "sqlite-net-pcl": "1.7.335"
+          "akavache": "7.1.1"
         },
         "compile": {
           "bin/placeholder/LaunchPad.Mobile.dll": {}
@@ -2530,20 +2426,6 @@
         "splat.nuspec"
       ]
     },
-    "sqlite-net-pcl/1.7.335": {
-      "sha512": "0A9YNPbp66aB+Sitxmh9lq1KDtD4+EBPfdtnYN8WenvQqh5dNgMxUV7kaEG6EXYTi4zBxcsDKpyYJzbViWJXtw==",
-      "type": "package",
-      "path": "sqlite-net-pcl/1.7.335",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.txt",
-        "lib/netstandard2.0/SQLite-net.dll",
-        "lib/netstandard2.0/SQLite-net.xml",
-        "sqlite-net-pcl.1.7.335.nupkg.sha512",
-        "sqlite-net-pcl.nuspec"
-      ]
-    },
     "SQLitePCLRaw.bundle_e_sqlite3/2.0.4": {
       "sha512": "f5U8Sw0lRym8tTraJ2zm6OqcDrcrEVvcKDtYlKSLs3Ox9SerkwkPXiFXb/uiW0g2tJdUw6oBhsxI/l5DoRxXMg==",
       "type": "package",
@@ -2560,24 +2442,6 @@
         "lib/netstandard2.0/SQLitePCLRaw.batteries_v2.dll",
         "sqlitepclraw.bundle_e_sqlite3.2.0.4.nupkg.sha512",
         "sqlitepclraw.bundle_e_sqlite3.nuspec"
-      ]
-    },
-    "SQLitePCLRaw.bundle_green/2.0.3": {
-      "sha512": "QgevRdYSy/MtL1TDdWuhoCH5cpBPZYUZd8h/WqgiLGXDa8e93Fv4/SE812SDCdjTb2+6s8SIwSLRq0z2bUeieg==",
-      "type": "package",
-      "path": "sqlitepclraw.bundle_green/2.0.3",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/Xamarin.iOS10/SQLitePCLRaw.batteries_v2.dll",
-        "lib/Xamarin.iOS10/SQLitePCLRaw.nativelibrary.dll",
-        "lib/net461/SQLitePCLRaw.batteries_v2.dll",
-        "lib/net461/SQLitePCLRaw.nativelibrary.dll",
-        "lib/netcoreapp3.0/SQLitePCLRaw.batteries_v2.dll",
-        "lib/netcoreapp3.0/SQLitePCLRaw.nativelibrary.dll",
-        "lib/netstandard2.0/SQLitePCLRaw.batteries_v2.dll",
-        "sqlitepclraw.bundle_green.2.0.3.nupkg.sha512",
-        "sqlitepclraw.bundle_green.nuspec"
       ]
     },
     "SQLitePCLRaw.core/2.0.4": {
@@ -2602,18 +2466,6 @@
         "lib/xamarinios10/SQLitePCLRaw.lib.e_sqlite3.ios.dll",
         "sqlitepclraw.lib.e_sqlite3.ios.2.0.4.nupkg.sha512",
         "sqlitepclraw.lib.e_sqlite3.ios.nuspec"
-      ]
-    },
-    "SQLitePCLRaw.provider.dynamic_cdecl/2.0.3": {
-      "sha512": "RybfknbgdhjD+g38vyLA8Ram3CbivpZEUa+ZthtULROrEp81V8hxK30mIsAM9YFb3cOmnF/3hOIjhpVo9h72Lg==",
-      "type": "package",
-      "path": "sqlitepclraw.provider.dynamic_cdecl/2.0.3",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll",
-        "sqlitepclraw.provider.dynamic_cdecl.2.0.3.nupkg.sha512",
-        "sqlitepclraw.provider.dynamic_cdecl.nuspec"
       ]
     },
     "SQLitePCLRaw.provider.internal/2.0.4": {
@@ -4222,6 +4074,22 @@
         "xamarin.forms.nuspec"
       ]
     },
+    "XForms.Plugin.AnimationNavigationPage/1.0.8": {
+      "sha512": "6w9mIG1xUBz2nIIVvPxt7qIGoDFd3Hle8tmNi9C5GQUm++No6fjTR/HadiogbWgAsJtvXSgpgfLMW+cl809fNg==",
+      "type": "package",
+      "path": "xforms.plugin.animationnavigationpage/1.0.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/MonoAndroid10/FormsControls.Base.dll",
+        "lib/MonoAndroid10/FormsControls.Droid.dll",
+        "lib/Xamarin.iOS10/FormsControls.Base.dll",
+        "lib/Xamarin.iOS10/FormsControls.Touch.dll",
+        "lib/netstandard2.0/FormsControls.Base.dll",
+        "xforms.plugin.animationnavigationpage.1.0.8.nupkg.sha512",
+        "xforms.plugin.animationnavigationpage.nuspec"
+      ]
+    },
     "LaunchPad.Client/1.0.0": {
       "type": "project",
       "path": "../../LaunchPad.Client/LaunchPad.Client.csproj",
@@ -4241,10 +4109,10 @@
   "projectFileDependencyGroups": {
     "Xamarin.iOS,Version=v1.0": [
       "LaunchPad.Mobile >= 1.0.0",
+      "XForms.Plugin.AnimationNavigationPage >= 1.0.8",
       "Xamarin.Essentials >= 1.5.3.2",
       "Xamarin.Forms >= 4.8.0.1687",
-      "akavache >= 7.1.1",
-      "sqlite-net-pcl >= 1.7.335"
+      "akavache >= 7.1.1"
     ]
   },
   "packageFolders": {
@@ -4289,6 +4157,10 @@
     "frameworks": {
       "xamarinios10": {
         "dependencies": {
+          "XForms.Plugin.AnimationNavigationPage": {
+            "target": "Package",
+            "version": "[1.0.8, )"
+          },
           "Xamarin.Essentials": {
             "target": "Package",
             "version": "[1.5.3.2, )"
@@ -4300,10 +4172,6 @@
           "akavache": {
             "target": "Package",
             "version": "[7.1.1, )"
-          },
-          "sqlite-net-pcl": {
-            "target": "Package",
-            "version": "[1.7.335, )"
           }
         }
       }

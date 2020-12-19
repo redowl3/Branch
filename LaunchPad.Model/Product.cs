@@ -21,9 +21,10 @@ namespace IIAADataModels.Transfer
 
 		public List<string> SkinConcerns { get; set; }
 
+		public string Classification { get; set; }
+
 		public string LevelType { get; set; }
 
 		public string Level { get; set; }
-		
 	}
 }

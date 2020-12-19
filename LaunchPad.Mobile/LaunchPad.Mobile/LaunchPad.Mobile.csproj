@@ -26,15 +26,14 @@
 
   <ItemGroup>
     <PackageReference Include="akavache" Version="7.1.1" />
-    <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="XForms.Plugin.AnimationNavigationPage" Version="1.0.8" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\LaunchPad.Client\LaunchPad.Client.csproj" />
-    <ProjectReference Include="..\..\LaunchPad.Model\LaunchPad.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,6 +46,9 @@
     <Compile Update="Views\FeedFilterPage.xaml.cs">
       <DependentUpon>FeedFilterPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\HealthPlanBasketPage.xaml.cs">
+      <DependentUpon>HealthPlanBasketPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\UserHealthPlanPage.xaml.cs">
       <DependentUpon>UserHealthPlanPage.xaml</DependentUpon>
     </Compile>
@@ -57,6 +59,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\FeedFilterPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\HealthPlanBasketPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\UserHealthPlanPage.xaml">

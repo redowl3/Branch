@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using FormsControls.Base;
+using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -6,7 +7,7 @@ using Xamarin.Forms.Xaml;
 namespace LaunchPad.Mobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SplashPage : ContentPage
+    public partial class SplashPage : AnimationPage
     {
         public SplashPage()
         {
@@ -17,7 +18,7 @@ namespace LaunchPad.Mobile.Views
         {
             base.OnAppearing();
             await Task.Delay(3000);
-            Application.Current.MainPage = new NavigationPage(new UserHealthPlanPage());
+            Application.Current.MainPage = new AnimationNavigationPage(new UserHealthPlanPage());
         }
     }
 }

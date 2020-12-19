@@ -1,21 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<base:AnimationPage xmlns:base="clr-namespace:FormsControls.Base;assembly=FormsControls.Base"
+                    xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:customlayouts="clr-namespace:LaunchPad.Mobile.CustomLayouts"
              xmlns:viewmodels="clr-namespace:LaunchPad.Mobile.ViewModels"
              x:Class="LaunchPad.Mobile.Views.UserHealthPlanPage">
+    <base:AnimationPage.PageAnimation>
+        <base:RotatePageAnimation Duration="Medium" Subtype="FromLeft" />
+    </base:AnimationPage.PageAnimation>
     <NavigationPage.TitleView>
         <Grid ColumnDefinitions="*,*">
             <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Sarah's Skin Health Plan" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
             <StackLayout Grid.Column="1" HorizontalOptions="End" Padding="10,0" Spacing="20" Orientation="Horizontal">
                 <StackLayout Orientation="Horizontal" Spacing="10">
                     <Label Text="Sarah Smith" HorizontalTextAlignment="End" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
-                    <Image Source="icon_user" WidthRequest="32" HeightRequest="32"/>
+                    <Image Source="icon_user" WidthRequest="28" HeightRequest="28"/>
                 </StackLayout>
-                <Image Source="icon_list" WidthRequest="36" HeightRequest="36"/>
+                <!--<Image Source="icon_list" WidthRequest="36" HeightRequest="36"/>-->
             </StackLayout>
         </Grid>
     </NavigationPage.TitleView>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="icon_list" Command="{Binding ViewPlanCommand}"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.BindingContext>
         <viewmodels:UserHealthPlanPageViewModel/>
     </ContentPage.BindingContext>
@@ -173,4 +180,4 @@
             </AbsoluteLayout>
         </Grid>
     </ContentPage.Content>
-</ContentPage>
+</base:AnimationPage>
