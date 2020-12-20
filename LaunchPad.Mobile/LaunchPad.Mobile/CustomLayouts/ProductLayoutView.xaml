@@ -10,9 +10,9 @@
                 <RowDefinition Height="36"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Grid ColumnDefinitions="*,2*">
-                <forms:CachedImage Source="{Binding ImageUrl}" WidthRequest="150" HeightRequest="150" Aspect="AspectFill"/>
-                <Grid Grid.Column="1" HorizontalOptions="Start">
+            <Grid ColumnDefinitions="150,*" ColumnSpacing="10">
+                <forms:CachedImage Source="{Binding ImageUrl}" WidthRequest="150" HeightRequest="150" Aspect="Fill"/>
+                <Grid Grid.Column="1" HorizontalOptions="FillAndExpand">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="56"/>
@@ -20,15 +20,15 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="56"/>
                         </Grid.ColumnDefinitions>
                         <StackLayout>
                             <Label Text="{Binding Product.Name}" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}"/>
                             <Label FontSize="14" Text="{Binding Product.Summary}" HorizontalTextAlignment="Start" Style="{StaticResource ContentDescription}"/>
                         </StackLayout>
-                        <ImageButton Command="{Binding AddPlanCommand}" CommandParameter="{Binding .}" Grid.Column="1" Source="icon_doc" HorizontalOptions="End" VerticalOptions="Start" WidthRequest="46" HeightRequest="46"/>
+                        <ImageButton BackgroundColor="Transparent" Command="{Binding AddPlanCommand}" CommandParameter="{Binding .}" Grid.Column="1" Source="icon_doc" HorizontalOptions="End" VerticalOptions="Start" WidthRequest="46" HeightRequest="56"/>
                     </Grid>
-                    <StackLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding Product.Properties}" Orientation="Horizontal" Spacing="10" VerticalOptions="End">
+                    <StackLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding Product.Properties}" Orientation="Horizontal" Spacing="20" VerticalOptions="End">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
                                 <Grid VerticalOptions="End" Padding="0,5">

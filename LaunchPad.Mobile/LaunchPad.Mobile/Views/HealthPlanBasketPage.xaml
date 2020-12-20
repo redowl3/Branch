@@ -3,7 +3,8 @@
                          xmlns="http://xamarin.com/schemas/2014/forms"
                          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                          xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-                         xmlns:viewmodels="clr-namespace:LaunchPad.Mobile.ViewModels" xmlns:views="clr-namespace:LaunchPad.Mobile.CustomLayouts"
+                         xmlns:viewmodels="clr-namespace:LaunchPad.Mobile.ViewModels"
+                         BackgroundColor="#ffffff"
                          x:Class="LaunchPad.Mobile.Views.HealthPlanBasketPage">
     <controls:AnimationPage.PageAnimation>
         <controls:PushPageAnimation Duration="Medium" Subtype="FromRight" />
@@ -27,8 +28,8 @@
         <ToolbarItem IconImageSource="icon_list"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid RowDefinitions="Auto,2,*" Padding="20">
-            <Grid ColumnDefinitions="2*,*">
+        <Grid RowDefinitions="Auto,2,*" Padding="30,0">
+            <Grid ColumnDefinitions="2*,*" Padding="0,30">
                 <Label Text="Sarah's Optimum Skin Health Plan" VerticalTextAlignment="Center" FontSize="18" Style="{StaticResource ContentTitle}"/>
                 <Label Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="18" Style="{StaticResource ContentTitle}">
                     <Label.Text>
@@ -52,45 +53,49 @@
                                     <Image Source="icon_down_arrow" IsVisible="{Binding IsSelected,Converter={StaticResource InverseConverter}}" HorizontalOptions="End" VerticalOptions="Center" WidthRequest="36" HeightRequest="36"/>
                                     <Image Source="icon_up_arrow" IsVisible="{Binding IsSelected}" HorizontalOptions="End" VerticalOptions="Center" WidthRequest="36" HeightRequest="36"/>
                                 </Grid>
-                                <StackLayout BindableLayout.ItemsSource="{Binding ProductWithLevelTypeList}" IsVisible="{Binding IsSelected,Mode=TwoWay}">
+                                <StackLayout BindableLayout.ItemsSource="{Binding ProductWithLevelTypeList}" IsVisible="{Binding IsSelected,Mode=TwoWay}" Padding="0,20">
                                     <BindableLayout.ItemTemplate>
                                         <DataTemplate>
                                             <StackLayout Spacing="10">
                                                 <StackLayout>
-                                                    <Label Text="{Binding Classification}" VerticalTextAlignment="Center" FontSize="20" Style="{StaticResource ContentTitle}"/>
-                                                    <BoxView BackgroundColor="Gray" HeightRequest="2"/>
+                                                    <Label Text="{Binding Classification}" VerticalTextAlignment="Center" FontSize="18" Style="{StaticResource ContentTitle}"/>
+                                                    <BoxView BackgroundColor="Gray" HeightRequest="1"/>
                                                 </StackLayout>
                                                 <ScrollView Orientation="Horizontal">
-                                                    <StackLayout BindableLayout.ItemsSource="{Binding Products}" VerticalOptions="Center" Orientation="Horizontal" Spacing="20">
+                                                    <StackLayout BindableLayout.ItemsSource="{Binding Products}" VerticalOptions="Center" Orientation="Horizontal" Spacing="30" Padding="0,30">
                                                         <BindableLayout.ItemTemplate>
                                                             <DataTemplate>
-                                                                <Grid RowDefinitions="220,Auto,56" ColumnDefinitions="220">
+                                                                <Grid RowDefinitions="150,Auto,Auto" ColumnDefinitions="200" RowSpacing="20">
                                                                     <forms:CachedImage Source="{Binding ImageUrl}" Aspect="Fill"/>
                                                                     <StackLayout Grid.Row="1">
-                                                                        <Label Text="{Binding Product.Name}" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}"/>
-                                                                        <Label Text="{Binding Price}" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}"/>
-                                                                        <Grid RowDefinitions="56" IsVisible="{Binding ShouldShowVariant}">
+                                                                        <Label Text="{Binding Product.Name}" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="16"/>
+                                                                        <Label Text="{Binding Price}" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="16"/>
+                                                                        
+                                                                    </StackLayout>
+                                                                    <StackLayout Grid.Row="2" Spacing="10">
+                                                                        <Grid RowDefinitions="46" IsVisible="{Binding ShouldShowVariant}">
                                                                             <Frame Padding="5" BorderColor="#000000" CornerRadius="0" HasShadow="False">
                                                                                 <Grid ColumnDefinitions="2*,Auto">
-                                                                                    <Picker x:Name="VariantsPicker" ItemsSource="{Binding VariantsList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedVariant}" >
+                                                                                    <Picker x:Name="VariantsPicker" FontSize="16" ItemsSource="{Binding VariantsList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedVariant}" >
 
                                                                                     </Picker>
                                                                                     <!--<views:BindablePicker ItemsSource="{Binding VariantsList}" Title="Type" SelectedItem="{Binding SelectedVariant}" ItemDisplayBinding="{Binding Name}"/>-->
 
-                                                                                    <Image Grid.Column="1" Source="icon_down_arrow" WidthRequest="32" HeightRequest="32" HorizontalOptions="End"/>
+                                                                                    <Image Grid.Column="1" Source="icon_down_arrow" WidthRequest="30" HeightRequest="30" HorizontalOptions="End"/>
                                                                                 </Grid>
                                                                             </Frame>
                                                                         </Grid>
-                                                                        <Grid RowDefinitions="56" IsVisible="{Binding ShouldShowSubVariant,Mode=TwoWay}">
+                                                                        <Grid RowDefinitions="46" IsVisible="{Binding ShouldShowSubVariant,Mode=TwoWay}">
                                                                             <Frame Padding="5" BorderColor="#000000" CornerRadius="0" HasShadow="False">
                                                                                 <Grid ColumnDefinitions="2*,Auto">
-                                                                                    <Picker x:Name="SubVariantsPicker" ItemsSource="{Binding PrescribingOptions}" ItemDisplayBinding="{Binding Title}" SelectedItem="{Binding SelectedOption}" />
-                                                                                    <Image Grid.Column="1" Source="icon_down_arrow" WidthRequest="32" HeightRequest="32" HorizontalOptions="End"/>
+                                                                                    <Picker x:Name="SubVariantsPicker" FontSize="16" ItemsSource="{Binding PrescribingOptions}" ItemDisplayBinding="{Binding Title}" SelectedItem="{Binding SelectedOption}" />
+                                                                                    <Image Grid.Column="1" Source="icon_down_arrow" WidthRequest="30" HeightRequest="30" HorizontalOptions="End"/>
                                                                                 </Grid>
                                                                             </Frame>
                                                                         </Grid>
+                                                                        <Button Background="#000000" Text="Purchase today" TextTransform="None" HeightRequest="46" FontSize="16" FontFamily="RegularFont" TextColor="#ffffff"/>
                                                                     </StackLayout>
-                                                                    <Button Grid.Row="2" Background="#000000" Text="Purchase Today" FontSize="18" FontFamily="RegularFont" TextColor="#ffffff"/>
+                                                                    
                                                                 </Grid>
                                                             </DataTemplate>
                                                         </BindableLayout.ItemTemplate>
@@ -100,7 +105,7 @@
                                         </DataTemplate>
                                     </BindableLayout.ItemTemplate>
                                 </StackLayout>
-                                <BoxView BackgroundColor="#000000" HeightRequest="2"/>
+                                <BoxView BackgroundColor="#000000" HeightRequest="1"/>
                             </StackLayout>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
