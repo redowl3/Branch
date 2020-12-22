@@ -42,7 +42,7 @@ namespace LaunchPad.Mobile.Models
                     if (SelectedVariant.PrescribingOptions != null && SelectedVariant.PrescribingOptions.Count > 0)
                     {
                         ShouldShowSubVariant = true;
-                        PrescribingOptions = new ObservableCollection<PrescribingOption>(SelectedVariant.PrescribingOptions);
+                        PrescribingOptions = new ObservableCollection<ProductVariantPrescribingOption>(SelectedVariant.PrescribingOptions);
                         SelectedOption = PrescribingOptions.FirstOrDefault();
                     }
 
@@ -50,15 +50,15 @@ namespace LaunchPad.Mobile.Models
                 }
             }
         }
-        private ObservableCollection<PrescribingOption> _prescribingOptions;
-        public ObservableCollection<PrescribingOption> PrescribingOptions
+        private ObservableCollection<ProductVariantPrescribingOption> _prescribingOptions;
+        public ObservableCollection<ProductVariantPrescribingOption> PrescribingOptions
         {
             get => _prescribingOptions;
             set => SetProperty(ref _prescribingOptions, value);
         }
 
-        private PrescribingOption _selectedOption;
-        public PrescribingOption SelectedOption
+        private ProductVariantPrescribingOption _selectedOption;
+        public ProductVariantPrescribingOption SelectedOption
         {
             get => _selectedOption;
             set => SetProperty(ref _selectedOption, value);
@@ -91,7 +91,7 @@ namespace LaunchPad.Mobile.Models
             AdditionalInformations = new List<CustomProductAdditionalInfo>();
             SelectedAdditionalInfo = new CustomProductAdditionalInfo();
             VariantsList = new ObservableCollection<ProductVariant>();
-            PrescribingOptions = new ObservableCollection<PrescribingOption>();
+            PrescribingOptions = new ObservableCollection<ProductVariantPrescribingOption>();
         }
         #region # INotifyPropertyChanged Impl #
         public event PropertyChangedEventHandler PropertyChanged;
@@ -304,6 +304,7 @@ namespace LaunchPad.Mobile.Models
     public class ProductWithLevelType :INotifyPropertyChanged
     {
         public string Classification { get; set; }
+        public string ProgramName { get; set; }
 
         private ObservableCollection<CustomProduct> _products;
         public ObservableCollection<CustomProduct> Products

@@ -28,20 +28,27 @@
         <ToolbarItem IconImageSource="icon_list"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid RowDefinitions="Auto,2,*" Padding="30,0">
-            <Grid ColumnDefinitions="2*,*" Padding="0,30">
+        <Grid x:Name="GridLayout"  RowDefinitions="Auto,2,*">
+            <Grid ColumnDefinitions="2*,*" Padding="30">
                 <Label Text="Sarah's Optimum Skin Health Plan" VerticalTextAlignment="Center" FontSize="18" Style="{StaticResource ContentTitle}"/>
-                <Label Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="18" Style="{StaticResource ContentTitle}">
-                    <Label.Text>
-                        <MultiBinding StringFormat="Sub Total : {0}">
-                            <Binding Path="SubTotal"/>
-                        </MultiBinding>
-                    </Label.Text>
-                </Label>
+                <StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="End" Spacing="20">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1"/>
+                    </StackLayout.GestureRecognizers>
+                    <Label VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="18" Style="{StaticResource ContentTitle}">
+                        <Label.Text>
+                            <MultiBinding StringFormat="Sub Total : {0}">
+                                <Binding Path="SubTotal"/>
+                            </MultiBinding>
+                        </Label.Text>
+                    </Label>
+                    <Button BackgroundColor="#ffffff" BorderColor="#000000" BorderWidth="1" WidthRequest="46" HeightRequest="46" CornerRadius="23" Text="0" FontSize="20" HorizontalOptions="End"/>
+                </StackLayout>
+               
             </Grid>
-            <BoxView Grid.Row="1" BackgroundColor="#000000" HeightRequest="2"/>
+            <BoxView Grid.Row="1" BackgroundColor="#000000" HeightRequest="2" Margin="30,0"/>
             <ScrollView Grid.Row="2">
-                <StackLayout BindableLayout.ItemsSource="{Binding HealthPlanCollection}">
+                <StackLayout BindableLayout.ItemsSource="{Binding HealthPlanCollection}" Padding="30,0">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <StackLayout Spacing="10">
@@ -58,7 +65,10 @@
                                         <DataTemplate>
                                             <StackLayout Spacing="10">
                                                 <StackLayout>
-                                                    <Label Text="{Binding Classification}" VerticalTextAlignment="Center" FontSize="18" Style="{StaticResource ContentTitle}"/>
+                                                    <Grid ColumnDefinitions="*,*">
+                                                        <Label Text="{Binding Classification}" VerticalTextAlignment="Center" FontSize="18" Style="{StaticResource ContentTitle}"/>
+                                                        <Label Grid.Column="1" Opacity="0.5" Text="{Binding ProgramName}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="18" Style="{StaticResource ContentTitle}"/>
+                                                    </Grid>
                                                     <BoxView BackgroundColor="Gray" HeightRequest="1"/>
                                                 </StackLayout>
                                                 <ScrollView Orientation="Horizontal">
@@ -74,7 +84,7 @@
                                                                     </StackLayout>
                                                                     <StackLayout Grid.Row="2" Spacing="10">
                                                                         <Grid RowDefinitions="46" IsVisible="{Binding ShouldShowVariant}">
-                                                                            <Frame Padding="5" BorderColor="#000000" CornerRadius="0" HasShadow="False">
+                                                                            <Frame Padding="10,5" BorderColor="#000000" CornerRadius="0" HasShadow="False">
                                                                                 <Grid ColumnDefinitions="2*,Auto">
                                                                                     <Picker x:Name="VariantsPicker" FontSize="16" ItemsSource="{Binding VariantsList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedVariant}" >
 
@@ -86,7 +96,7 @@
                                                                             </Frame>
                                                                         </Grid>
                                                                         <Grid RowDefinitions="46" IsVisible="{Binding ShouldShowSubVariant,Mode=TwoWay}">
-                                                                            <Frame Padding="5" BorderColor="#000000" CornerRadius="0" HasShadow="False">
+                                                                            <Frame Padding="10,5" BorderColor="#000000" CornerRadius="0" HasShadow="False">
                                                                                 <Grid ColumnDefinitions="2*,Auto">
                                                                                     <Picker x:Name="SubVariantsPicker" FontSize="16" ItemsSource="{Binding PrescribingOptions}" ItemDisplayBinding="{Binding Title}" SelectedItem="{Binding SelectedOption}" />
                                                                                     <Image Grid.Column="1" Source="icon_down_arrow" WidthRequest="30" HeightRequest="30" HorizontalOptions="End"/>
@@ -95,7 +105,6 @@
                                                                         </Grid>
                                                                         <Button Background="#000000" Text="Purchase today" TextTransform="None" HeightRequest="46" FontSize="16" FontFamily="RegularFont" TextColor="#ffffff"/>
                                                                     </StackLayout>
-                                                                    
                                                                 </Grid>
                                                             </DataTemplate>
                                                         </BindableLayout.ItemTemplate>
@@ -111,6 +120,30 @@
                     </BindableLayout.ItemTemplate>
                 </StackLayout>
             </ScrollView>
+            <ContentView Grid.Row="0" Grid.RowSpan="3" x:Name="Sidebar">
+                <Grid ColumnDefinitions="*,500">
+                    <Grid/>
+                    <Frame Grid.Column="1" Padding="0">
+                        <Frame.Content>
+                            <Grid RowDefinitions="Auto,*">
+                                <Grid>
+                                    <Button Text="X" FontSize="28" HorizontalOptions="End" BackgroundColor="Transparent" Clicked="Handle_Tapped"/>
+                                </Grid>
+                                <StackLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding BasketItems}" Padding="20">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackLayout>
+                                                
+                                            </StackLayout>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
+                            </Grid>
+                        </Frame.Content>
+                    </Frame>
+                    
+                </Grid>
+            </ContentView>
         </Grid>
     </ContentPage.Content>
 </controls:AnimationPage>

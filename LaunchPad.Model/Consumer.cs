@@ -17,8 +17,10 @@ namespace IIAADataModels.Transfer
 		public Guid Salon { get; set; }
 		public Guid BillingAddress { get; set; }
 		public Guid ShippingAddress { get; set; }
-		public String SalonName { get; set; }
+		public string SalonName { get; set; }
 
-		
+		public string Source { get; set; }
+		public DateTime Created { get; set; }
+		public DateTime Updated { get; set; }
 	}
 }

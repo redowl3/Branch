@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace IIAADataModels.Transfer
-{
-    public class Salon
-	{
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public List<ProductCategory> ProductCategories { get; set; }
-        public List<Survey> Surveys { get; set; }
-        public object Therapists { get; set; }
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-    }
+namespace IIAADataModels.Transfer
+{	
+	public class Salon
+	{
+		public Guid Id { get; set; }
+		public string Name { get; set; }	
+		
+		public List<Transfer.ProductCategory> ProductCategories { get; set; }
+
+		public List<Transfer.Survey.Form> Surveys { get; set; }
+
+		public List<Transfer.Therapist> Therapists { get; set; }
+	}
 }

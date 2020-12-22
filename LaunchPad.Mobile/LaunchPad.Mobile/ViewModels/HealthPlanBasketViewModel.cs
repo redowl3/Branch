@@ -78,6 +78,7 @@ namespace LaunchPad.Mobile.ViewModels
                             var temp = new ProductWithLevelType
                             {
                                 Classification = item.Key,
+                                ProgramName=productCategory.Subtitle,
                                 Products = new ObservableCollection<CustomProduct>(item.Select(a => new CustomProduct
                                 {
                                     Product = a,
@@ -94,7 +95,7 @@ namespace LaunchPad.Mobile.ViewModels
                         }
 
                         HealthPlanCollection.Add(healthPlan);
-                        SubTotal = $"£{sumTotal.ToString("F2")}";
+                        //SubTotal = $"£{sumTotal.ToString("F2")}";
                     }
                 }
                 // Program name
@@ -119,12 +120,11 @@ namespace LaunchPad.Mobile.ViewModels
                     }
                 }
 
-                SubTotal = $"£{sumTotal.ToString("F2")}";
+                //SubTotal = $"£{sumTotal.ToString("F2")}";
             }
             catch (Exception ex)
             {
-
-                throw;
+                Console.WriteLine(ex.Message + "\n\n" + ex.StackTrace);
             }
         }
         #endregion

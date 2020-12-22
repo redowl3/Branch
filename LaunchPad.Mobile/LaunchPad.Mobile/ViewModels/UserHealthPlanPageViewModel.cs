@@ -206,7 +206,7 @@ namespace LaunchPad.Mobile.ViewModels
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message + "\n\n" + ex.StackTrace);
             }
         }
 
