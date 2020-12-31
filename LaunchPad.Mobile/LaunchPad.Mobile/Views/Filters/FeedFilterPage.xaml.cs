@@ -1,11 +1,12 @@
-﻿using Xamarin.Forms;
+﻿using LaunchPad.Mobile.ViewModels;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-namespace LaunchPad.Mobile.Views
+namespace LaunchPad.Mobile.Views.Filters
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class FinishFilterPage : ContentPage
+    public partial class FeedFilterPage : ContentPage
     {
-        public FinishFilterPage(ViewModels.UserHealthPlanPageViewModel userHealthPlanPageViewModel)
+        public FeedFilterPage(SalonProductsPageViewModel userHealthPlanPageViewModel)
         {
             InitializeComponent();
             this.BindingContext = userHealthPlanPageViewModel;

@@ -16,7 +16,7 @@ namespace LaunchPad.Mobile.Droid.CustomRenderers
             if (e.OldElement == null)
             {
                 Control.Background = null;
-
+                Control.SetTextSize(Android.Util.ComplexUnitType.Dip, (float)e.NewElement.FontSize);
                 var layoutParams = new MarginLayoutParams(Control.LayoutParameters);
                 layoutParams.SetMargins(0, 0, 0, 0);
                 LayoutParameters = layoutParams;

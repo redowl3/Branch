@@ -5,6 +5,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <converters:InverseConverter x:Key="InverseConverter"/>
+            <converters:IntToBoolConverter x:Key="IntToBoolConverter"/>
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="#000000"/>
                 <Setter Property="BarTextColor" Value="White"/>

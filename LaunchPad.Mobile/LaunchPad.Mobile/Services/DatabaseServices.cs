@@ -82,7 +82,7 @@ namespace LaunchPad.Mobile.Services
             {
                 entity = await DbInstance.GetObject<T>(key);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
             }
@@ -110,7 +110,7 @@ namespace LaunchPad.Mobile.Services
                 await DbInstance.InsertObject(key, t);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }

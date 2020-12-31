@@ -1,9 +1,8 @@
-﻿using FormsControls.Base;
-using IIAADataModels.Transfer;
+﻿
+using FormsControls.Base;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -14,47 +13,88 @@ namespace LaunchPad.Mobile.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class UserHealthPlanPage : AnimationPage
     {
-        public List<Product> Products = new List<Product>();
+        private bool isExpanded;
+        public bool ShouldAnimateOut { get; set; }
         public UserHealthPlanPage()
         {
             InitializeComponent();
-            FeedTab.BackgroundColor = Color.White;
-            FortifyTab.BackgroundColor = FinishTab.BackgroundColor = Color.FromHex("#bdbdbd");
-            UserHealthPlanPageViewModel.CartItemAdded += AddOrUpdateBadge;
+            isExpanded = true;
+            ShouldAnimateOut = true;
+            UserHealthPlanPageViewModel.BadgeCountAction += AddOrUpdateBadge;
+            UserHealthPlanPageViewModel.CloseDrawer += CloseDrawer;
+            UserHealthPlanPageViewModel.ShouldAnimateOut += SetShouldAnimateOut;
         }
 
+        private void CloseDrawer()
+        {
+            AnimateOut();
+            isExpanded = false;
+        }
+
+        private void SetShouldAnimateOut(bool obj)
+        {
+            ShouldAnimateOut = obj;
+        }
         protected async override void OnAppearing()
         {
             base.OnAppearing();
             await Task.Delay(1000);
-            (this.BindingContext as UserHealthPlanPageViewModel)?.RefreshBadgeCountAsync();
+            var count=await (this.BindingContext as UserHealthPlanPageViewModel)?.RefreshBadgeCountAsync();
+            if (ToolbarItems.Count > 0)
+                DependencyService.Get<IToolbarItemBadgeService>().SetBadge(this, ToolbarItems.First(), $"{count}", Color.White, Color.Black);
         }
-
         private void AddOrUpdateBadge(int obj)
         {
             if (ToolbarItems.Count > 0)
                 DependencyService.Get<IToolbarItemBadgeService>().SetBadge(this, ToolbarItems.First(), $"{obj}", Color.White, Color.Black);
         }
-
-        private void Feed_tapped(object sender, System.EventArgs e)
+        void Handle_Tapped(object sender, System.EventArgs e)
         {
-            FeedTab.BackgroundColor = Color.White;
-            FortifyTab.BackgroundColor = FinishTab.BackgroundColor = Color.FromHex("#bdbdbd");
-            (this.BindingContext as UserHealthPlanPageViewModel)?.FeedCommand.Execute(null);
+            if (!isExpanded)
+                AnimateIn();
+            else
+                AnimateOut();
+
+            isExpanded = !isExpanded;
+        }
+        private void AnimateIn()
+        {
+            BasketView.IsVisible = true;
+            var rect = new Rectangle(-(GridLayout.Width - BasketView.Width), BasketView.Y, BasketView.Width, BasketView.Height);
+            BasketView.LayoutTo(rect, 400, Easing.Linear);
+        }
+        private async void AnimateOut()
+        {
+            var rect = new Rectangle(GridLayout.Width, BasketView.Y, BasketView.Width, BasketView.Height);
+            await BasketView.LayoutTo(rect, 400, Easing.Linear);
+
+            BasketView.IsVisible = false;
+        }
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+            if (isExpanded && ShouldAnimateOut)
+            {
+                AnimateOut();
+                isExpanded = false;
+            }
         }
 
-        private void fortify_tapped(object sender, System.EventArgs e)
+        private void OpenBasketView(object sender, System.EventArgs e)
         {
-            FortifyTab.BackgroundColor = Color.White;
-            FeedTab.BackgroundColor = FinishTab.BackgroundColor = Color.FromHex("#bdbdbd");
-            (this.BindingContext as UserHealthPlanPageViewModel)?.FortifyCommand.Execute(null);
+            AnimateIn();
+            isExpanded = true;
         }
 
-        private void finish_tapped(object sender, System.EventArgs e)
+        private void CloseBasketView(object sender, System.EventArgs e)
         {
-            FinishTab.BackgroundColor = Color.White;
-            FortifyTab.BackgroundColor = FeedTab.BackgroundColor = Color.FromHex("#bdbdbd");
-            (this.BindingContext as UserHealthPlanPageViewModel)?.FinishCommand.Execute(null);
+            AnimateOut();
+            isExpanded = false;
+        }
+
+        private void OnSwiped(object sender, SwipedEventArgs e)
+        {
+
         }
     }
 }

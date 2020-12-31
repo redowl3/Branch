@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="LaunchPad.Mobile.Views.FinishFilterPage"
+             x:Class="LaunchPad.Mobile.Views.Filters.FeedFilterPage"
              BackgroundColor="WhiteSmoke">
     <ContentPage.Content>
         <Grid Margin="20" Padding="20,10" RowSpacing="0" BackgroundColor="#ffffff">
@@ -12,18 +12,18 @@
                 <RowDefinition Height="56"/>
             </Grid.RowDefinitions>
             <Grid ColumnDefinitions="*,*">
-                <Label Grid.ColumnSpan="2" Text="Refine" FontSize="22" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="#000000"/>
+                <Label Grid.ColumnSpan="2" Text="Refine" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Style="{StaticResource TabTitleLabelStyle}"/>
                 <ImageButton Grid.Column="1" Source="icon_cross_circle" BackgroundColor="Transparent" WidthRequest="48" HeightRequest="48" HorizontalOptions="End" VerticalOptions="Start" Clicked="CloseThis"/>
             </Grid>
             <BoxView Grid.Row="1" BackgroundColor="#000000"/>
-            <StackLayout Grid.Row="2" BindableLayout.ItemsSource="{Binding FinishFilterOptionList}" VerticalOptions="Center">
+            <StackLayout Grid.Row="2" BindableLayout.ItemsSource="{Binding FeedFilterOptionList}" VerticalOptions="Center">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
                         <Grid RowDefinitions="56" VerticalOptions="Center" Margin="0,5" BackgroundColor="{Binding BackgroundColor}">
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding SelectCommand}"/>
                             </Grid.GestureRecognizers>
-                            <Label Text="{Binding Option}" FontSize="20" HorizontalTextAlignment="Center" VerticalTextAlignment="Center">
+                            <Label Text="{Binding Option}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Style="{StaticResource ContentTitle}">
                                 <Label.Triggers>
                                     <MultiTrigger TargetType="Label">
                                         <MultiTrigger.Conditions>
@@ -43,7 +43,7 @@
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
             </StackLayout>
-            <Button Grid.Row="3" Background="#000000" Text="Apply" Command="{Binding FilterCommand}" FontSize="18" TextColor="#ffffff"/>
+            <Button Grid.Row="3" Background="#000000" Text="Apply" Command="{Binding FilterCommand}" FontSize="18" FontFamily="RegularFont" TextColor="#ffffff"/>
         </Grid>      
     </ContentPage.Content>
 </ContentPage>

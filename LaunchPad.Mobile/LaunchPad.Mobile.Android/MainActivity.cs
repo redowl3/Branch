@@ -4,6 +4,7 @@ using Android.Runtime;
 using Android.OS;
 using FFImageLoading.Forms.Platform;
 using Plugin.CurrentActivity;
+using Xamarin.Forms;
 
 namespace LaunchPad.Mobile.Droid
 {
@@ -18,6 +19,7 @@ namespace LaunchPad.Mobile.Droid
             base.OnCreate(savedInstanceState);
            
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            Forms.SetFlags("SwipeView_Experimental");
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             CachedImageRenderer.Init(true);
             CachedImageRenderer.InitImageViewHandler();

@@ -26,7 +26,8 @@
                             <Label Text="{Binding Product.Name}" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}"/>
                             <Label FontSize="14" Text="{Binding Product.Summary}" HorizontalTextAlignment="Start" Style="{StaticResource ContentDescription}"/>
                         </StackLayout>
-                        <ImageButton BackgroundColor="Transparent" Command="{Binding AddPlanCommand}" CommandParameter="{Binding .}" Grid.Column="1" Source="icon_doc" HorizontalOptions="End" VerticalOptions="Start" WidthRequest="46" HeightRequest="56"/>
+                        <ImageButton IsVisible="{Binding IsProductAdded,Converter={StaticResource InverseConverter}}" BackgroundColor="Transparent" Command="{Binding AddProductToPlanCommand}" CommandParameter="{Binding .}" Grid.Column="1" Source="icon_doc" HorizontalOptions="End" VerticalOptions="Start" WidthRequest="46" HeightRequest="56" Margin="0,-5,0,0"/>
+                        <ImageButton IsVisible="{Binding IsProductAdded}" BackgroundColor="Transparent" Grid.Column="1" Source="icon_doc_selected" Command="{Binding RemoveProductFromPlanCommand}" CommandParameter="{Binding .}" HorizontalOptions="End" VerticalOptions="Start" WidthRequest="46" HeightRequest="40" Margin="0,5"/>
                     </Grid>
                     <StackLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding Product.Properties}" Orientation="Horizontal" Spacing="20" VerticalOptions="End">
                         <BindableLayout.ItemTemplate>

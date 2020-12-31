@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:AnimationPage xmlns="http://xamarin.com/schemas/2014/forms"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                        xmlns:controls="clr-namespace:FormsControls.Base;assembly=FormsControls.Base"
+                        xmlns:viewmodels="clr-namespace:LaunchPad.Mobile.ViewModels"
+                        x:Class="LaunchPad.Mobile.Views.CompletedHealthPlanPage">
+    <controls:AnimationPage.PageAnimation>
+        <controls:PushPageAnimation Duration="Medium" Subtype="FromRight" />
+    </controls:AnimationPage.PageAnimation>
+    <controls:AnimationPage.BindingContext>
+        <viewmodels:CompletedHealthPlanPageViewModel/>
+    </controls:AnimationPage.BindingContext>
+    <NavigationPage.TitleView>
+        <Grid ColumnDefinitions="*,*">
+            <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Sarah's Skin Health Plan" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
+            <StackLayout Grid.Column="1" HorizontalOptions="End" Padding="10,0" Spacing="20" Orientation="Horizontal">
+                <StackLayout Orientation="Horizontal" Spacing="10">
+                    <Label Text="Sarah Smith" HorizontalTextAlignment="End" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
+                    <Image Source="icon_user" WidthRequest="28" HeightRequest="28"/>
+                </StackLayout>
+                <!--<Image Source="icon_list" WidthRequest="36" HeightRequest="36"/>-->
+            </StackLayout>
+        </Grid>
+    </NavigationPage.TitleView>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="icon_list"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid RowDefinitions="200,*">
+            <Grid BackgroundColor="#000000" Padding="20,0">
+                <Grid BackgroundColor="Black" VerticalOptions="Center">
+                    <Grid RowDefinitions="*,*" ColumnDefinitions="3*,*" VerticalOptions="Center" RowSpacing="0">
+                        <Label Text="Sarah's optimum skin health plan is now complete" FontSize="42" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
+                        <StackLayout Grid.Column="1" Spacing="-25" HorizontalOptions="End" VerticalOptions="Center" Padding="10,15">
+                            <Label Grid.Row="0"  FontSize="22" TextColor="White" HorizontalOptions="End" Style="{StaticResource ContentTitle}">
+                                <Label.Text>
+                                    <MultiBinding StringFormat="£{0} / £{1}">
+                                        <Binding Path="AmountPaid"/>
+                                        <Binding Path="AmountToBePaid"/>
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+                            <StackLayout Orientation="Horizontal" Spacing="25">
+                                <Label Text="." FontSize="50" TextColor="White" Style="{StaticResource ContentTitle}"/>
+                                <Label Text="." FontSize="50" TextColor="White" Style="{StaticResource ContentTitle}"/>
+                                <Label Text="." FontSize="50" TextColor="White" Style="{StaticResource ContentTitle}"/>
+                                <Label Text="." FontSize="50" TextColor="White" Style="{StaticResource ContentTitle}"/>
+                                <Label Text="." FontSize="50" TextColor="White" Style="{StaticResource ContentTitle}"/>
+                                <Label Text="." FontSize="50" TextColor="White" Style="{StaticResource ContentTitle}"/>
+                                <Label Text="." FontSize="50" TextColor="White" Style="{StaticResource ContentTitle}"/>
+                            </StackLayout>
+                        </StackLayout>
+                        <Label Grid.Row="1" Text="Scan each item to accrue loyalty points" FontSize="32" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
+                        <forms:CachedImage Grid.Row="1" Grid.Column="1" Source="icon_stars_black" HorizontalOptions="End" VerticalOptions="Center" WidthRequest="100" HeightRequest="40" Aspect="Fill"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <ScrollView Grid.Row="1">
+                <FlexLayout BindableLayout.ItemsSource="{Binding CompletedHealthPlansCollection}" 
+           Wrap="Wrap"
+           Direction="Row"
+           JustifyContent="Start"
+           AlignItems="Start"
+           AlignContent="Start"
+           Padding="20">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Grid RowDefinitions="300,Auto,Auto" RowSpacing="20" FlexLayout.Basis="{OnIdiom Tablet='33%'}" FlexLayout.AlignSelf="Start" Margin="10">
+                                <forms:CachedImage Source="{Binding ImageUrl}" Aspect="Fill"/>
+                                <StackLayout Grid.Row="1">
+                                    <Label Text="{Binding ProgramName}" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="14"/>
+                                    <Label Text="{Binding Product.Name}" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="20"/>
+                                    <Label Text="{Binding Price}" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="18"/>
+                                </StackLayout>
+                                <StackLayout Grid.Row="2" IsVisible="{Binding IsDropdownVisible}">
+                                    <Grid RowDefinitions="56" ColumnDefinitions="2*,*" IsVisible="{Binding ShouldShowSubVariant}">
+                                        <Grid Grid.Column="0" RowDefinitions="56" HorizontalOptions="FillAndExpand">
+                                            <Frame Padding="10,5" BorderColor="#000000" CornerRadius="0" HasShadow="False">
+                                                <Grid ColumnDefinitions="2*,Auto">
+                                                    <Picker FontSize="20" ItemsSource="{Binding VariantsList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedVariant}" />
+                                                    <Image Grid.Column="1" Source="icon_down_arrow" WidthRequest="36" HeightRequest="36" HorizontalOptions="End"/>
+                                                </Grid>
+                                            </Frame>
+                                        </Grid>
+                                        <Grid Grid.Column="1" RowDefinitions="56">
+                                            <Frame Padding="10,5" BorderColor="#000000" CornerRadius="0" HasShadow="False">
+                                                <Grid ColumnDefinitions="2*,Auto">
+                                                    <Picker x:Name="SubVariantsPicker" FontSize="20" ItemsSource="{Binding PrescribingOptions}" ItemDisplayBinding="{Binding Title}" SelectedItem="{Binding SelectedOption}" />
+                                                    <Image Grid.Column="1" Source="icon_down_arrow" WidthRequest="36" HeightRequest="36" HorizontalOptions="End"/>
+                                                </Grid>
+                                            </Frame>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid RowDefinitions="56" HorizontalOptions="FillAndExpand" IsVisible="{Binding ShouldShowSubVariant,Converter={StaticResource InverseConverter}}">
+                                        <Frame Padding="10,5" BorderColor="#000000" CornerRadius="0" HasShadow="False">
+                                            <Grid ColumnDefinitions="2*,Auto">
+                                                <Picker FontSize="20" ItemsSource="{Binding VariantsList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedVariant}" />
+                                                <Image Grid.Column="1" Source="icon_down_arrow" WidthRequest="36" HeightRequest="36" HorizontalOptions="End"/>
+                                            </Grid>
+                                        </Frame>
+                                    </Grid>
+                                </StackLayout>                                
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</controls:AnimationPage>

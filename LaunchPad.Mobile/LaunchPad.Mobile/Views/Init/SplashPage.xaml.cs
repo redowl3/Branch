@@ -13,12 +13,5 @@ namespace LaunchPad.Mobile.Views
         {
             InitializeComponent();
         }
-
-        protected async override void OnAppearing()
-        {
-            base.OnAppearing();
-            await Task.Delay(3000);
-            Application.Current.MainPage = new AnimationNavigationPage(new UserHealthPlanPage());
-        }
     }
 }

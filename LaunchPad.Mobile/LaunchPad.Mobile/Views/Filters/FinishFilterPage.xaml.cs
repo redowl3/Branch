@@ -1,11 +1,12 @@
-﻿using Xamarin.Forms;
+﻿using LaunchPad.Mobile.ViewModels;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-namespace LaunchPad.Mobile.Views
+namespace LaunchPad.Mobile.Views.Filters
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class FortifyFilterPage : ContentPage
+    public partial class FinishFilterPage : ContentPage
     {
-        public FortifyFilterPage(ViewModels.UserHealthPlanPageViewModel userHealthPlanPageViewModel)
+        public FinishFilterPage(SalonProductsPageViewModel userHealthPlanPageViewModel)
         {
             InitializeComponent();
             this.BindingContext = userHealthPlanPageViewModel;

@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="BadgeDrawable.cs" />
     <Compile Include="CustomRenderers\BorderlessPickerRenderer.cs" />
+    <Compile Include="CustomRenderers\FixedFontLabelRenderer.cs" />
     <Compile Include="CustomServices\ToolbarItemBadgeService.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
@@ -136,5 +137,16 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon_up_arrow.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon_doc_selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon_stars_black.PNG" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionLaunchPadMobileAndroidHideInfoBar="True" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

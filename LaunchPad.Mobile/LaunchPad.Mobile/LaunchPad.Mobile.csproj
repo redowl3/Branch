@@ -37,20 +37,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\FinishFilterPage.xaml.cs">
+    <Compile Update="Views\Filters\FinishFilterPage.xaml.cs">
       <DependentUpon>FinishFilterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\FortifyFilterPage.xaml.cs">
+    <Compile Update="Views\Filters\FortifyFilterPage.xaml.cs">
       <DependentUpon>FortifyFilterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\FeedFilterPage.xaml.cs">
+    <Compile Update="Views\Filters\FeedFilterPage.xaml.cs">
       <DependentUpon>FeedFilterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\HealthPlanBasketPage.xaml.cs">
-      <DependentUpon>HealthPlanBasketPage.xaml</DependentUpon>
+    <Compile Update="Views\CompletedHealthPlanPage.xaml.cs">
+      <DependentUpon>CompletedHealthPlanPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\UserHealthPlanPage.xaml.cs">
       <DependentUpon>UserHealthPlanPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SalonProductsPage.xaml.cs">
+      <DependentUpon>SalonProductsPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -58,16 +61,19 @@
     <EmbeddedResource Update="CustomLayouts\ProductLayoutView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\FeedFilterPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\HealthPlanBasketPage.xaml">
+    <EmbeddedResource Update="Views\Filters\FeedFilterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\UserHealthPlanPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\SplashPage.xaml">
+    <EmbeddedResource Update="Views\CompletedHealthPlanPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\SalonProductsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Init\SplashPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

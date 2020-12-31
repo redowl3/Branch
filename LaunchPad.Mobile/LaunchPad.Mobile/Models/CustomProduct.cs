@@ -10,7 +10,7 @@ using Xamarin.Forms;
 
 namespace LaunchPad.Mobile.Models
 {
-    public class CustomProduct: INotifyPropertyChanged
+    public class CustomProduct : INotifyPropertyChanged
     {
         public Product Product { get; set; }
 
@@ -20,7 +20,15 @@ namespace LaunchPad.Mobile.Models
 
         public CustomProductAdditionalInfo SelectedAdditionalInfo { get; set; }
 
-        public ICommand AddPlanCommand { get; set; }
+        public Command AddPlanCommand { get; set; }
+        public Command RemovePlanCommand { get; set; }
+
+        private bool _isProductAdded;
+        public bool IsProductAdded
+        {
+            get => _isProductAdded;
+            set => SetProperty(ref _isProductAdded, value);
+        }
 
         private ObservableCollection<ProductVariant> _variantsList;
         public ObservableCollection<ProductVariant> VariantsList
@@ -36,7 +44,7 @@ namespace LaunchPad.Mobile.Models
             set
             {
                 SetProperty(ref _selectedVariant, value);
-                if(SelectedVariant!=null)
+                if (SelectedVariant != null)
                 {
                     Price = $"£{SelectedVariant.Price.ToString("F2")}";
                     if (SelectedVariant.PrescribingOptions != null && SelectedVariant.PrescribingOptions.Count > 0)
@@ -71,21 +79,32 @@ namespace LaunchPad.Mobile.Models
             set => SetProperty(ref _price, value);
         }
 
-        private bool _shouldShowSubVariant=false;
+        private bool _shouldShowSubVariant = false;
         public bool ShouldShowSubVariant
         {
             get => _shouldShowSubVariant;
             set => SetProperty(ref _shouldShowSubVariant, value);
         }
-        
-        private bool _shouldShowVariant=false;
+
+        private bool _shouldShowVariant = false;
         public bool ShouldShowVariant
         {
             get => _shouldShowVariant;
             set => SetProperty(ref _shouldShowVariant, value);
         }
 
-        public ICommand RefreshPriceCommand { get; set; }
+        public Command RefreshPriceCommand { get; set; }
+        public Command PurchaseCommand { get; set; }
+        public Command AddProductToPlanCommand => new Command<CustomProduct>((param) =>
+          {
+              IsProductAdded = true;
+              AddPlanCommand.Execute(param);
+          }); 
+        public Command RemoveProductFromPlanCommand => new Command<CustomProduct>((param) =>
+          {
+              IsProductAdded = false;
+              RemovePlanCommand.Execute(param);
+          });
         public CustomProduct()
         {
             AdditionalInformations = new List<CustomProductAdditionalInfo>();
@@ -114,12 +133,17 @@ namespace LaunchPad.Mobile.Models
         #endregion
     }
 
+    public class CompletedHealthPlan:CustomProduct
+    {
+        public string ProgramName { get; set; }
+        public bool IsDropdownVisible { get; set; }
+    }
     public class CustomProductAdditionalInfo : INotifyPropertyChanged
     {
         public string Id { get; set; }
         public ProductAdditionalInformation AdditionalInformation { get; set; }
 
-        private bool _isSelected=false;
+        private bool _isSelected = false;
         public bool IsSelected
         {
             get => _isSelected;
@@ -128,12 +152,12 @@ namespace LaunchPad.Mobile.Models
 
         public Color BackgroundColor { get; set; }
 
-        public ICommand ViewCommand => new Command<CustomProductAdditionalInfo>((param) =>
+        public Command ViewCommand => new Command<CustomProductAdditionalInfo>((param) =>
           {
               IsSelected = !IsSelected;
               ItemSelectedCommand.Execute(param);
           });
-        public ICommand ItemSelectedCommand { get;set; }
+        public Command ItemSelectedCommand { get; set; }
 
         #region # INotifyPropertyChanged Impl #
         public event PropertyChangedEventHandler PropertyChanged;
@@ -179,7 +203,7 @@ namespace LaunchPad.Mobile.Models
             set => SetProperty(ref _backgroundColor, value);
         }
 
-        public ICommand SelectCommand => new Command<CustomProductAdditionalInfo>((param) =>
+        public Command SelectCommand => new Command<CustomProductAdditionalInfo>((param) =>
         {
             IsSelected = !IsSelected;
             if (IsSelected)
@@ -218,7 +242,7 @@ namespace LaunchPad.Mobile.Models
         }
     }
 
-    public class HealthPlan:INotifyPropertyChanged
+    public class HealthPlan : INotifyPropertyChanged
     {
         public string ProgramName { get; set; }
 
@@ -230,7 +254,7 @@ namespace LaunchPad.Mobile.Models
             set => SetProperty(ref _productWithLevelTypeList, value);
         }
 
-        private bool _isSelected=false;
+        private bool _isSelected = false;
         public bool IsSelected
         {
             get => _isSelected;
@@ -301,7 +325,7 @@ namespace LaunchPad.Mobile.Models
         #endregion
     }
 
-    public class ProductWithLevelType :INotifyPropertyChanged
+    public class ProductWithLevelType : INotifyPropertyChanged
     {
         public string Classification { get; set; }
         public string ProgramName { get; set; }
@@ -317,6 +341,55 @@ namespace LaunchPad.Mobile.Models
         {
             Products = new ObservableCollection<CustomProduct>();
         }
+
+        #region # INotifyPropertyChanged Impl #
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected bool SetProperty<T>(ref T storage, T value,
+                                      [CallerMemberName] string propertyName = null)
+        {
+            if (Object.Equals(storage, value))
+                return false;
+
+            storage = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+    }
+
+    public class CustomBasket
+    {
+        public string Id { get; set; }
+        public Basket Basket { get; set; }
+        public List<CustomBasketInfo> ItemsCollection { get; set; }
+    }
+
+    public class CustomBasketInfo :INotifyPropertyChanged
+    {
+        public CustomProduct Product { get; set; }
+        public string ProgramName { get; set; }
+
+        public Guid ProductId { get; set; }
+        public string ProductName { get; set; }
+
+        public string Price { get; set; }
+
+        public ProductVariant Variant { get; set; }
+
+        private bool _shouldRemove;
+        public bool ShouldRemove
+        {
+            get => _shouldRemove;
+            set => SetProperty(ref _shouldRemove, value);
+        }
+
+        public Command RemoveCommand { get; set; }
 
         #region # INotifyPropertyChanged Impl #
         public event PropertyChangedEventHandler PropertyChanged;
