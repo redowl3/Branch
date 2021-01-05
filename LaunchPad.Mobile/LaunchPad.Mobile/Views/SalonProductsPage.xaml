@@ -39,9 +39,12 @@
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Feed_tapped" NumberOfTapsRequired="1"/>
                     </Grid.GestureRecognizers>
-                    <StackLayout Grid.Column="0" VerticalOptions="Center" Spacing="0">
+                    <StackLayout Grid.Column="0" VerticalOptions="Center" Spacing="5">
                         <Label Text="Feed" Style="{StaticResource TabTitleLabelStyle}"/>
-                        <Label Style="{StaticResource TabSubTitleLabelStyle}" Text="Advanced Nutrition Programme &amp; Trade"/>
+                        <Label Style="{StaticResource TabSubTitleLabelStyle}" TextType="Html">
+                            <![CDATA[
+                            Advanced Nutrition Programme &trade;]]>
+                        </Label>
                     </StackLayout>
                 </Grid>
                 <BoxView Grid.Column="1" BackgroundColor="#ffffff"/>
@@ -49,9 +52,12 @@
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Tapped="fortify_tapped" NumberOfTapsRequired="1"/>
                     </Grid.GestureRecognizers>
-                    <StackLayout VerticalOptions="Center" Spacing="0">
+                    <StackLayout VerticalOptions="Center" Spacing="5">
                         <Label Text="Fortify" Style="{StaticResource TabTitleLabelStyle}"/>
-                        <Label Style="{StaticResource TabSubTitleLabelStyle}" Text="Environ &amp; Trade"/>
+                        <Label Style="{StaticResource TabSubTitleLabelStyle}" TextType="Html">
+                            <![CDATA[
+                            Environ &trade;]]>
+                        </Label>
                     </StackLayout>
                 </Grid>
                 <BoxView Grid.Column="3" BackgroundColor="#ffffff"/>
@@ -59,11 +65,11 @@
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Tapped="finish_tapped" NumberOfTapsRequired="1"/>
                     </Grid.GestureRecognizers>
-                    <StackLayout VerticalOptions="Center" Spacing="0">
+                    <StackLayout VerticalOptions="Center" Spacing="5">
                         <Label Text="Finish" Style="{StaticResource TabTitleLabelStyle}"/>
                         <Label Style="{StaticResource TabSubTitleLabelStyle}" TextType="Html">
                             <![CDATA[
-    Jane Iredale]]>
+    Jane Iredale &trade;]]>
                         </Label>
                     </StackLayout>
                 </Grid>

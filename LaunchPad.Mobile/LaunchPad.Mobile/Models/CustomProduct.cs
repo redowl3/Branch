@@ -133,10 +133,65 @@ namespace LaunchPad.Mobile.Models
         #endregion
     }
 
-    public class CompletedHealthPlan:CustomProduct
+    public class CompletedHealthPlan:CustomProduct,INotifyPropertyChanged
     {
         public string ProgramName { get; set; }
         public bool IsDropdownVisible { get; set; }
+
+        private int _loyalityPoints;
+        public int LoyalityPoints
+        {
+            get => _loyalityPoints;
+            set => SetProperty(ref _loyalityPoints, value);
+        }
+        private bool _isScanning = false;
+        public bool IsScanning
+        {
+            get => _isScanning;
+            set => SetProperty(ref _isScanning, value);
+        }
+        
+        private bool _isProductScanned = false;
+        public bool IsProductScanned
+        {
+            get => _isProductScanned;
+            set => SetProperty(ref _isProductScanned, value);
+        }
+        public Command ScanCommand => new Command<Product>((param) =>
+        {
+            IsScanning = true;
+            CloseOtherScanExceptthisCommand?.Execute(param);
+        });
+        public Command ScanResultCommand => new Command<ZXing.Result>((param) =>
+        {
+            IsScanning = false;
+            var result = param.Text;
+            IsProductScanned = true;
+            IsDropdownVisible = false;
+            ProductScannedCommand?.Execute(param);
+        });
+        public Command CloseOtherScanExceptthisCommand { get; set; }
+        public Command ProductScannedCommand { get; set; }
+        public Command RemoveLoyaltyCommand { get; set; }
+        #region # INotifyPropertyChanged Impl #
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected bool SetProperty<T>(ref T storage, T value,
+                                      [CallerMemberName] string propertyName = null)
+        {
+            if (Object.Equals(storage, value))
+                return false;
+
+            storage = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
     }
     public class CustomProductAdditionalInfo : INotifyPropertyChanged
     {
@@ -391,6 +446,60 @@ namespace LaunchPad.Mobile.Models
 
         public Command RemoveCommand { get; set; }
 
+        #region # INotifyPropertyChanged Impl #
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected bool SetProperty<T>(ref T storage, T value,
+                                      [CallerMemberName] string propertyName = null)
+        {
+            if (Object.Equals(storage, value))
+                return false;
+
+            storage = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+    }
+
+    public class StarRatings:INotifyPropertyChanged
+    {
+        private string _star;
+        public string Star
+        {
+            get => _star;
+            set => SetProperty(ref _star, value);
+        }
+        private double _widthRequest;
+        public double WidthRequest
+        {
+            get => _widthRequest;
+            set => SetProperty(ref _widthRequest, value);
+        } 
+        private double _heightRequest;
+        public double HeightRequest
+        {
+            get => _heightRequest;
+            set => SetProperty(ref _heightRequest, value);
+        }
+
+        private Thickness _margin;
+        public Thickness Margin
+        {
+            get => _margin;
+            set => SetProperty(ref _margin, value);
+        }
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set => SetProperty(ref _isSelected, value);
+        }
         #region # INotifyPropertyChanged Impl #
         public event PropertyChangedEventHandler PropertyChanged;
 

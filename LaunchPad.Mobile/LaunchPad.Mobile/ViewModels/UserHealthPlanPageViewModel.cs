@@ -66,7 +66,12 @@ namespace LaunchPad.Mobile.ViewModels
             get => _basketItemsCollection;
             set => SetProperty(ref _basketItemsCollection, value);
         }
-
+        private bool _isContentVisible=false;
+        public bool IsContentVisible
+        {
+            get => _isContentVisible;
+            set => SetProperty(ref _isContentVisible, value);
+        }
         public ICommand ContinueCommand => new Command(() => ComplateHelathPLanAsync());
 
         #region # Constructor #
@@ -95,6 +100,8 @@ namespace LaunchPad.Mobile.ViewModels
         {
             try
             {
+                await Task.Delay(1000);
+                IsContentVisible = true;
                 var healthplans = await DatabaseServices.Get<List<Product>>("healthplans");
                 if (healthplans.Count > 0)
                 {

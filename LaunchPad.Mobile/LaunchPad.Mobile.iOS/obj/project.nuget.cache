@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ipcUFjY39KLr9cT/SBup+30obRZGo1uZc6hAnOoJTplHcfZp/5cqiSVgkhaC7E3FAWpoK122lVWhOA+3sdEO9Q==",
+  "dgSpecHash": "XKPOEivyADEBet2HBbW/KlhYYwrCvPuJzOc+WxP6FVloOwlm0fS52atMpuDOTgxwhIbtmihd1O9ENYCfY/QtIw==",
   "success": true,
   "projectFilePath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
   "expectedPackageFiles": [
@@ -39,7 +39,9 @@
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\xamarin.ffimageloading\\2.4.11.982\\xamarin.ffimageloading.2.4.11.982.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\xamarin.ffimageloading.forms\\2.4.11.982\\xamarin.ffimageloading.forms.2.4.11.982.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\xamarin.forms\\4.8.0.1687\\xamarin.forms.4.8.0.1687.nupkg.sha512",
-    "C:\\Users\\Amit Kumar\\.nuget\\packages\\xforms.plugin.animationnavigationpage\\1.0.8\\xforms.plugin.animationnavigationpage.1.0.8.nupkg.sha512"
+    "C:\\Users\\Amit Kumar\\.nuget\\packages\\xforms.plugin.animationnavigationpage\\1.0.8\\xforms.plugin.animationnavigationpage.1.0.8.nupkg.sha512",
+    "C:\\Users\\Amit Kumar\\.nuget\\packages\\zxing.net.mobile\\2.4.1\\zxing.net.mobile.2.4.1.nupkg.sha512",
+    "C:\\Users\\Amit Kumar\\.nuget\\packages\\zxing.net.mobile.forms\\2.4.1\\zxing.net.mobile.forms.2.4.1.nupkg.sha512"
   ],
   "logs": []
 }

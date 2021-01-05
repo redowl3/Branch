@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace LaunchPad.Mobile.Droid
 {
-    [Activity(Label = "Launch Pad", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true,ScreenOrientation =ScreenOrientation.Landscape|ScreenOrientation.ReverseLandscape, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
+    [Activity(Label = "Eventis", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = true,ScreenOrientation =ScreenOrientation.Landscape|ScreenOrientation.ReverseLandscape, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -20,6 +20,7 @@ namespace LaunchPad.Mobile.Droid
            
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Forms.SetFlags("SwipeView_Experimental");
+            ZXing.Net.Mobile.Forms.Android.Platform.Init();
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             CachedImageRenderer.Init(true);
             CachedImageRenderer.InitImageViewHandler();

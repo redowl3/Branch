@@ -29,7 +29,7 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid x:Name="GridLayout"  RowDefinitions="Auto,2,*">
-            <Grid ColumnDefinitions="2*,*" Padding="30">
+            <Grid ColumnDefinitions="2*,*" Padding="30" IsVisible="{Binding IsContentVisible}">
                 <Label Text="Sarah's Optimum Skin Health Plan" VerticalTextAlignment="Center" FontSize="18" Style="{StaticResource ContentTitle}"/>
                 <StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="End" Spacing="20">
                     <StackLayout.GestureRecognizers>
@@ -46,9 +46,9 @@
                 </StackLayout>
                
             </Grid>
-            <BoxView Grid.Row="1" BackgroundColor="#000000" HeightRequest="2" Margin="30,0"/>
+            <BoxView Grid.Row="1" BackgroundColor="#000000" HeightRequest="2" Margin="30,0"  IsVisible="{Binding IsContentVisible}"/>
             <ScrollView Grid.Row="2">
-                <StackLayout BindableLayout.ItemsSource="{Binding HealthPlanCollection}" Padding="30,0">
+                <StackLayout BindableLayout.ItemsSource="{Binding HealthPlanCollection}" Padding="30,0" IsVisible="{Binding IsContentVisible}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <StackLayout Spacing="10">
@@ -56,7 +56,7 @@
                                     <Grid.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ToggleCommand}" NumberOfTapsRequired="1"/>
                                     </Grid.GestureRecognizers>
-                                    <Label Text="{Binding ProgramName}" VerticalTextAlignment="Center" FontSize="24" Style="{StaticResource ContentTitle}"/>
+                                    <Label Text="{Binding ProgramName}" TextType="Html" VerticalTextAlignment="Center" FontSize="24" Style="{StaticResource ContentTitle}"/>
                                     <Image Source="icon_down_arrow" IsVisible="{Binding IsSelected,Converter={StaticResource InverseConverter}}" HorizontalOptions="End" VerticalOptions="Center" WidthRequest="36" HeightRequest="36"/>
                                     <Image Source="icon_up_arrow" IsVisible="{Binding IsSelected}" HorizontalOptions="End" VerticalOptions="Center" WidthRequest="36" HeightRequest="36"/>
                                 </Grid>
@@ -78,7 +78,7 @@
                                                                 <Grid RowDefinitions="150,Auto,Auto" ColumnDefinitions="200" RowSpacing="20">
                                                                     <forms:CachedImage Source="{Binding ImageUrl}" Aspect="Fill"/>
                                                                     <StackLayout Grid.Row="1">
-                                                                        <Label Text="{Binding Product.Name}" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="16"/>
+                                                                        <Label Text="{Binding Product.Name}" TextType="Html" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="16"/>
                                                                         <Label Text="{Binding Price}" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="16"/>
                                                                         
                                                                     </StackLayout>
