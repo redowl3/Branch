@@ -2,19 +2,23 @@
 <controls:AnimationPage xmlns="http://xamarin.com/schemas/2014/forms"
                         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                         xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-                        xmlns:controls="clr-namespace:FormsControls.Base;assembly=FormsControls.Base"
-                        xmlns:viewmodels="clr-namespace:LaunchPad.Mobile.ViewModels" xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms" xmlns:customlayouts="clr-namespace:LaunchPad.Mobile.CustomLayouts"
+                        xmlns:controls="clr-namespace:FormsControls.Base;assembly=FormsControls.Base"                        
                         x:Class="LaunchPad.Mobile.Views.CompletedHealthPlanPage">
     <controls:AnimationPage.PageAnimation>
         <controls:PushPageAnimation Duration="Medium" Subtype="FromRight" />
     </controls:AnimationPage.PageAnimation>
-    <controls:AnimationPage.BindingContext>
-        <viewmodels:CompletedHealthPlanPageViewModel/>
-    </controls:AnimationPage.BindingContext>
+
     <NavigationPage.TitleView>
-        <Grid ColumnDefinitions="*,*">
-            <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Sarah's Skin Health Plan" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
-            <StackLayout Grid.Column="1" HorizontalOptions="End" Padding="10,0" Spacing="20" Orientation="Horizontal">
+        <Grid ColumnDefinitions="*,*,*">
+            <StackLayout Grid.Column="0" Padding="10,0" Orientation="Horizontal">
+                <StackLayout Orientation="Horizontal" Spacing="10">
+                    <Image Source="icon_user_circle" WidthRequest="28" HeightRequest="28"/>
+                    <Label Text="{Binding LoggedInUserName}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
+                </StackLayout>
+                <!--<Image Source="icon_list" WidthRequest="36" HeightRequest="36"/>-->
+            </StackLayout>
+            <Label Grid.Column="1" Grid.ColumnSpan="2" Text="Sarah's Skin Health Plan" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
+            <StackLayout Grid.Column="2" HorizontalOptions="End" Padding="10,0" Spacing="20" Orientation="Horizontal">
                 <StackLayout Orientation="Horizontal" Spacing="10">
                     <Label Text="Sarah Smith" HorizontalTextAlignment="End" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
                     <Image Source="icon_user" WidthRequest="28" HeightRequest="28"/>
@@ -76,7 +80,7 @@
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <Grid BackgroundColor="#f" RowDefinitions="250,Auto" RowSpacing="20" FlexLayout.Basis="{OnIdiom Phone='50%', Tablet='33%'}" FlexLayout.AlignSelf="Start" Margin="20,10">
-                                <forms:CachedImage Source="{Binding ImageUrl}" Aspect="Fill">
+                                <forms:CachedImage Source="{Binding HealthPlanToComplete.ImageUrl}" Aspect="Fill">
                                     <forms:CachedImage.GestureRecognizers>
                                         <TapGestureRecognizer Tapped="scan_event" CommandParameter="{Binding .}" NumberOfTapsRequired="1"/>
                                     </forms:CachedImage.GestureRecognizers>
@@ -149,12 +153,12 @@
                                         <Label TextType="Html" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Style="{StaticResource ContentTitle}" FontSize="20">
                                             <Label.Text>
                                                 <MultiBinding StringFormat="{}+{0}">
-                                                    <Binding Path="LoyalityPoints"/>
+                                                    <Binding Path="HealthPlanToComplete.LoyalityPoints"/>
                                                 </MultiBinding>
                                             </Label.Text>
                                         </Label>
                                     </StackLayout>
-                                    <Button Grid.Column="1" Text="Remove" TextColor="Gray" BackgroundColor="#ffffff" BorderColor="Transparent" Command="{Binding RemoveLoyaltyCommand}" CommandParameter="{Binding Product}"/>
+                                    <Button Grid.Column="1" Text="Remove" TextColor="Gray" BackgroundColor="#ffffff" BorderColor="Transparent" Clicked="remove_loyalty" CommandParameter="{Binding .}"/>
                                     <Label Grid.Row="1" TextType="Html" Grid.ColumnSpan="2" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="20">
                                         <Label.Text>
                                             <MultiBinding StringFormat="{}{0} Loaylty Points Earned">
@@ -165,16 +169,22 @@
                                 </Grid>
                                 <Grid Grid.Row="1" RowDefinitions="Auto,Auto" IsVisible="{Binding IsProductScanned,Converter={StaticResource InverseConverter}}">
                                     <StackLayout Grid.Row="0">
-                                        <Label Text="{Binding ProgramName}" TextType="Html" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="14"/>
-                                        <Label Text="{Binding Product.Name}" TextType="Html" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="20"/>
-                                        <Label Text="{Binding Price}" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="18"/>
+                                        <Label Text="{Binding HealthPlanToComplete.ProgramName}" TextType="Html" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="14"/>
+                                        <Label Text="{Binding HealthPlanToComplete.Product.Name}" TextType="Html" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="20"/>
+                                        <Label LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="18">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="£{0:F2}">
+                                                    <Binding Path="HealthPlanToComplete.SelectedVariant.Price"/>
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
                                     </StackLayout>
                                     <StackLayout Grid.Row="1" IsVisible="{Binding IsDropdownVisible}">
-                                        <Grid RowDefinitions="56" ColumnDefinitions="2*,*" IsVisible="{Binding ShouldShowSubVariant}">
+                                        <Grid RowDefinitions="56" ColumnDefinitions="2*,*" IsVisible="{Binding HealthPlanToComplete.ShouldShowSubVariant}">
                                             <Grid Grid.Column="0" RowDefinitions="56" HorizontalOptions="FillAndExpand">
                                                 <Frame Padding="10,5" BorderColor="#000000" CornerRadius="0" HasShadow="False">
                                                     <Grid ColumnDefinitions="2*,Auto">
-                                                        <Picker FontSize="20" ItemsSource="{Binding VariantsList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedVariant}" />
+                                                        <Picker FontSize="20" ItemsSource="{Binding Path=HealthPlanToComplete.VariantsList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding Path=HealthPlanToComplete.SelectedVariant}" />
                                                         <Image Grid.Column="1" Source="icon_down_arrow" WidthRequest="36" HeightRequest="36" HorizontalOptions="End"/>
                                                     </Grid>
                                                 </Frame>
@@ -182,16 +192,16 @@
                                             <Grid Grid.Column="1" RowDefinitions="56">
                                                 <Frame Padding="10,5" BorderColor="#000000" CornerRadius="0" HasShadow="False">
                                                     <Grid ColumnDefinitions="2*,Auto">
-                                                        <Picker x:Name="SubVariantsPicker" FontSize="20" ItemsSource="{Binding PrescribingOptions}" ItemDisplayBinding="{Binding Title}" SelectedItem="{Binding SelectedOption}" />
+                                                        <Picker x:Name="SubVariantsPicker" FontSize="20" ItemsSource="{Binding HealthPlanToComplete.PrescribingOptions}" ItemDisplayBinding="{Binding Title}" SelectedItem="{Binding HealthPlanToComplete.SelectedOption}" />
                                                         <Image Grid.Column="1" Source="icon_down_arrow" WidthRequest="36" HeightRequest="36" HorizontalOptions="End"/>
                                                     </Grid>
                                                 </Frame>
                                             </Grid>
                                         </Grid>
-                                        <Grid RowDefinitions="56" HorizontalOptions="FillAndExpand" IsVisible="{Binding ShouldShowSubVariant,Converter={StaticResource InverseConverter}}">
+                                        <Grid RowDefinitions="56" HorizontalOptions="FillAndExpand" IsVisible="{Binding HealthPlanToComplete.ShouldShowSubVariant,Converter={StaticResource InverseConverter}}">
                                             <Frame Padding="10,5" BorderColor="#000000" CornerRadius="0" HasShadow="False">
                                                 <Grid ColumnDefinitions="2*,Auto">
-                                                    <Picker FontSize="20" ItemsSource="{Binding VariantsList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedVariant}" />
+                                                    <Picker FontSize="20" ItemsSource="{Binding HealthPlanToComplete.VariantsList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding HealthPlanToComplete.SelectedVariant}" />
                                                     <Image Grid.Column="1" Source="icon_down_arrow" WidthRequest="36" HeightRequest="36" HorizontalOptions="End"/>
                                                 </Grid>
                                             </Frame>

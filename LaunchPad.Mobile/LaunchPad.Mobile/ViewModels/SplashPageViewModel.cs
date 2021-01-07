@@ -50,7 +50,7 @@ namespace LaunchPad.Mobile.ViewModels
                 ProgressBarVisible = true;
                 await Task.Delay(200);
                 Progress = 0.10;
-                await Task.Delay(200);
+                await Task.Delay(100);
                 Progress = 0.25;
                 var salon = await ApiServices.Client.GetAsync<Salon>("salon");
                 Progress = 0.50;
@@ -66,24 +66,44 @@ namespace LaunchPad.Mobile.ViewModels
 
                 Progress = 0.75;
                 IsBusy = false;
-                var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
+                var locationStatus = await Permissions.CheckStatusAsync<Permissions.LocationAlways>();
 
-                if (status != PermissionStatus.Granted)
+                if (locationStatus != PermissionStatus.Granted)
                 {
-                    await Task.Delay(500);
-                    status = await Permissions.RequestAsync<Permissions.Camera>();
+                    locationStatus = await Permissions.RequestAsync<Permissions.LocationAlways>();
+                }
+                var locationInUseStatus = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+
+                if (locationInUseStatus != PermissionStatus.Granted)
+                {
+                    locationInUseStatus = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                }
+                var camerastatus = await Permissions.CheckStatusAsync<Permissions.Camera>();
+
+                if (camerastatus != PermissionStatus.Granted)
+                {
+                    camerastatus = await Permissions.RequestAsync<Permissions.Camera>();
                 }
 
                 var flashLightStatus = await Permissions.CheckStatusAsync<Permissions.Flashlight>();
-                if (status != PermissionStatus.Granted)
+                if (flashLightStatus != PermissionStatus.Granted)
                 {
                     await Task.Delay(500);
-                    status = await Permissions.RequestAsync<Permissions.Flashlight>();
+                    flashLightStatus = await Permissions.RequestAsync<Permissions.Flashlight>();
                 }
 
                 Progress = 1;
                 await Task.Delay(100);
-                Application.Current.MainPage = new AnimationNavigationPage(new SalonProductsPage());
+                var currentTherapist=await SecureStorage.GetAsync("currentTherapist");
+                if (!string.IsNullOrEmpty(currentTherapist))
+                {
+                    Application.Current.MainPage = new AnimationNavigationPage(new SalonProductsPage());
+                }
+                else
+                {
+                    await Application.Current.MainPage.Navigation.PushAsync(new SignInPage());
+                }
+                
             }));
         }
 

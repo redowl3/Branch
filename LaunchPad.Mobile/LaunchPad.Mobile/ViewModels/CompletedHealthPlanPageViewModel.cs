@@ -7,13 +7,20 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace LaunchPad.Mobile.ViewModels
 {
-    public class CompletedHealthPlanPageViewModel:ViewModelBase
+    public class CompletedHealthPlanPageViewModel : ViewModelBase
     {
+        private string _loggedInUserName;
+        public string LoggedInUserName
+        {
+            get => _loggedInUserName;
+            set => SetProperty(ref _loggedInUserName, value);
+        }
         public static Action<int> BadgeCountAction;
         public static void OnBadgeCountAction(int param)
         {
@@ -21,6 +28,11 @@ namespace LaunchPad.Mobile.ViewModels
             {
                 BadgeCountAction(param);
             }
+        }
+        public static Action RemoveScanner;
+        public static void OnRemoveScanner()
+        {
+            RemoveScanner?.Invoke();
         }
         private IDatabaseServices DatabaseServices => DependencyService.Get<IDatabaseServices>();
         private Salon Salon = new Salon();
@@ -36,14 +48,14 @@ namespace LaunchPad.Mobile.ViewModels
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
         }
-        private string _amountPaid="0.00";
+        private string _amountPaid = "0.00";
         public string AmountPaid
         {
             get => _amountPaid;
             set => SetProperty(ref _amountPaid, value);
-        } 
-        
-        private string _amountToBePaid="0.00";
+        }
+
+        private string _amountToBePaid = "0.00";
         public string AmountToBePaid
         {
             get => _amountToBePaid;
@@ -57,7 +69,7 @@ namespace LaunchPad.Mobile.ViewModels
             set => SetProperty(ref _totalLoyaltyPoints, value);
         }
 
-        private ObservableCollection<StarRatings> _starRatingsCollection=new ObservableCollection<StarRatings>();
+        private ObservableCollection<StarRatings> _starRatingsCollection = new ObservableCollection<StarRatings>();
         public ObservableCollection<StarRatings> StarRatingsCollection
         {
             get => _starRatingsCollection;
@@ -71,8 +83,19 @@ namespace LaunchPad.Mobile.ViewModels
         }
         public CompletedHealthPlanPageViewModel()
         {
-             GetItemsAsync();
+            GetItemsAsync();
+            App.AppInSleepMode += CloseActivities;
         }
+
+        private void CloseActivities()
+        {
+            Device.BeginInvokeOnMainThread(() => ExceptionHandler(() =>
+            {
+                CompletedHealthPlansCollection.ForEach(a => a.IsScanning = false);
+
+            }));
+        }
+
         private async void GetItemsAsync()
         {
             IsBusy = true;
@@ -80,11 +103,11 @@ namespace LaunchPad.Mobile.ViewModels
             IsContentVisible = true;
             Device.BeginInvokeOnMainThread(() => ExceptionHandler(async () =>
                 {
+                    LoggedInUserName = await SecureStorage.GetAsync("currentUserName");
                     var basket = await DatabaseServices.Get<CustomBasket>("basketItems");
-                   
                     var salon = await DatabaseServices.Get<Salon>("salon");
                     if (basket != null && basket.ItemsCollection.Count > 0)
-                    {                        
+                    {
                         AmountToBePaid = $"{basket.ItemsCollection.Sum(a => a.Variant.Price).ToString("F2")}";
                         BadgeCountAction?.Invoke(basket.ItemsCollection.Count);
                         foreach (var item in basket.Basket.Items)
@@ -97,40 +120,84 @@ namespace LaunchPad.Mobile.ViewModels
                                     foreach (var product in products)
                                     {
                                         var completedHealthPlan = new CompletedHealthPlan();
+                                        var healthPlansCompleted = await DatabaseServices.Get<List<HealthPlanToComplete>>("healthPlanCompleted");
+                                        if (healthPlansCompleted.Count > 0 && healthPlansCompleted.Count(a=>a.Product.Id==product.Id)>0)
+                                        {
+                                            var healthPlan = healthPlansCompleted.First(a => a.Product.Id == product.Id);
+                                            completedHealthPlan.HealthPlanToComplete = new HealthPlanToComplete();
+                                            completedHealthPlan.HealthPlanToComplete.ProgramName = healthPlan.ProgramName;
+                                            completedHealthPlan.HealthPlanToComplete.Product = healthPlan.Product;
+                                            completedHealthPlan.HealthPlanToComplete.VariantsList = new ObservableCollection<ProductVariant>();
+                                            completedHealthPlan.HealthPlanToComplete.ShouldShowVariant = completedHealthPlan.IsDropdownVisible = healthPlan.Product.Variants?.Count > 0;
+                                            foreach (var variant in healthPlan.VariantsList)
+                                            {
+                                                completedHealthPlan.HealthPlanToComplete.VariantsList.Add(variant);
+                                            }
+                                            completedHealthPlan.HealthPlanToComplete.SelectedVariant = product.Variants.FirstOrDefault(a => a.Id == healthPlan.SelectedVariant.Id);
+                                            completedHealthPlan.IsProductScanned = healthPlan.ProductScanned;
+                                            completedHealthPlan.LoyalityPoints = healthPlan.SelectedVariant.LoyaltyPoints;
+                                            completedHealthPlan.HealthPlanToComplete.ShouldShowSubVariant = healthPlan.PrescribingOptions?.Count > 0;
+                                            if (healthPlan.ShouldShowSubVariant)
+                                            {
+                                                completedHealthPlan.HealthPlanToComplete.PrescribingOptions = new ObservableCollection<ProductVariantPrescribingOption>();
+                                                foreach (var option in healthPlan.SelectedVariant.PrescribingOptions)
+                                                {
+                                                    completedHealthPlan.HealthPlanToComplete.PrescribingOptions.Add(option);
+                                                }
+                                                completedHealthPlan.HealthPlanToComplete.SelectedOption = completedHealthPlan.HealthPlanToComplete.PrescribingOptions.First(a => a.Title.ToLower() == healthPlan.SelectedOption.Title.ToLower());
+                                            }
+
+                                            if (product.ImageUrls?.Count > 0)
+                                            {
+                                                completedHealthPlan.HealthPlanToComplete.ImageUrl = healthPlan.ImageUrl;
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            if (completedHealthPlan.HealthPlanToComplete == null) completedHealthPlan.HealthPlanToComplete = new HealthPlanToComplete();
+                                            completedHealthPlan.HealthPlanToComplete.ProgramName = productCategory.Subtitle;
+                                            completedHealthPlan.HealthPlanToComplete.Product = product;
+                                            completedHealthPlan.HealthPlanToComplete.VariantsList = new ObservableCollection<ProductVariant>();
+                                            completedHealthPlan.HealthPlanToComplete.ShouldShowVariant = completedHealthPlan.IsDropdownVisible = product.Variants?.Count > 0;
+                                            foreach (var variant in product.Variants)
+                                            {
+                                                completedHealthPlan.HealthPlanToComplete.VariantsList.Add(variant);
+                                            }
+                                            completedHealthPlan.HealthPlanToComplete.SelectedVariant = product.Variants.FirstOrDefault(a => a.Id == item.VariantId);
+                                            completedHealthPlan.LoyalityPoints = completedHealthPlan.HealthPlanToComplete.SelectedVariant.LoyaltyPoints;
+                                            completedHealthPlan.HealthPlanToComplete.ShouldShowSubVariant = completedHealthPlan.HealthPlanToComplete.SelectedVariant?.PrescribingOptions?.Count > 0;
+                                            if (completedHealthPlan.HealthPlanToComplete.ShouldShowSubVariant)
+                                            {
+                                                completedHealthPlan.HealthPlanToComplete.PrescribingOptions = new ObservableCollection<ProductVariantPrescribingOption>();
+                                                foreach (var option in completedHealthPlan.HealthPlanToComplete.SelectedVariant.PrescribingOptions)
+                                                {
+                                                    completedHealthPlan.HealthPlanToComplete.PrescribingOptions.Add(option);
+                                                }
+                                                completedHealthPlan.HealthPlanToComplete.SelectedOption = completedHealthPlan.HealthPlanToComplete.PrescribingOptions.First(a => a.Title.ToLower() == item.PrescribingOption.ToLower());
+                                            }
+
+                                            if (product.ImageUrls?.Count > 0)
+                                            {
+                                                completedHealthPlan.HealthPlanToComplete.ImageUrl = new Uri(product.ImageUrls.FirstOrDefault());
+                                            }
+                                        }
+                                                                                
+                                        
+
+
                                         completedHealthPlan.CloseOtherScanExceptthisCommand = new Command<Product>((param) => CloseOtherScanExceptthis(param));
                                         completedHealthPlan.ProductScannedCommand = new Command<ZXing.Result>((param) => AddLoyalityPoints(param));
                                         completedHealthPlan.RemoveLoyaltyCommand = new Command<Product>((param) => RemoveLoyalityPoints(param));
-                                        completedHealthPlan.ProgramName = productCategory.Subtitle;
-                                        completedHealthPlan.Product = product;
-                                        completedHealthPlan.VariantsList = new ObservableCollection<ProductVariant>();
-                                        completedHealthPlan.ShouldShowVariant = completedHealthPlan.IsDropdownVisible = product.Variants?.Count > 0;
-                                        foreach (var variant in product.Variants)
-                                        {
-                                            completedHealthPlan.VariantsList.Add(variant);
-                                        }
-                                        completedHealthPlan.SelectedVariant = product.Variants.FirstOrDefault(a => a.Id == item.VariantId);
-                                        completedHealthPlan.ShouldShowSubVariant = completedHealthPlan.SelectedVariant?.PrescribingOptions?.Count > 0;
-                                        if (completedHealthPlan.ShouldShowSubVariant)
-                                        {
-                                            completedHealthPlan.PrescribingOptions = new ObservableCollection<ProductVariantPrescribingOption>();
-                                            foreach (var option in completedHealthPlan.SelectedVariant.PrescribingOptions)
-                                            {
-                                                completedHealthPlan.PrescribingOptions.Add(option);
-                                            }
-                                            completedHealthPlan.SelectedOption = completedHealthPlan.PrescribingOptions.First(a => a.Title.ToLower() == item.PrescribingOption.ToLower());
-                                        }
-
-                                        if (product.ImageUrls?.Count > 0)
-                                        {
-                                            completedHealthPlan.ImageUrl = new Uri(product.ImageUrls.FirstOrDefault());
-                                        }
-
                                         CompletedHealthPlansCollection.Add(completedHealthPlan);
                                     }
                                 }
                             }
                         }
+                        var sumOfLoyaltyPoits = CompletedHealthPlansCollection.Where(a => a.IsProductScanned).Sum(a => a.HealthPlanToComplete.SelectedVariant.LoyaltyPoints);
 
+                        TotalLoyaltyPoints = sumOfLoyaltyPoits == 0 ? "" : $"+ {sumOfLoyaltyPoits}";
+                        AmountPaid = $"{CompletedHealthPlansCollection.Where(x => x.IsProductScanned).Sum(a => a.HealthPlanToComplete.SelectedVariant.Price).ToString("F2")}";
                         foreach (var item in CompletedHealthPlansCollection.Where(a => a.IsProductScanned))
                         {
                             StarRatingsCollection.Add(new StarRatings
@@ -138,7 +205,7 @@ namespace LaunchPad.Mobile.ViewModels
                                 Star = "star.png",
                                 WidthRequest = 14,
                                 HeightRequest = 14,
-                                Margin=new Thickness(0,-2,0,0)
+                                Margin = new Thickness(0, -2, 0, 0)
                             });
                         }
                         foreach (var item in CompletedHealthPlansCollection.Where(a => !a.IsProductScanned))
@@ -148,95 +215,178 @@ namespace LaunchPad.Mobile.ViewModels
                                 Star = "icon_white_circle.png",
                                 WidthRequest = 8,
                                 HeightRequest = 8,
-                                Margin=new Thickness(0,0,0,0)
+                                Margin = new Thickness(0, 0, 0, 0)
                             });
                         }
                     }
                 }));
         }
 
+        internal void SaveCurrentState()
+        {
+            try
+            {
+                Task.Run(() => ExceptionHandler(async () =>
+                {
+                    var healthPlansCompleted = await DatabaseServices.Get<List<HealthPlanToComplete>>("healthPlanCompleted");
+                    healthPlansCompleted = new List<HealthPlanToComplete>();
+                    foreach (var item in CompletedHealthPlansCollection)
+                    {
+                        healthPlansCompleted.Add(item.HealthPlanToComplete);
+                    }
+
+                    await DatabaseServices.InsertData<List<HealthPlanToComplete>>("healthPlanCompleted", healthPlansCompleted);
+                }));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+
         private void RemoveLoyalityPoints(Product param)
         {
-            Device.BeginInvokeOnMainThread(() => ExceptionHandler(async() =>
+            Device.BeginInvokeOnMainThread(() => ExceptionHandler(async () =>
+            {
+                if (param != null)
+                {
+                    var basket = await DatabaseServices.Get<CustomBasket>("basketItems");
+                    if (basket != null && basket.Basket != null && basket.Basket.Items != null)
+                    {                      
+                        CompletedHealthPlansCollection.Where(a => !a.IsProductScanned).ForEach(a => a.HealthPlanToComplete.ProductScanned = false);
+                        var sumOfLoyaltyPoits = CompletedHealthPlansCollection.Where(a => a.IsProductScanned).Sum(a => a.HealthPlanToComplete.SelectedVariant.LoyaltyPoints);
+                        TotalLoyaltyPoints = sumOfLoyaltyPoits == 0 ? "" : $"+ {sumOfLoyaltyPoits}";
+                        AmountPaid = $"{CompletedHealthPlansCollection.Where(x => x.IsProductScanned).Sum(a => a.HealthPlanToComplete.SelectedVariant.Price).ToString("F2")}";
+                        StarRatingsCollection = new ObservableCollection<StarRatings>();
+                        foreach (var item in CompletedHealthPlansCollection.Where(a => a.IsProductScanned))
+                        {
+                            StarRatingsCollection.Add(new StarRatings
+                            {
+                                Star = "star.png",
+                                WidthRequest = 14,
+                                HeightRequest = 14,
+                                Margin = new Thickness(0, -2, 0, 0)
+                            });
+                        }
+                        foreach (var item in CompletedHealthPlansCollection.Where(a => !a.IsProductScanned))
+                        {
+                            StarRatingsCollection.Add(new StarRatings
+                            {
+                                Star = "icon_white_circle.png",
+                                WidthRequest = 8,
+                                HeightRequest = 8,
+                                Margin = new Thickness(0, 0, 0, 0)
+                            });
+                        }
+                    }
+                }
+
+                var healthPlansCompleted = await DatabaseServices.Get<List<HealthPlanToComplete>>("healthPlanCompleted");
+                if (healthPlansCompleted != null && healthPlansCompleted.Count > 0)
+                {
+                    var currentCompletedHealthPlan = CompletedHealthPlansCollection.FirstOrDefault(a => a.HealthPlanToComplete.Product.Id == param.Id);
+                    if (currentCompletedHealthPlan != null)
+                    {
+                        if (healthPlansCompleted.FirstOrDefault(a => a.Product.Id == currentCompletedHealthPlan.HealthPlanToComplete.Product.Id) != null)
+                        {
+                            healthPlansCompleted.Remove(healthPlansCompleted.FirstOrDefault(a => a.Product.Id == currentCompletedHealthPlan.HealthPlanToComplete.Product.Id));
+                        }
+
+                    }
+                }
+
+                await DatabaseServices.InsertData<List<HealthPlanToComplete>>("healthPlanCompleted", healthPlansCompleted);
+            }));
+
+            Task.Run(() => ExceptionHandler(async () =>
+            {
+                var healthPlansCompleted = await DatabaseServices.Get<List<HealthPlanToComplete>>("healthPlanCompleted");
+                var currentCompletedHealthPlan = CompletedHealthPlansCollection.FirstOrDefault(a => a.HealthPlanToComplete.Product.Id == _selectedProduct.Id);
+                if (currentCompletedHealthPlan != null)
+                {
+                    if (healthPlansCompleted.Count(a=>a.Product.Id==currentCompletedHealthPlan.HealthPlanToComplete.Product.Id)>0)
+                    {
+                        healthPlansCompleted.Remove(currentCompletedHealthPlan.HealthPlanToComplete);
+                    }
+
+                    await DatabaseServices.InsertData<List<HealthPlanToComplete>>("healthPlanCompleted", healthPlansCompleted);
+                }
+                
+            }));
+        }
+
+        private void AddLoyalityPoints(ZXing.Result param)
+        {
+            Device.BeginInvokeOnMainThread(() => ExceptionHandler(async () =>
             {
                 var basket = await DatabaseServices.Get<CustomBasket>("basketItems");
-                CompletedHealthPlansCollection.Where(a => a.Product.Id == param.Id).ForEach(x =>
+                if (basket != null && basket.Basket != null && basket.Basket.Items != null)
                 {
-                    var selectedVariant = basket.Basket.Items.First(t => t.ProductId == param.Id).VariantId;
-                    var variant = _selectedProduct.Variants.First(temp => temp.Id == selectedVariant);
-                    x.LoyalityPoints = 0;
-                    x.IsProductScanned = false;
-                });
-                var sumOfLoyaltyPoits = CompletedHealthPlansCollection.Sum(a => a.LoyalityPoints);
+                    //CompletedHealthPlansCollection.Where(a => a.HealthPlanToComplete.Product.Id == basket.Basket.Items.First(x => x.ProductId == _selectedProduct.Id).ProductId).ForEach(x =>
+                    //     {
+                    //         var selectedVariant = basket.Basket.Items.First(t => t.ProductId == _selectedProduct.Id).VariantId;
+                    //         var variant = _selectedProduct.Variants.First(temp => temp.Id == selectedVariant);
+                    //         x.LoyalityPoints = variant.LoyaltyPoints;
+                    //     });
+                    CompletedHealthPlansCollection.Where(a => a.IsProductScanned).ForEach(a => a.HealthPlanToComplete.ProductScanned = true);
+                    TotalLoyaltyPoints = $"+ {CompletedHealthPlansCollection.Where(a=>a.IsProductScanned).Sum(a => a.HealthPlanToComplete.SelectedVariant.LoyaltyPoints)}";
+                    AmountPaid= $"{CompletedHealthPlansCollection.Where(x=>x.IsProductScanned).Sum(a => a.HealthPlanToComplete.SelectedVariant.Price).ToString("F2")}";
+                    StarRatingsCollection = new ObservableCollection<StarRatings>();
+                    foreach (var item in CompletedHealthPlansCollection.Where(a => a.IsProductScanned))
+                    {
+                        StarRatingsCollection.Add(new StarRatings
+                        {
+                            Star = "star.png",
+                            WidthRequest = 14,
+                            HeightRequest = 14,
+                            Margin = new Thickness(0, -2, 0, 0)
+                        });
+                    }
+                    foreach (var item in CompletedHealthPlansCollection.Where(a => !a.IsProductScanned))
+                    {
+                        StarRatingsCollection.Add(new StarRatings
+                        {
+                            Star = "icon_white_circle.png",
+                            WidthRequest = 8,
+                            HeightRequest = 8,
+                            Margin = new Thickness(0, 0, 0, 0)
+                        });
+                    }
+                }
+                var healthPlansCompleted = await DatabaseServices.Get<List<HealthPlanToComplete>>("healthPlanCompleted");
+                if (healthPlansCompleted == null || healthPlansCompleted.Count == 0)
+                {
+                    healthPlansCompleted = new List<HealthPlanToComplete>();
+                    var currentCompletedHealthPlan = CompletedHealthPlansCollection.FirstOrDefault(a => a.HealthPlanToComplete.Product.Id == _selectedProduct.Id);
+                    if (currentCompletedHealthPlan != null)
+                    {
+                        healthPlansCompleted.Add(currentCompletedHealthPlan.HealthPlanToComplete);
+                    }
+                }
+                else
+                {
+                    var currentCompletedHealthPlan = CompletedHealthPlansCollection.FirstOrDefault(a => a.HealthPlanToComplete.Product.Id == _selectedProduct.Id);
+                    if (currentCompletedHealthPlan != null)
+                    {
+                        if (healthPlansCompleted.FirstOrDefault(a => a.Product.Id == currentCompletedHealthPlan.HealthPlanToComplete.Product.Id) != null)
+                        {
+                            healthPlansCompleted.Remove(healthPlansCompleted.FirstOrDefault(a => a.Product.Id == currentCompletedHealthPlan.HealthPlanToComplete.Product.Id));
+                        }
 
-                TotalLoyaltyPoints =sumOfLoyaltyPoits==0?"": $"+ {sumOfLoyaltyPoits}";
-                StarRatingsCollection = new ObservableCollection<StarRatings>();
-                foreach (var item in CompletedHealthPlansCollection.Where(a => a.IsProductScanned))
-                {
-                    StarRatingsCollection.Add(new StarRatings
-                    {
-                        Star = "star.png",
-                        WidthRequest = 14,
-                        HeightRequest = 14,
-                        Margin = new Thickness(0, -2, 0, 0)
-                    });
+                        healthPlansCompleted.Add(currentCompletedHealthPlan.HealthPlanToComplete);
+                    }
                 }
-                foreach (var item in CompletedHealthPlansCollection.Where(a => !a.IsProductScanned))
-                {
-                    StarRatingsCollection.Add(new StarRatings
-                    {
-                        Star = "icon_white_circle.png",
-                        WidthRequest = 8,
-                        HeightRequest = 8,
-                        Margin = new Thickness(0, 0, 0, 0)
-                    });
-                }
-            }));
+                await DatabaseServices.InsertData<List<HealthPlanToComplete>>("healthPlanCompleted", healthPlansCompleted);
+            }));          
         }
 
-        private async void AddLoyalityPoints(ZXing.Result param)
-        {
-            var basket = await DatabaseServices.Get<CustomBasket>("basketItems");
-            Device.BeginInvokeOnMainThread(() => ExceptionHandler(() =>
-            {
-                CompletedHealthPlansCollection.Where(a => a.Product.Id== basket.Basket.Items.First(x=>x.ProductId==_selectedProduct.Id).ProductId).ForEach(x =>
-                {
-                    var selectedVariant = basket.Basket.Items.First(t => t.ProductId == _selectedProduct.Id).VariantId;
-                    var variant = _selectedProduct.Variants.First(temp => temp.Id == selectedVariant);
-                    x.LoyalityPoints = variant.LoyaltyPoints;                   
-                });
-                TotalLoyaltyPoints = $"+ {CompletedHealthPlansCollection.Sum(a => a.LoyalityPoints)}";
-                StarRatingsCollection = new ObservableCollection<StarRatings>();
-                foreach (var item in CompletedHealthPlansCollection.Where(a => a.IsProductScanned))
-                {
-                    StarRatingsCollection.Add(new StarRatings
-                    {
-                        Star = "star.png",
-                        WidthRequest = 14,
-                        HeightRequest = 14,
-                        Margin = new Thickness(0, -2, 0, 0)
-                    });
-                }
-                foreach (var item in CompletedHealthPlansCollection.Where(a => !a.IsProductScanned))
-                {
-                    StarRatingsCollection.Add(new StarRatings
-                    {
-                        Star = "icon_white_circle.png",
-                        WidthRequest = 8,
-                        HeightRequest = 8,
-                        Margin = new Thickness(0, 0, 0, 0)
-                    });
-                }
-            }));
-        }
-
-        private Product _selectedProduct=new Product();
+        private Product _selectedProduct = new Product();
         private void CloseOtherScanExceptthis(Product param)
         {
             _selectedProduct = param;
             Device.BeginInvokeOnMainThread(() => ExceptionHandler(() =>
             {
-                CompletedHealthPlansCollection.Where(a => a.Product.Id != param.Id).ForEach(x => x.IsScanning = false);
+                CompletedHealthPlansCollection.Where(a => a.HealthPlanToComplete.Product.Id != param.Id).ForEach(x => x.IsScanning = false);
             }));
         }
 

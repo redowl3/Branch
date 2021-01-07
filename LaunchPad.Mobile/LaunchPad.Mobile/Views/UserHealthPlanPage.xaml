@@ -9,13 +9,17 @@
     <controls:AnimationPage.PageAnimation>
         <controls:PushPageAnimation Duration="Medium" Subtype="FromRight" />
     </controls:AnimationPage.PageAnimation>
-    <controls:AnimationPage.BindingContext>
-        <viewmodels:UserHealthPlanPageViewModel/>
-    </controls:AnimationPage.BindingContext>
     <NavigationPage.TitleView>
-        <Grid ColumnDefinitions="*,*">
-            <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Sarah's Skin Health Plan" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
-            <StackLayout Grid.Column="1" HorizontalOptions="End" Padding="10,0" Spacing="20" Orientation="Horizontal">
+        <Grid ColumnDefinitions="*,*,*">
+            <StackLayout Grid.Column="0" Padding="10,0" Orientation="Horizontal">
+                <StackLayout Orientation="Horizontal" Spacing="10">
+                    <Image Source="icon_user_circle" WidthRequest="28" HeightRequest="28"/>
+                    <Label Text="{Binding LoggedInUserName}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
+                </StackLayout>
+                <!--<Image Source="icon_list" WidthRequest="36" HeightRequest="36"/>-->
+            </StackLayout>
+            <Label Grid.Column="1" Grid.ColumnSpan="2" Text="Sarah's Skin Health Plan" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
+            <StackLayout Grid.Column="2" HorizontalOptions="End" Padding="10,0" Spacing="20" Orientation="Horizontal">
                 <StackLayout Orientation="Horizontal" Spacing="10">
                     <Label Text="Sarah Smith" HorizontalTextAlignment="End" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
                     <Image Source="icon_user" WidthRequest="28" HeightRequest="28"/>

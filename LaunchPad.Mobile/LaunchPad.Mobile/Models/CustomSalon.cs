@@ -1,4 +1,5 @@
 ﻿using IIAADataModels.Transfer;
+using LaunchPad.Mobile.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -133,10 +134,16 @@ namespace LaunchPad.Mobile.Models
         #endregion
     }
 
-    public class CompletedHealthPlan:CustomProduct,INotifyPropertyChanged
+    public class CompletedHealthPlan:ViewModelBase
     {
-        public string ProgramName { get; set; }
-        public bool IsDropdownVisible { get; set; }
+        public HealthPlanToComplete HealthPlanToComplete { get; set; }
+
+        private bool _isDropdownVisible;
+        public bool IsDropdownVisible
+        {
+            get => _isDropdownVisible;
+            set => SetProperty(ref _isDropdownVisible, value);
+        }
 
         private int _loyalityPoints;
         public int LoyalityPoints
@@ -172,26 +179,14 @@ namespace LaunchPad.Mobile.Models
         });
         public Command CloseOtherScanExceptthisCommand { get; set; }
         public Command ProductScannedCommand { get; set; }
+
+        public ICommand RemoveCommand => new Command<Product>((param) =>
+          {
+              IsProductScanned = false;
+              LoyalityPoints = 0;
+              RemoveLoyaltyCommand.Execute(param);
+          });
         public Command RemoveLoyaltyCommand { get; set; }
-        #region # INotifyPropertyChanged Impl #
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected bool SetProperty<T>(ref T storage, T value,
-                                      [CallerMemberName] string propertyName = null)
-        {
-            if (Object.Equals(storage, value))
-                return false;
-
-            storage = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
     }
     public class CustomProductAdditionalInfo : INotifyPropertyChanged
     {
@@ -519,5 +514,62 @@ namespace LaunchPad.Mobile.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+    }
+
+    public class CustomTherapist
+    {
+        public Therapist Therapist { get; set; }
+        public ICommand SelectCommand { get; set; }
+    }
+
+    public class HealthPlanToComplete:ViewModelBase
+    {
+        public string ProgramName { get; set; }
+        public Product Product { get; set; }
+        public Uri ImageUrl { get; set; }
+        private ObservableCollection<ProductVariant> _variantsList;
+        public ObservableCollection<ProductVariant> VariantsList
+        {
+            get => _variantsList;
+            set => SetProperty(ref _variantsList, value);
+        }
+        private bool _shouldShowSubVariant = false;
+        public bool ShouldShowSubVariant
+        {
+            get => _shouldShowSubVariant;
+            set => SetProperty(ref _shouldShowSubVariant, value);
+        }
+
+        private bool _shouldShowVariant = false;
+        public bool ShouldShowVariant
+        {
+            get => _shouldShowVariant;
+            set => SetProperty(ref _shouldShowVariant, value);
+        }
+        private ProductVariant _selectedVariant;
+        public ProductVariant SelectedVariant
+        {
+            get => _selectedVariant;
+            set=> SetProperty(ref _selectedVariant, value);
+        }
+        private ObservableCollection<ProductVariantPrescribingOption> _prescribingOptions;
+        public ObservableCollection<ProductVariantPrescribingOption> PrescribingOptions
+        {
+            get => _prescribingOptions;
+            set => SetProperty(ref _prescribingOptions, value);
+        }
+
+        private ProductVariantPrescribingOption _selectedOption;
+        public ProductVariantPrescribingOption SelectedOption
+        {
+            get => _selectedOption;
+            set => SetProperty(ref _selectedOption, value);
+        }
+        private bool _productScanned = false;
+        public bool ProductScanned
+        {
+            get => _productScanned;
+            set => SetProperty(ref _productScanned, value);
+        }
     }
 }

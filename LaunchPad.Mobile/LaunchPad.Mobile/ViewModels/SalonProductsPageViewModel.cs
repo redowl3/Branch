@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -16,6 +17,12 @@ namespace LaunchPad.Mobile.ViewModels
 {
     public class SalonProductsPageViewModel : ViewModelBase
     {
+        private string _loggedInUserName;
+        public string LoggedInUserName
+        {
+            get => _loggedInUserName;
+            set => SetProperty(ref _loggedInUserName, value);
+        }
         private IDatabaseServices DatabaseServices => DependencyService.Get<IDatabaseServices>();
         public static Action<int> CartItemAdded;
         public static void OnCartItemAdded(int param)
@@ -135,6 +142,13 @@ namespace LaunchPad.Mobile.ViewModels
             get => _selectedAdditionalInfo;
             set => SetProperty(ref _selectedAdditionalInfo, value);
         }
+
+        private bool _isContentLoading=true;
+        public bool IsContentLoading
+        {
+            get => _isContentLoading;
+            set => SetProperty(ref _isContentLoading, value);
+        }
         public Command FeedCommand => new Command(() =>
           {
               FortifyContentVisible = false;
@@ -173,8 +187,8 @@ namespace LaunchPad.Mobile.ViewModels
             if (FinishContentVisible) FilterFinishsAsync();
         });
 
-        public Command AddToPlanCommand => new Command<CustomProduct>((param) =>AddToHealthPlanAsync(param));
-        public Command ViewPlanCommand => new Command(() =>ViewHealthPlanAsync());
+        public Command AddToPlanCommand => new Command<CustomProduct>((param) => AddToHealthPlanAsync(param));
+        public Command ViewPlanCommand => new Command(() => ViewHealthPlanAsync());
 
         public SalonProductsPageViewModel()
         {
@@ -210,17 +224,19 @@ namespace LaunchPad.Mobile.ViewModels
 
         private async void FetchFeedContentAsync()
         {
-            try
+            await Task.Delay(1000);
+            Device.BeginInvokeOnMainThread(() => ExceptionHandler(async() =>
             {
+                LoggedInUserName = await SecureStorage.GetAsync("currentUserName");
                 if (Salon == null || Salon.Id == Guid.Empty)
                 {
                     Salon = await DatabaseServices.Get<Salon>("salon");
-                    if (Salon == null || Salon.Id==Guid.Empty)
+                    if (Salon == null || Salon.Id == Guid.Empty)
                     {
                         Salon = await ApiServices.Client.GetAsync<Salon>("salon");
                         await DatabaseServices.InsertData("salon", Salon);
                     }
-                  
+
                 }
                 if (Salon.ProductCategories != null && Salon.ProductCategories.Count > 0)
                 {
@@ -244,7 +260,7 @@ namespace LaunchPad.Mobile.ViewModels
                                             AdditionalInformation = a,
                                             ItemSelectedCommand = new Command<CustomProductAdditionalInfo>((param) => RefreshFeedProductListAsync(param, false))
                                         }).ToList(),
-                                        IsProductAdded=healthPlans.Count(x=>x.Id==product.Id)>0,
+                                        IsProductAdded = healthPlans.Count(x => x.Id == product.Id) > 0,
                                         AddPlanCommand = new Command<CustomProduct>((param) => AddToHealthPlanAsync(param)),
                                         RemovePlanCommand = new Command<CustomProduct>((param) => RemoveFromHealthPlanAsync(param))
                                     });
@@ -276,14 +292,11 @@ namespace LaunchPad.Mobile.ViewModels
                 {
                     NoFeedsFound = true;
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
+                IsLoading = false;
+                FeedContentVisible = true;
+                IsContentLoading = false;
+            }));
 
-            IsLoading = false;
-            FeedContentVisible = true;
         }
 
         private void RefreshFeedProductListAsync(CustomProductAdditionalInfo a, bool isOdd)
@@ -365,7 +378,7 @@ namespace LaunchPad.Mobile.ViewModels
                     NoFortifyFound = true;
                 }
 
-               
+
             }
             catch (Exception ex)
             {
@@ -423,7 +436,7 @@ namespace LaunchPad.Mobile.ViewModels
                                         ItemSelectedCommand = new Command<CustomProductAdditionalInfo>((param) => RefreshFinishProductListAsync(param, false))
                                     }).ToList(),
                                     IsProductAdded = healthPlans.Count(x => x.Id == product.Id) > 0,
-                                    AddPlanCommand =new Command<CustomProduct>((param)=>AddToHealthPlanAsync(param)),
+                                    AddPlanCommand = new Command<CustomProduct>((param) => AddToHealthPlanAsync(param)),
                                     RemovePlanCommand = new Command<CustomProduct>((param) => RemoveFromHealthPlanAsync(param))
                                 });
                             }
@@ -462,7 +475,7 @@ namespace LaunchPad.Mobile.ViewModels
             FinishContentVisible = true;
         }
 
-       
+
         private void RefreshFinishProductListAsync(CustomProductAdditionalInfo a, bool isOdd)
         {
             if (!isOdd)
@@ -563,7 +576,7 @@ namespace LaunchPad.Mobile.ViewModels
                             FinishFilterOptionList = new ObservableCollection<FilterOption>(filterOptions.Distinct());
                             await Application.Current.MainPage.Navigation.PushModalAsync(new FinishFilterPage(this));
                         }
-                      
+
                     }
                 }
             }
@@ -797,7 +810,7 @@ namespace LaunchPad.Mobile.ViewModels
                 var cartItems = await DatabaseServices.Get<List<Product>>("healthplans");
                 if (cartItems.Count > 0)
                 {
-                    if (cartItems.Count(async => async.Id == product.Product.Id) ==0)
+                    if (cartItems.Count(async => async.Id == product.Product.Id) == 0)
                     {
                         cartItems.Add(product.Product);
                         await DatabaseServices.InsertData("healthplans", cartItems);
@@ -828,9 +841,9 @@ namespace LaunchPad.Mobile.ViewModels
                 var cartItems = await DatabaseServices.Get<List<Product>>("healthplans");
                 if (cartItems.Count > 0)
                 {
-                    if (cartItems.Count(async => async.Id == product.Product.Id) >0)
+                    if (cartItems.Count(async => async.Id == product.Product.Id) > 0)
                     {
-                        cartItems.RemoveAll(x=>x.Id==product.Product.Id);
+                        cartItems.RemoveAll(x => x.Id == product.Product.Id);
                         await DatabaseServices.InsertData("healthplans", cartItems);
                     }
                 }
@@ -843,6 +856,16 @@ namespace LaunchPad.Mobile.ViewModels
                 Console.WriteLine(ex.Message + "/n/n" + ex.StackTrace);
             }
         }
-
+        private void ExceptionHandler(Action action)
+        {
+            try
+            {
+                action?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
     }
 }

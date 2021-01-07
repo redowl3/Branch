@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -22,6 +23,7 @@ namespace LaunchPad.Mobile.Views
             FeedTab.BackgroundColor = Color.White;
             FortifyTab.BackgroundColor = FinishTab.BackgroundColor = Color.FromHex("#bdbdbd");
             SalonProductsPageViewModel.CartItemAdded += AddOrUpdateBadge;
+            this.BindingContext = new SalonProductsPageViewModel();
         }
 
         protected async override void OnAppearing()
@@ -56,6 +58,10 @@ namespace LaunchPad.Mobile.Views
             FinishTab.BackgroundColor = Color.White;
             FortifyTab.BackgroundColor = FeedTab.BackgroundColor = Color.FromHex("#bdbdbd");
             (this.BindingContext as SalonProductsPageViewModel)?.FinishCommand.Execute(null);
+        }
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
         }
     }
 }

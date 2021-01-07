@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -16,6 +17,12 @@ namespace LaunchPad.Mobile.ViewModels
 {
     public class UserHealthPlanPageViewModel : ViewModelBase
     {
+        private string _loggedInUserName;
+        public string LoggedInUserName
+        {
+            get => _loggedInUserName;
+            set => SetProperty(ref _loggedInUserName, value);
+        }
         public static Action CloseDrawer;
         public static void OnCloseDrawer()
         {
@@ -102,6 +109,7 @@ namespace LaunchPad.Mobile.ViewModels
             {
                 await Task.Delay(1000);
                 IsContentVisible = true;
+                LoggedInUserName = await SecureStorage.GetAsync("currentUserName");
                 var healthplans = await DatabaseServices.Get<List<Product>>("healthplans");
                 if (healthplans.Count > 0)
                 {
