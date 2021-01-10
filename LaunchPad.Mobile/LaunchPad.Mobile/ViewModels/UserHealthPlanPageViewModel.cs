@@ -1,4 +1,5 @@
-﻿using IIAADataModels.Transfer;
+﻿using FormsControls.Base;
+using IIAADataModels.Transfer;
 using LaunchPad.Client;
 using LaunchPad.Mobile.Models;
 using LaunchPad.Mobile.Services;
@@ -22,6 +23,12 @@ namespace LaunchPad.Mobile.ViewModels
         {
             get => _loggedInUserName;
             set => SetProperty(ref _loggedInUserName, value);
+        }
+        private string _salonName;
+        public string SalonName
+        {
+            get => _salonName;
+            set => SetProperty(ref _salonName, value);
         }
         public static Action CloseDrawer;
         public static void OnCloseDrawer()
@@ -73,13 +80,34 @@ namespace LaunchPad.Mobile.ViewModels
             get => _basketItemsCollection;
             set => SetProperty(ref _basketItemsCollection, value);
         }
-        private bool _isContentVisible=false;
+        private bool _isContentVisible = false;
         public bool IsContentVisible
         {
             get => _isContentVisible;
             set => SetProperty(ref _isContentVisible, value);
         }
         public ICommand ContinueCommand => new Command(() => ComplateHelathPLanAsync());
+        public ICommand SignOutCommand => new Command(() =>
+        {
+            try
+            {
+                Task.Run(async () =>
+                {
+                    SecureStorage.RemoveAll();
+                    await DatabaseServices.Delete<List<Product>>("healthplans");
+                    await DatabaseServices.Delete<List<Product>>("basketItems");
+                    await DatabaseServices.Delete<List<HealthPlanToComplete>>("healthPlanCompleted");
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Application.Current.MainPage = new AnimationNavigationPage(new SignInPage());
+                    });
+                });
+
+            }
+            catch (Exception)
+            {
+            }
+        });
 
         #region # Constructor #
         public UserHealthPlanPageViewModel()
@@ -94,6 +122,7 @@ namespace LaunchPad.Mobile.ViewModels
         {
             try
             {
+                SalonName = App.SalonName;
                 var cartItems = await DatabaseServices.Get<List<Product>>("healthplans");
                 return cartItems.Count;
             }
@@ -218,7 +247,7 @@ namespace LaunchPad.Mobile.ViewModels
                         ItemsCollection = new List<CustomBasketInfo>
                         {
                             new CustomBasketInfo
-                            { 
+                            {
                                 ProductId=param.Product.Id,
                                 ProgramName = healthPlan.ProgramName,
                                 ProductName = param.Product.Name,
@@ -290,13 +319,13 @@ namespace LaunchPad.Mobile.ViewModels
         private void RemoveItemFromBasketAsync(CustomBasketInfo param)
         {
             try
-            {                
+            {
                 ShouldAnimateOut?.Invoke(false);
                 BasketItemsCollection.Remove(param);
                 BasketItemsCount = BasketItemsCollection.Count;
                 SubTotal = $"£{BasketItemsCollection.Sum(a => a.Variant.Price):F2}";
                 ShouldDisplayCollection = BasketItemsCollection.Count > 0;
-                Task.Run(()=>ExceptionHandler(async()=>
+                Task.Run(() => ExceptionHandler(async () =>
                 {
                     var basket = await DatabaseServices.Get<CustomBasket>("basketItems");
                     if (basket != null && basket.ItemsCollection.Count > 0)
@@ -330,7 +359,7 @@ namespace LaunchPad.Mobile.ViewModels
                 var basket = await DatabaseServices.Get<CustomBasket>("basketItems");
                 if (basket != null && basket.ItemsCollection.Count > 0)
                 {
-                    await DatabaseServices.InsertData("CompletedHealthPlanItems",basket);
+                    await DatabaseServices.InsertData("CompletedHealthPlanItems", basket);
                     await Application.Current.MainPage.Navigation.PushAsync(new CompletedHealthPlanPage());
                     CompletedHealthPlanPageViewModel.BadgeCountAction?.Invoke(basket.ItemsCollection.Count);
                     CloseDrawer?.Invoke();

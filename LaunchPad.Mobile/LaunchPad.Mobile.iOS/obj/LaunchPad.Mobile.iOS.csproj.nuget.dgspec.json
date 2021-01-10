@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj": {}
+    "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj": {}
   },
   "projects": {
-    "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Client\\LaunchPad.Client.csproj": {
+    "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Client\\LaunchPad.Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Client\\LaunchPad.Client.csproj",
+        "projectUniqueName": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Client\\LaunchPad.Client.csproj",
         "projectName": "LaunchPad.Client",
-        "projectPath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Client\\LaunchPad.Client.csproj",
+        "projectPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Client\\LaunchPad.Client.csproj",
         "packagesPath": "C:\\Users\\Amit Kumar\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Client\\obj\\",
+        "outputPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Client\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -31,8 +31,8 @@
         "frameworks": {
           "netstandard2.0": {
             "projectReferences": {
-              "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Model\\LaunchPad.Model.csproj": {
-                "projectPath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Model\\LaunchPad.Model.csproj"
+              "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Model\\LaunchPad.Model.csproj": {
+                "projectPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Model\\LaunchPad.Model.csproj"
               }
             }
           }
@@ -75,14 +75,14 @@
         }
       }
     },
-    "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj": {
+    "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
+        "projectUniqueName": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
         "projectName": "LaunchPad.Mobile.iOS",
-        "projectPath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
+        "projectPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
         "packagesPath": "C:\\Users\\Amit Kumar\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\obj\\",
+        "outputPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "fallbackFolders": [
@@ -103,8 +103,8 @@
         "frameworks": {
           "xamarinios10": {
             "projectReferences": {
-              "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj": {
-                "projectPath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj"
+              "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj": {
+                "projectPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj"
               }
             }
           }
@@ -116,6 +116,10 @@
             "XForms.Plugin.AnimationNavigationPage": {
               "target": "Package",
               "version": "[1.0.8, )"
+            },
+            "Xam.Plugins.Settings": {
+              "target": "Package",
+              "version": "[3.1.1, )"
             },
             "Xamarin.Essentials": {
               "target": "Package",
@@ -152,14 +156,14 @@
         }
       }
     },
-    "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj": {
+    "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj",
+        "projectUniqueName": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj",
         "projectName": "LaunchPad.Mobile",
-        "projectPath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj",
+        "projectPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj",
         "packagesPath": "C:\\Users\\Amit Kumar\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Mobile\\LaunchPad.Mobile\\obj\\",
+        "outputPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -179,8 +183,8 @@
         "frameworks": {
           "netstandard2.0": {
             "projectReferences": {
-              "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Client\\LaunchPad.Client.csproj": {
-                "projectPath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Client\\LaunchPad.Client.csproj"
+              "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Client\\LaunchPad.Client.csproj": {
+                "projectPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Client\\LaunchPad.Client.csproj"
               }
             }
           }
@@ -203,6 +207,10 @@
             "XForms.Plugin.AnimationNavigationPage": {
               "target": "Package",
               "version": "[1.0.8, )"
+            },
+            "Xam.Plugins.Settings": {
+              "target": "Package",
+              "version": "[3.1.1, )"
             },
             "Xamarin.Essentials": {
               "target": "Package",
@@ -243,14 +251,14 @@
         }
       }
     },
-    "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Model\\LaunchPad.Model.csproj": {
+    "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Model\\LaunchPad.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Model\\LaunchPad.Model.csproj",
+        "projectUniqueName": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Model\\LaunchPad.Model.csproj",
         "projectName": "LaunchPad.Model",
-        "projectPath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Model\\LaunchPad.Model.csproj",
+        "projectPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Model\\LaunchPad.Model.csproj",
         "packagesPath": "C:\\Users\\Amit Kumar\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\locals\\LaunchPadRepo\\LaunchPad.Model\\obj\\",
+        "outputPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Model\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"

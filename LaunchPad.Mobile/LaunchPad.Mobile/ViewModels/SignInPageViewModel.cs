@@ -1,5 +1,6 @@
 ﻿using IIAADataModels.Transfer;
 using LaunchPad.Client;
+using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Models;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.Views;
@@ -16,6 +17,11 @@ namespace LaunchPad.Mobile.ViewModels
 {
     public class SignInPageViewModel : ViewModelBase
     {
+        public static Action<string> LoadLoggedInUserDetail;
+        public static void OnLoadLoggedInUserDetail(string param)
+        {
+            LoadLoggedInUserDetail?.Invoke(param);
+        }
         private IDatabaseServices DatabaseServices => DependencyService.Get<IDatabaseServices>();
         private Salon Salon = new Salon();
         private ObservableCollection<CustomTherapist> _therapists;
@@ -25,7 +31,7 @@ namespace LaunchPad.Mobile.ViewModels
             set => SetProperty(ref _therapists, value);
         }
 
-        private Therapist SelectedTherapist=null;
+        private Therapist SelectedTherapist = null;
         private string _username;
         public string Username
         {
@@ -67,11 +73,11 @@ namespace LaunchPad.Mobile.ViewModels
                         {
                             Therapist = a,
                             SelectCommand = new Command<Therapist>((param) =>
-                              {
-                                  Username = param.Username;
-                                  SelectedTherapist = param;
-                              })
-                        })); 
+                            {
+                                Username = param.Username;
+                                SelectedTherapist = param;
+                            })
+                        }));
                 }
             }));
         }
@@ -88,10 +94,12 @@ namespace LaunchPad.Mobile.ViewModels
                         SecureStorage.SetAsync("currentTherapist", jsonString);
                         SecureStorage.SetAsync("currentUserName", $"{SelectedTherapist.Firstname} {SelectedTherapist.Surname}");
                         SecureStorage.SetAsync("currentUserImage", SelectedTherapist.ImageUrl);
+                        App.UserName = $"{SelectedTherapist.Firstname}  {SelectedTherapist.Surname}";
+                        Settings.CurrentUserName = $"{SelectedTherapist.Firstname}  {SelectedTherapist.Surname}";
                         Application.Current.MainPage.Navigation.PushAsync(new SalonProductsPage());
                     }
                 }
-            }));           
+            }));
         }
         private void ForgotPasswordAsync()
         {

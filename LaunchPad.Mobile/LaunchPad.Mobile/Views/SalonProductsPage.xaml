@@ -10,30 +10,11 @@
         <base:PushPageAnimation Duration="Medium" Subtype="FromRight" />
     </base:AnimationPage.PageAnimation>
     <NavigationPage.TitleView>
-        <Grid ColumnDefinitions="*,*,*">
-            <StackLayout Grid.Column="0" Padding="10,0" Orientation="Horizontal">
-                <StackLayout Orientation="Horizontal" Spacing="10">
-                    <Image Source="icon_user_circle" WidthRequest="28" HeightRequest="28"/>
-                    <Label Text="{Binding LoggedInUserName}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
-                </StackLayout>
-                <!--<Image Source="icon_list" WidthRequest="36" HeightRequest="36"/>-->
-            </StackLayout>
-            <Label Grid.Column="1" Grid.ColumnSpan="2" Text="Sarah's Skin Health Plan" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
-            <StackLayout Grid.Column="2" HorizontalOptions="End" Padding="10,0" Spacing="20" Orientation="Horizontal">
-                <StackLayout Orientation="Horizontal" Spacing="10">
-                    <Label Text="Sarah Smith" HorizontalTextAlignment="End" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}"/>
-                    <Image Source="icon_user" WidthRequest="28" HeightRequest="28"/>
-                </StackLayout>
-                <!--<Image Source="icon_list" WidthRequest="36" HeightRequest="36"/>-->
-            </StackLayout>
-        </Grid>
+        <customlayouts:TitleBarLayout/>
     </NavigationPage.TitleView>
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="icon_list" Command="{Binding ViewPlanCommand}"/>
     </ContentPage.ToolbarItems>
-    <!--<ContentPage.BindingContext>
-        <viewmodels:SalonProductsPageViewModel/>
-    </ContentPage.BindingContext>-->
     <ContentPage.Content>
         <Grid BackgroundColor="#fff" RowSpacing="0" IsVisible="{Binding IsContentLoading,Converter={StaticResource InverseConverter}}">
             <Grid.RowDefinitions>

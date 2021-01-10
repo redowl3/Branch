@@ -1,4 +1,5 @@
-﻿using IIAADataModels.Transfer;
+﻿using FormsControls.Base;
+using IIAADataModels.Transfer;
 using LaunchPad.Client;
 using LaunchPad.Mobile.Models;
 using LaunchPad.Mobile.Services;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -22,6 +24,13 @@ namespace LaunchPad.Mobile.ViewModels
         {
             get => _loggedInUserName;
             set => SetProperty(ref _loggedInUserName, value);
+        }
+
+        private string _salonName;
+        public string SalonName
+        {
+            get => _salonName;
+            set => SetProperty(ref _salonName, value);
         }
         private IDatabaseServices DatabaseServices => DependencyService.Get<IDatabaseServices>();
         public static Action<int> CartItemAdded;
@@ -143,42 +152,63 @@ namespace LaunchPad.Mobile.ViewModels
             set => SetProperty(ref _selectedAdditionalInfo, value);
         }
 
-        private bool _isContentLoading=true;
+        private bool _isContentLoading = true;
         public bool IsContentLoading
         {
             get => _isContentLoading;
             set => SetProperty(ref _isContentLoading, value);
         }
+        public ICommand SignOutCommand => new Command(() =>
+        {
+            try
+            {
+                Task.Run(async () =>
+                {
+                    SecureStorage.RemoveAll();
+                    await DatabaseServices.Delete<List<Product>>("healthplans");
+                    await DatabaseServices.Delete<List<Product>>("basketItems");
+                    await DatabaseServices.Delete<List<HealthPlanToComplete>>("healthPlanCompleted");
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Application.Current.MainPage = new AnimationNavigationPage(new SignInPage());
+                    });
+                });
+
+            }
+            catch (Exception)
+            {
+            }
+        });
         public Command FeedCommand => new Command(() =>
-          {
-              FortifyContentVisible = false;
-              FinishContentVisible = false;
-              FetchFeedContentAsync();
-              FortifyEvenProducts?.Clear();
-              FortifyOddProducts?.Clear();
-              FinishOddProducts?.Clear();
-              FinishEvenProducts?.Clear();
-          });
+        {
+            FortifyContentVisible = false;
+            FinishContentVisible = false;
+            FetchFeedContentAsync();
+            FortifyEvenProducts?.Clear();
+            FortifyOddProducts?.Clear();
+            FinishOddProducts?.Clear();
+            FinishEvenProducts?.Clear();
+        });
         public Command FortifyCommand => new Command(() =>
-           {
-               FeedContentVisible = false;
-               FinishContentVisible = false;
-               FetchFortifyContentAsync();
-               FeedsEvenProducts?.Clear();
-               FeedsOddsProducts?.Clear();
-               FinishOddProducts?.Clear();
-               FinishEvenProducts?.Clear();
-           });
+        {
+            FeedContentVisible = false;
+            FinishContentVisible = false;
+            FetchFortifyContentAsync();
+            FeedsEvenProducts?.Clear();
+            FeedsOddsProducts?.Clear();
+            FinishOddProducts?.Clear();
+            FinishEvenProducts?.Clear();
+        });
         public Command FinishCommand => new Command(() =>
-           {
-               FortifyContentVisible = false;
-               FeedContentVisible = false;
-               FetchFinishContentsAsync();
-               FortifyEvenProducts?.Clear();
-               FortifyOddProducts?.Clear();
-               FeedsEvenProducts?.Clear();
-               FeedsOddsProducts?.Clear();
-           });
+        {
+            FortifyContentVisible = false;
+            FeedContentVisible = false;
+            FetchFinishContentsAsync();
+            FortifyEvenProducts?.Clear();
+            FortifyOddProducts?.Clear();
+            FeedsEvenProducts?.Clear();
+            FeedsOddsProducts?.Clear();
+        });
         public Command FilterOptionCommand => new Command(() => GoToFilterAsync());
         public Command FilterCommand => new Command(() =>
         {
@@ -202,9 +232,11 @@ namespace LaunchPad.Mobile.ViewModels
             FetchFeedContentAsync();
         }
 
-        internal void RefreshBadgeCountAsync()
+        internal async void RefreshBadgeCountAsync()
         {
             GetCartItemAsync();
+            LoggedInUserName = await SecureStorage.GetAsync("currentUserName");
+            SalonName = App.SalonName;
         }
         private async void GetCartItemAsync()
         {
@@ -225,9 +257,9 @@ namespace LaunchPad.Mobile.ViewModels
         private async void FetchFeedContentAsync()
         {
             await Task.Delay(1000);
-            Device.BeginInvokeOnMainThread(() => ExceptionHandler(async() =>
+            Device.BeginInvokeOnMainThread(() => ExceptionHandler(async () =>
             {
-                LoggedInUserName = await SecureStorage.GetAsync("currentUserName");
+
                 if (Salon == null || Salon.Id == Guid.Empty)
                 {
                     Salon = await DatabaseServices.Get<Salon>("salon");
@@ -240,6 +272,7 @@ namespace LaunchPad.Mobile.ViewModels
                 }
                 if (Salon.ProductCategories != null && Salon.ProductCategories.Count > 0)
                 {
+                    App.SalonName = Salon.Name;
                     var healthPlans = await DatabaseServices.Get<List<Product>>("healthplans");
                     NoFeedsFound = false;
                     foreach (var item in Salon.ProductCategories)
@@ -830,9 +863,18 @@ namespace LaunchPad.Mobile.ViewModels
             }
         }
 
-        private void ViewHealthPlanAsync()
+        private async void ViewHealthPlanAsync()
         {
-            Application.Current.MainPage.Navigation.PushAsync(new UserHealthPlanPage());
+            var cartItems = await DatabaseServices.Get<List<Product>>("healthplans");
+            if (cartItems.Count > 0)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Application.Current.MainPage.Navigation.PushAsync(new UserHealthPlanPage());
+                });
+             
+            }
+          
         }
         private async void RemoveFromHealthPlanAsync(CustomProduct product)
         {

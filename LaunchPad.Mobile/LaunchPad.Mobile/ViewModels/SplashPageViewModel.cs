@@ -1,16 +1,20 @@
 ﻿using FormsControls.Base;
 using IIAADataModels.Transfer;
 using LaunchPad.Client;
+using LaunchPad.Mobile.Helpers;
+using LaunchPad.Mobile.Models;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.Views;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace LaunchPad.Mobile.ViewModels
 {
-    public class SplashPageViewModel:ViewModelBase
+    public class SplashPageViewModel : ViewModelBase
     {
         public static Action<int> UpdateProgress;
         public static void OnUpdateProgress(int param)
@@ -37,6 +41,8 @@ namespace LaunchPad.Mobile.ViewModels
             get => _progressBarVisible;
             set => SetProperty(ref _progressBarVisible, value);
         }
+
+
         public SplashPageViewModel()
         {
             GetInitialDataAsync();
@@ -44,7 +50,7 @@ namespace LaunchPad.Mobile.ViewModels
         private async void GetInitialDataAsync()
         {
             IsBusy = true;
-            await Task.Delay(1000);           
+            await Task.Delay(1000);
             Device.BeginInvokeOnMainThread(() => ExceptionHandler(async () =>
             {
                 ProgressBarVisible = true;
@@ -56,12 +62,14 @@ namespace LaunchPad.Mobile.ViewModels
                 Progress = 0.50;
                 if (salon != null || salon.Id != Guid.Empty)
                 {
-                    var result=await DatabaseServices.InsertData("salon", salon);
+                    App.SalonName = salon.Name;
+                    Settings.SalonName = salon.Name;
+                    var result = await DatabaseServices.InsertData("salon", salon);
                     if (result)
                     {
                         Console.WriteLine("salon stored to local cache");
                     }
-                    
+
                 }
 
                 Progress = 0.75;
@@ -94,7 +102,8 @@ namespace LaunchPad.Mobile.ViewModels
 
                 Progress = 1;
                 await Task.Delay(100);
-                var currentTherapist=await SecureStorage.GetAsync("currentTherapist");
+                Settings.ClientName = "Sarah Smith";
+                var currentTherapist = await SecureStorage.GetAsync("currentTherapist");
                 if (!string.IsNullOrEmpty(currentTherapist))
                 {
                     Application.Current.MainPage = new AnimationNavigationPage(new SalonProductsPage());
@@ -103,7 +112,7 @@ namespace LaunchPad.Mobile.ViewModels
                 {
                     await Application.Current.MainPage.Navigation.PushAsync(new SignInPage());
                 }
-                
+
             }));
         }
 

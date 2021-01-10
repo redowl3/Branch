@@ -37,9 +37,11 @@ namespace LaunchPad.Mobile.Views
                 var senderElement = sender as CachedImage;
                 if (senderElement != null)
                 {
-                    var parent = senderElement.Parent as Grid;
-                    if (parent != null)
+                    var subParent = senderElement.Parent as Grid;
+                    if (subParent != null)
                     {
+                        var parent = subParent.Parent as Grid;
+                        if (parent == null) return;
                         var scannerStack = parent.Children[1] as StackLayout;
                         scannerStack?.Children?.Clear();
                         scannerStack.Children.Add(new ScannerViewLayout());
@@ -94,14 +96,9 @@ namespace LaunchPad.Mobile.Views
             base.OnDisappearing();
             this.BindingContext = null;
         }
-
-        private void TogglePicker(object sender, System.EventArgs e)
+        private void GoBack(object sender, System.EventArgs e)
         {
-            var param = (e as TappedEventArgs).Parameter as HealthPlanToComplete;
-            if (param != null)
-            {
-                Application.Current.MainPage.Navigation.PushModalAsync(new PickerItemsView());
-            }
+            Application.Current.MainPage.Navigation.PopAsync();
         }
     }
 }

@@ -93,9 +93,9 @@ namespace LaunchPad.Mobile.Views
             isExpanded = false;
         }
 
-        private void OnSwiped(object sender, SwipedEventArgs e)
+        private void GoBack(object sender, System.EventArgs e)
         {
-
+            Application.Current.MainPage.Navigation.PopAsync();
         }
     }
 }

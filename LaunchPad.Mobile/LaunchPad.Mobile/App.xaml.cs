@@ -9,11 +9,8 @@ namespace LaunchPad.Mobile
 {
     public partial class App : Application
     {
-        public static Action AppInSleepMode;
-        public static void OnAppInSleepMode()
-        {
-            AppInSleepMode?.Invoke();
-        }
+        public static string UserName { get; set; }
+        public static string SalonName { get; set; }
         public App()
         {
             InitializeComponent();
@@ -31,7 +28,6 @@ namespace LaunchPad.Mobile
 
         protected override void OnSleep()
         {
-            AppInSleepMode?.Invoke();
         }
 
         protected override void OnResume()
