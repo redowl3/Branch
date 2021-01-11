@@ -74,6 +74,9 @@
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="Xamarin.Forms.Visual.Material">
+      <Version>4.8.0.1687</Version>
+    </PackageReference>
     <PackageReference Include="XForms.Plugin.AnimationNavigationPage">
       <Version>1.0.8</Version>
     </PackageReference>
@@ -88,6 +91,7 @@
     <Compile Include="BadgeDrawable.cs" />
     <Compile Include="CustomEntryRenderer.cs" />
     <Compile Include="CustomRenderers\BorderlessPickerRenderer.cs" />
+    <Compile Include="CustomRenderers\BorderlessEntryRenderer.cs" />
     <Compile Include="CustomRenderers\FixedFontLabelRenderer.cs" />
     <Compile Include="CustomServices\ToolbarItemBadgeService.cs" />
     <Compile Include="CustomServices\WifiUtility.cs" />

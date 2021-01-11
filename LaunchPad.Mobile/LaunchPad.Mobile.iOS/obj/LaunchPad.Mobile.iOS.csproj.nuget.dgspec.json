@@ -129,6 +129,10 @@
               "target": "Package",
               "version": "[4.8.0.1687, )"
             },
+            "Xamarin.Forms.Visual.Material": {
+              "target": "Package",
+              "version": "[4.8.0.1687, )"
+            },
             "ZXing.Net.Mobile": {
               "target": "Package",
               "version": "[2.4.1, )"
@@ -221,6 +225,10 @@
               "version": "[2.4.11.982, )"
             },
             "Xamarin.Forms": {
+              "target": "Package",
+              "version": "[4.8.0.1687, )"
+            },
+            "Xamarin.Forms.Visual.Material": {
               "target": "Package",
               "version": "[4.8.0.1687, )"
             },

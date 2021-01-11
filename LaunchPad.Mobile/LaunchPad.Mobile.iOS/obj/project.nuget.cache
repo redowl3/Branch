@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "LcvA3IrQt/tayHYPuJQXRvgGTe7lCGs3NQsIwmGw17gYHQhURtv1A8GvkFBouvoZ28ycDYkp/sWdB2JTkUivYg==",
+  "dgSpecHash": "BzQdnEKZEWqx7Qck5n6OeIsXxIFineZ+npPvI4A7xrHVtyaXp/UmctWuuWi3x7FT4dNb7KmwOqBnI1Va+sw8Aw==",
   "success": true,
   "projectFilePath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
   "expectedPackageFiles": [
@@ -40,6 +40,8 @@
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\xamarin.ffimageloading\\2.4.11.982\\xamarin.ffimageloading.2.4.11.982.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\xamarin.ffimageloading.forms\\2.4.11.982\\xamarin.ffimageloading.forms.2.4.11.982.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\xamarin.forms\\4.8.0.1687\\xamarin.forms.4.8.0.1687.nupkg.sha512",
+    "C:\\Users\\Amit Kumar\\.nuget\\packages\\xamarin.forms.visual.material\\4.8.0.1687\\xamarin.forms.visual.material.4.8.0.1687.nupkg.sha512",
+    "C:\\Users\\Amit Kumar\\.nuget\\packages\\xamarin.ios.materialcomponents\\92.0.0\\xamarin.ios.materialcomponents.92.0.0.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\xforms.plugin.animationnavigationpage\\1.0.8\\xforms.plugin.animationnavigationpage.1.0.8.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\zxing.net.mobile\\2.4.1\\zxing.net.mobile.2.4.1.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\zxing.net.mobile.forms\\2.4.1\\zxing.net.mobile.forms.2.4.1.nupkg.sha512"
