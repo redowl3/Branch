@@ -15,7 +15,7 @@ namespace LaunchPad.Mobile
         {
             InitializeComponent();
 
-            MainPage = new AnimationNavigationPage(new ClientRegistrationPage())
+            MainPage = new AnimationNavigationPage(new SplashPage())
             {
                 BarBackgroundColor=Color.Black,
                 BarTextColor=Color.White

@@ -1,6 +1,7 @@
 ﻿using FFImageLoading.Forms;
 using FormsControls.Base;
 using LaunchPad.Mobile.CustomLayouts;
+using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Models;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.ViewModels;
@@ -18,6 +19,7 @@ namespace LaunchPad.Mobile.Views
         {
             InitializeComponent();
             CompletedHealthPlanPageViewModel.BadgeCountAction += AddOrUpdateBadge;
+            CompleteHealthPlanHeaderLabel.Text = $"{Settings.ClientFirstName}'s optimum skin health plan is now complete";
         }
         protected override void OnAppearing()
         {

@@ -22,5 +22,7 @@ namespace IIAADataModels.Transfer
 		public string Source { get; set; }
 		public DateTime Created { get; set; }
 		public DateTime Updated { get; set; }
+		public DateTime DateOfBirth { get; set; }
+		public int CurrentLoyaltyPoints { get; set; }
 	}
 }

@@ -27,7 +27,10 @@ namespace LaunchPad.Mobile.Helpers
         private const string SettingsKey = "settings_key";
         private const string UsernameKey = "current_user_name";
         private const string SalonnameKey = "salon_name_key";
+        private const string ClientFirstNameKey = "client_first_name_key";
         private const string ClientNameKey = "client_name_key";
+        private const string ClientHeaderTitle = "client_header_key";
+        private const string ClientIdKey = "client_Id_key";
         private static readonly string SettingsDefault = string.Empty;
 
         #endregion
@@ -75,6 +78,41 @@ namespace LaunchPad.Mobile.Helpers
             set
             {
                 AppSettings.AddOrUpdateValue(ClientNameKey, value);
+            }
+        } 
+        
+        public static string ClientFirstName
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(ClientFirstNameKey, SettingsDefault);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(ClientFirstNameKey, value);
+            }
+        }
+        
+        public static string ClientHeader
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(ClientHeaderTitle, SettingsDefault);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(ClientHeaderTitle, value);
+            }
+        }
+        public static string ClientId
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(ClientIdKey, SettingsDefault);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(ClientIdKey, value);
             }
         }
 

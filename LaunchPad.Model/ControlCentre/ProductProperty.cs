@@ -13,5 +13,14 @@ namespace IIAADataModels.Transfer.ControlCentre
 		public int Sort { get; set; }
 		public string Detail { get; set; }
 		public string ImageUrl { get; set; }
+
+		public IIAADataModels.Transfer.ProductProperty ToTransfer()
+		{
+			return new Transfer.ProductProperty()
+			{
+				Detail = this.Detail,
+				ImageUrl = this.ImageUrl
+			};
+		}
 	}
 }

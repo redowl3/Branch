@@ -1,5 +1,6 @@
 ﻿
 using FormsControls.Base;
+using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.ViewModels;
 using System;
@@ -23,6 +24,7 @@ namespace LaunchPad.Mobile.Views
             UserHealthPlanPageViewModel.BadgeCountAction += AddOrUpdateBadge;
             UserHealthPlanPageViewModel.CloseDrawer += CloseDrawer;
             UserHealthPlanPageViewModel.ShouldAnimateOut += SetShouldAnimateOut;
+            HealthPlanHeader.Text = $"{Settings.ClientFirstName}'s Optimum Skin Health Plan";
         }
 
         private void CloseDrawer()

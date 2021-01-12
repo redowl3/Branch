@@ -6,15 +6,11 @@ using System.Threading.Tasks;
 
 namespace IIAADataModels.Transfer
 {	
-	public class Salon
+	public class Salon : Base.SalonBase
 	{
-		public Guid Id { get; set; }
-		public string Name { get; set; }	
-		
+		public List<Transfer.Therapist> Therapists { get; set; }
 		public List<Transfer.ProductCategory> ProductCategories { get; set; }
 
 		public List<Transfer.Survey.Form> Surveys { get; set; }
-
-		public List<Transfer.Therapist> Therapists { get; set; }
 	}
 }

@@ -11,6 +11,8 @@ namespace LaunchPad.Mobile.CustomLayouts
         {
             InitializeComponent();
             LoggedInUserDetailLabel.Text = $"{Settings.CurrentUserName} | {Settings.SalonName}";
+            PageHeaderTitle.Text = Settings.ClientHeader;
+            CurrentClientName.Text = Settings.ClientName;
         }
     }
 }

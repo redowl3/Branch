@@ -1,4 +1,5 @@
-﻿using IIAADataModels.Transfer;
+﻿using FormsControls.Base;
+using IIAADataModels.Transfer;
 using LaunchPad.Client;
 using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Models;
@@ -96,7 +97,7 @@ namespace LaunchPad.Mobile.ViewModels
                         SecureStorage.SetAsync("currentUserImage", SelectedTherapist.ImageUrl);
                         App.UserName = $"{SelectedTherapist.Firstname}  {SelectedTherapist.Surname}";
                         Settings.CurrentUserName = $"{SelectedTherapist.Firstname}  {SelectedTherapist.Surname}";
-                        Application.Current.MainPage.Navigation.PushAsync(new SalonProductsPage());
+                        Application.Current.MainPage=new AnimationNavigationPage(new SalonClientsPage());
                     }
                 }
             }));

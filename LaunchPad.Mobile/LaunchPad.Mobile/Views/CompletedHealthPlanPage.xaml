@@ -4,7 +4,8 @@
                         xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
                         xmlns:controls="clr-namespace:FormsControls.Base;assembly=FormsControls.Base"
                         xmlns:customlayouts="clr-namespace:LaunchPad.Mobile.CustomLayouts"
-                        x:Class="LaunchPad.Mobile.Views.CompletedHealthPlanPage">
+                        x:Class="LaunchPad.Mobile.Views.CompletedHealthPlanPage"
+                        NavigationPage.HasBackButton="False">
     <controls:AnimationPage.PageAnimation>
         <controls:PushPageAnimation Duration="Medium" Subtype="FromRight" />
     </controls:AnimationPage.PageAnimation>
@@ -21,7 +22,7 @@
             <Grid BackgroundColor="#000000" Padding="20,0">
                 <Grid BackgroundColor="Black" VerticalOptions="Center">
                     <Grid RowDefinitions="*,*" ColumnDefinitions="3*,*" VerticalOptions="Center" RowSpacing="0">
-                        <Label Text="Sarah's optimum skin health plan is now complete" FontSize="{OnIdiom Phone='26', Tablet='42'}" TextColor="White" Style="{StaticResource ContentTitle}"/>
+                        <Label x:Name="CompleteHealthPlanHeaderLabel" FontSize="{OnIdiom Phone='26', Tablet='42'}" TextColor="White" Style="{StaticResource ContentTitle}"/>
                         <Grid RowDefinitions="30,30" RowSpacing="0" Grid.Column="1" HorizontalOptions="End" Padding="10">
                             <Label Grid.Row="0"  FontSize="{OnIdiom Phone='16', Tablet='22'}" TextColor="White" HorizontalOptions="End" Style="{StaticResource ContentTitle}">
                                 <Label.Text>

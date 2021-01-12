@@ -1,6 +1,7 @@
 ﻿using FormsControls.Base;
 using IIAADataModels.Transfer;
 using LaunchPad.Client;
+using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Models;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.Views;
@@ -87,6 +88,8 @@ namespace LaunchPad.Mobile.ViewModels
             set => SetProperty(ref _isContentVisible, value);
         }
         public ICommand ContinueCommand => new Command(() => ComplateHelathPLanAsync());
+        public ICommand GoBackCommand => new Command(() => Application.Current.MainPage.Navigation.PopAsync());
+        public ICommand HomeCommand => new Command(() => Application.Current.MainPage = new AnimationNavigationPage(new SalonClientsPage()));
         public ICommand SignOutCommand => new Command(() =>
         {
             try
@@ -94,8 +97,8 @@ namespace LaunchPad.Mobile.ViewModels
                 Task.Run(async () =>
                 {
                     SecureStorage.RemoveAll();
-                    await DatabaseServices.Delete<List<Product>>("healthplans");
-                    await DatabaseServices.Delete<List<Product>>("basketItems");
+                    await DatabaseServices.Delete<List<Product>>("healthplans"+Settings.ClientId);
+                    await DatabaseServices.Delete<List<Product>>("basketItems"+Settings.ClientId);
                     await DatabaseServices.Delete<List<HealthPlanToComplete>>("healthPlanCompleted");
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -123,7 +126,7 @@ namespace LaunchPad.Mobile.ViewModels
             try
             {
                 SalonName = App.SalonName;
-                var cartItems = await DatabaseServices.Get<List<Product>>("healthplans");
+                var cartItems = await DatabaseServices.Get<List<Product>>("healthplans"+Settings.ClientId);
                 return cartItems.Count;
             }
             catch (Exception ex)
@@ -139,7 +142,7 @@ namespace LaunchPad.Mobile.ViewModels
                 await Task.Delay(1000);
                 IsContentVisible = true;
                 LoggedInUserName = await SecureStorage.GetAsync("currentUserName");
-                var healthplans = await DatabaseServices.Get<List<Product>>("healthplans");
+                var healthplans = await DatabaseServices.Get<List<Product>>("healthplans"+Settings.ClientId);
                 if (healthplans.Count > 0)
                 {
                     decimal sumTotal = 0;
@@ -193,7 +196,7 @@ namespace LaunchPad.Mobile.ViewModels
                 }
 
 
-                var basket = await DatabaseServices.Get<CustomBasket>("basketItems");
+                var basket = await DatabaseServices.Get<CustomBasket>("basketItems"+Settings.ClientId);
                 if (basket == null || string.IsNullOrEmpty(basket.Id))
                 {
                     BasketItemsCount = 0;
@@ -223,7 +226,7 @@ namespace LaunchPad.Mobile.ViewModels
         {
             try
             {
-                var basket = await DatabaseServices.Get<CustomBasket>("basketItems");
+                var basket = await DatabaseServices.Get<CustomBasket>("basketItems"+Settings.ClientId);
                 if (basket == null || string.IsNullOrEmpty(basket.Id))
                 {
                     var basketItem = new BasketItem
@@ -258,8 +261,8 @@ namespace LaunchPad.Mobile.ViewModels
                     };
 
 
-                    await DatabaseServices.InsertData("basketItems", basket);
-                    var items = await DatabaseServices.Get<CustomBasket>("basketItems");
+                    await DatabaseServices.InsertData("basketItems"+Settings.ClientId, basket);
+                    var items = await DatabaseServices.Get<CustomBasket>("basketItems"+Settings.ClientId);
                 }
                 else
                 {
@@ -279,7 +282,7 @@ namespace LaunchPad.Mobile.ViewModels
                         Variant = param.SelectedVariant
                     });
 
-                    await DatabaseServices.InsertData("basketItems", basket);
+                    await DatabaseServices.InsertData("basketItems"+Settings.ClientId, basket);
                 }
 
                 BasketItemsCount = basket.Basket.Items.Count;
@@ -327,12 +330,12 @@ namespace LaunchPad.Mobile.ViewModels
                 ShouldDisplayCollection = BasketItemsCollection.Count > 0;
                 Task.Run(() => ExceptionHandler(async () =>
                 {
-                    var basket = await DatabaseServices.Get<CustomBasket>("basketItems");
+                    var basket = await DatabaseServices.Get<CustomBasket>("basketItems"+Settings.ClientId);
                     if (basket != null && basket.ItemsCollection.Count > 0)
                     {
                         basket.ItemsCollection.RemoveAll(a => a.ProductName.ToLower() == param.ProductName?.ToLower() && a.ProgramName.ToLower() == param.ProgramName?.ToLower());
                         basket.Basket.Items?.RemoveAll(a => a.ProductId == param.ProductId);
-                        await DatabaseServices.InsertData("basketItems", basket);
+                        await DatabaseServices.InsertData("basketItems"+Settings.ClientId, basket);
                     }
                 }));
             }
@@ -356,7 +359,7 @@ namespace LaunchPad.Mobile.ViewModels
         {
             try
             {
-                var basket = await DatabaseServices.Get<CustomBasket>("basketItems");
+                var basket = await DatabaseServices.Get<CustomBasket>("basketItems"+Settings.ClientId);
                 if (basket != null && basket.ItemsCollection.Count > 0)
                 {
                     await DatabaseServices.InsertData("CompletedHealthPlanItems", basket);

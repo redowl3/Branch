@@ -11,6 +11,25 @@ using Xamarin.Forms;
 
 namespace LaunchPad.Mobile.Models
 {
+    public class CustomProductCategory : ViewModelBase
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Subtitle { get; set; }
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set => SetProperty(ref _isSelected, value);
+        }
+        public ICommand SelectCommand => new Command<string>((param) =>
+          {
+              IsSelected = true;
+              ItemSelectedCommand.Execute(param);
+          });
+        public ICommand ItemSelectedCommand { get; set; }
+    }
     public class CustomProduct : INotifyPropertyChanged
     {
         public Product Product { get; set; }
@@ -100,7 +119,7 @@ namespace LaunchPad.Mobile.Models
           {
               IsProductAdded = true;
               AddPlanCommand.Execute(param);
-          }); 
+          });
         public Command RemoveProductFromPlanCommand => new Command<CustomProduct>((param) =>
           {
               IsProductAdded = false;
@@ -134,7 +153,7 @@ namespace LaunchPad.Mobile.Models
         #endregion
     }
 
-    public class CompletedHealthPlan:ViewModelBase
+    public class CompletedHealthPlan : ViewModelBase
     {
         public HealthPlanToComplete HealthPlanToComplete { get; set; }
 
@@ -157,7 +176,7 @@ namespace LaunchPad.Mobile.Models
             get => _isScanning;
             set => SetProperty(ref _isScanning, value);
         }
-        
+
         private bool _isProductScanned = false;
         public bool IsProductScanned
         {
@@ -420,7 +439,7 @@ namespace LaunchPad.Mobile.Models
         public List<CustomBasketInfo> ItemsCollection { get; set; }
     }
 
-    public class CustomBasketInfo :INotifyPropertyChanged
+    public class CustomBasketInfo : INotifyPropertyChanged
     {
         public CustomProduct Product { get; set; }
         public string ProgramName { get; set; }
@@ -462,7 +481,7 @@ namespace LaunchPad.Mobile.Models
         #endregion
     }
 
-    public class StarRatings:INotifyPropertyChanged
+    public class StarRatings : INotifyPropertyChanged
     {
         private string _star;
         public string Star
@@ -475,7 +494,7 @@ namespace LaunchPad.Mobile.Models
         {
             get => _widthRequest;
             set => SetProperty(ref _widthRequest, value);
-        } 
+        }
         private double _heightRequest;
         public double HeightRequest
         {
@@ -522,7 +541,7 @@ namespace LaunchPad.Mobile.Models
         public ICommand SelectCommand { get; set; }
     }
 
-    public class HealthPlanToComplete:ViewModelBase
+    public class HealthPlanToComplete : ViewModelBase
     {
         public string ProgramName { get; set; }
         public Product Product { get; set; }
@@ -550,7 +569,7 @@ namespace LaunchPad.Mobile.Models
         public ProductVariant SelectedVariant
         {
             get => _selectedVariant;
-            set=> SetProperty(ref _selectedVariant, value);
+            set => SetProperty(ref _selectedVariant, value);
         }
         private ObservableCollection<ProductVariantPrescribingOption> _prescribingOptions;
         public ObservableCollection<ProductVariantPrescribingOption> PrescribingOptions

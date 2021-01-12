@@ -1,5 +1,6 @@
 ﻿using FormsControls.Base;
 using IIAADataModels.Transfer;
+using LaunchPad.Mobile.Models;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.ViewModels;
 using System;
@@ -20,8 +21,6 @@ namespace LaunchPad.Mobile.Views
         {
             InitializeComponent();
             NavigationPage.SetHasBackButton(this, false);
-            FeedTab.BackgroundColor = Color.White;
-            FortifyTab.BackgroundColor = FinishTab.BackgroundColor = Color.FromHex("#bdbdbd");
             SalonProductsPageViewModel.CartItemAdded += AddOrUpdateBadge;
             this.BindingContext = new SalonProductsPageViewModel();
         }
@@ -39,29 +38,30 @@ namespace LaunchPad.Mobile.Views
                 DependencyService.Get<IToolbarItemBadgeService>().SetBadge(this, ToolbarItems.First(), $"{obj}", Color.White, Color.Black);
         }
 
-        private void Feed_tapped(object sender, System.EventArgs e)
-        {
-            FeedTab.BackgroundColor = Color.White;
-            FortifyTab.BackgroundColor = FinishTab.BackgroundColor = Color.FromHex("#bdbdbd");
-            (this.BindingContext as SalonProductsPageViewModel)?.FeedCommand.Execute(null);
-        }
+        //private void Feed_tapped(object sender, System.EventArgs e)
+        //{
+        //    FeedTab.BackgroundColor = Color.White;
+        //    FortifyTab.BackgroundColor = FinishTab.BackgroundColor = Color.FromHex("#bdbdbd");
+        //    (this.BindingContext as SalonProductsPageViewModel)?.FeedCommand.Execute(null);
+        //}
 
-        private void fortify_tapped(object sender, System.EventArgs e)
-        {
-            FortifyTab.BackgroundColor = Color.White;
-            FeedTab.BackgroundColor = FinishTab.BackgroundColor = Color.FromHex("#bdbdbd");
-            (this.BindingContext as SalonProductsPageViewModel)?.FortifyCommand.Execute(null);
-        }
+        //private void fortify_tapped(object sender, System.EventArgs e)
+        //{
+        //    FortifyTab.BackgroundColor = Color.White;
+        //    FeedTab.BackgroundColor = FinishTab.BackgroundColor = Color.FromHex("#bdbdbd");
+        //    (this.BindingContext as SalonProductsPageViewModel)?.FortifyCommand.Execute(null);
+        //}
 
-        private void finish_tapped(object sender, System.EventArgs e)
-        {
-            FinishTab.BackgroundColor = Color.White;
-            FortifyTab.BackgroundColor = FeedTab.BackgroundColor = Color.FromHex("#bdbdbd");
-            (this.BindingContext as SalonProductsPageViewModel)?.FinishCommand.Execute(null);
-        }
+        //private void finish_tapped(object sender, System.EventArgs e)
+        //{
+        //    FinishTab.BackgroundColor = Color.White;
+        //    FortifyTab.BackgroundColor = FeedTab.BackgroundColor = Color.FromHex("#bdbdbd");
+        //    (this.BindingContext as SalonProductsPageViewModel)?.FinishCommand.Execute(null);
+        //}
         protected override bool OnBackButtonPressed()
         {
             return true;
         }
+
     }
 }

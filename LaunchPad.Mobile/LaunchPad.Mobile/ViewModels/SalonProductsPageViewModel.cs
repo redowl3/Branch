@@ -1,6 +1,7 @@
 ﻿using FormsControls.Base;
 using IIAADataModels.Transfer;
 using LaunchPad.Client;
+using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Models;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.Views;
@@ -39,6 +40,14 @@ namespace LaunchPad.Mobile.ViewModels
             CartItemAdded?.Invoke(param);
         }
         private Salon Salon = new Salon();
+
+        private ObservableCollection<CustomProductCategory> _productCategoryList;
+        public ObservableCollection<CustomProductCategory> ProductCategoryList
+        {
+            get => _productCategoryList;
+            set => SetProperty(ref _productCategoryList, value);
+        }
+
         private ObservableCollection<CustomProduct> _feedsEvenProducts;
         public ObservableCollection<CustomProduct> FeedsEvenProducts
         {
@@ -158,6 +167,8 @@ namespace LaunchPad.Mobile.ViewModels
             get => _isContentLoading;
             set => SetProperty(ref _isContentLoading, value);
         }
+        public ICommand GoBackCommand => new Command(() => Application.Current.MainPage.Navigation.PopAsync());
+        public ICommand HomeCommand => new Command(() => Application.Current.MainPage = new AnimationNavigationPage(new SalonClientsPage()));
         public ICommand SignOutCommand => new Command(() =>
         {
             try
@@ -165,8 +176,9 @@ namespace LaunchPad.Mobile.ViewModels
                 Task.Run(async () =>
                 {
                     SecureStorage.RemoveAll();
-                    await DatabaseServices.Delete<List<Product>>("healthplans");
-                    await DatabaseServices.Delete<List<Product>>("basketItems");
+                    await DatabaseServices.Delete<List<Product>>("healthplans"+Settings.ClientId);
+                    await DatabaseServices.Delete<List<Product>>("basketItems"+Settings.ClientId);
+                    await DatabaseServices.Delete<List<RecentConsumer>>("recentconsumers");
                     await DatabaseServices.Delete<List<HealthPlanToComplete>>("healthPlanCompleted");
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -184,30 +196,30 @@ namespace LaunchPad.Mobile.ViewModels
             FortifyContentVisible = false;
             FinishContentVisible = false;
             FetchFeedContentAsync();
-            FortifyEvenProducts?.Clear();
-            FortifyOddProducts?.Clear();
-            FinishOddProducts?.Clear();
-            FinishEvenProducts?.Clear();
+            //FortifyEvenProducts?.Clear();
+            //FortifyOddProducts?.Clear();
+            //FinishOddProducts?.Clear();
+            //FinishEvenProducts?.Clear();
         });
         public Command FortifyCommand => new Command(() =>
         {
             FeedContentVisible = false;
             FinishContentVisible = false;
             FetchFortifyContentAsync();
-            FeedsEvenProducts?.Clear();
-            FeedsOddsProducts?.Clear();
-            FinishOddProducts?.Clear();
-            FinishEvenProducts?.Clear();
+            //FeedsEvenProducts?.Clear();
+            //FeedsOddsProducts?.Clear();
+            //FinishOddProducts?.Clear();
+            //FinishEvenProducts?.Clear();
         });
         public Command FinishCommand => new Command(() =>
         {
             FortifyContentVisible = false;
             FeedContentVisible = false;
             FetchFinishContentsAsync();
-            FortifyEvenProducts?.Clear();
-            FortifyOddProducts?.Clear();
-            FeedsEvenProducts?.Clear();
-            FeedsOddsProducts?.Clear();
+            //FortifyEvenProducts?.Clear();
+            //FortifyOddProducts?.Clear();
+            //FeedsEvenProducts?.Clear();
+            //FeedsOddsProducts?.Clear();
         });
         public Command FilterOptionCommand => new Command(() => GoToFilterAsync());
         public Command FilterCommand => new Command(() =>
@@ -229,7 +241,40 @@ namespace LaunchPad.Mobile.ViewModels
             FinishEvenProducts = new ObservableCollection<CustomProduct>();
             FinishEvenProducts = new ObservableCollection<CustomProduct>();
             FinishOddProducts = new ObservableCollection<CustomProduct>();
-            FetchFeedContentAsync();
+            FetchSalonAsync();
+            //FetchFeedContentAsync();
+        }
+
+        private async void FetchSalonAsync()
+        {
+            try
+            {
+                if (Salon == null || Salon.Id == Guid.Empty)
+                {
+                    Salon = await DatabaseServices.Get<Salon>("salon");
+                    if (Salon == null || Salon.Id == Guid.Empty)
+                    {
+                        Salon = await ApiServices.Client.GetAsync<Salon>("salon");
+                        await DatabaseServices.InsertData("salon", Salon);
+                    }
+
+                }
+                if (Salon.ProductCategories != null && Salon.ProductCategories.Count > 0)
+                {
+                    ProductCategoryList = new ObservableCollection<CustomProductCategory>(Salon.ProductCategories.Select(a => new CustomProductCategory
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = a.Name,
+                        Subtitle = a.Subtitle,
+                        ItemSelectedCommand = new Command<string>((param) => ExecuteOnSelectTabEvent(param))
+                    }));
+                    ProductCategoryList[0].IsSelected = true;
+                    ProductCategoryList[0].SelectCommand.Execute(ProductCategoryList[0].Name);
+                }
+            }
+            catch (Exception)
+            {
+            }
         }
 
         internal async void RefreshBadgeCountAsync()
@@ -242,7 +287,7 @@ namespace LaunchPad.Mobile.ViewModels
         {
             try
             {
-                var cartItems = await DatabaseServices.Get<List<Product>>("healthplans");
+                var cartItems = await DatabaseServices.Get<List<Product>>("healthplans"+Settings.ClientId);
                 if (cartItems.Count > 0)
                 {
                     CartItemAdded?.Invoke(cartItems.Count);
@@ -271,9 +316,9 @@ namespace LaunchPad.Mobile.ViewModels
 
                 }
                 if (Salon.ProductCategories != null && Salon.ProductCategories.Count > 0)
-                {
+                {                    
                     App.SalonName = Salon.Name;
-                    var healthPlans = await DatabaseServices.Get<List<Product>>("healthplans");
+                    var healthPlans = await DatabaseServices.Get<List<Product>>("healthplans"+Settings.ClientId);
                     NoFeedsFound = false;
                     foreach (var item in Salon.ProductCategories)
                     {
@@ -284,6 +329,7 @@ namespace LaunchPad.Mobile.ViewModels
                                 var index = item.Products.IndexOf(product);
                                 if (index % 2 == 0)
                                 {
+                                    if (FeedsEvenProducts.Count(a => a.Product.Id == product.Id) > 0) continue;
                                     FeedsEvenProducts.Add(new CustomProduct
                                     {
                                         Product = product,
@@ -300,6 +346,7 @@ namespace LaunchPad.Mobile.ViewModels
                                 }
                                 else
                                 {
+                                    if (FeedsOddsProducts.Count(a => a.Product.Id == product.Id) > 0) continue;
                                     FeedsOddsProducts.Add(new CustomProduct
                                     {
                                         Product = product,
@@ -330,6 +377,35 @@ namespace LaunchPad.Mobile.ViewModels
                 IsContentLoading = false;
             }));
 
+        }
+
+        private void ExecuteOnSelectTabEvent(string param)
+        {
+            try
+            {
+                ProductCategoryList.Where(a => a.Name.ToLower()!=param.ToLower()).ForEach(a => a.IsSelected = false);
+                if (!string.IsNullOrEmpty(param))
+                {
+                    switch (param.ToLower())
+                    {
+                        case "feed":
+                            FeedCommand.Execute(null);
+                            break;
+                        case "fortify":
+                            FortifyCommand.Execute(null);
+                            break;
+                        case "finish":
+                            FinishCommand.Execute(null);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void RefreshFeedProductListAsync(CustomProductAdditionalInfo a, bool isOdd)
@@ -363,7 +439,7 @@ namespace LaunchPad.Mobile.ViewModels
                 }
                 if (Salon.ProductCategories != null && Salon.ProductCategories.Count > 0)
                 {
-                    var healthPlans = await DatabaseServices.Get<List<Product>>("healthplans");
+                    var healthPlans = await DatabaseServices.Get<List<Product>>("healthplans"+Settings.ClientId);
                     NoFortifyFound = false;
                     foreach (var item in Salon.ProductCategories.Where(item => item.Name.ToLower() == "fortify"))
                     {
@@ -372,6 +448,7 @@ namespace LaunchPad.Mobile.ViewModels
                             var index = item.Products.IndexOf(product);
                             if (index % 2 == 0)
                             {
+                                if (FortifyEvenProducts.Count(a => a.Product.Id == product.Id) > 0) continue;
                                 FortifyEvenProducts.Add(new CustomProduct
                                 {
                                     Product = product,
@@ -388,6 +465,7 @@ namespace LaunchPad.Mobile.ViewModels
                             }
                             else
                             {
+                                if (FortifyOddProducts.Count(a => a.Product.Id == product.Id) > 0) continue;
                                 FortifyOddProducts.Add(new CustomProduct
                                 {
                                     Product = product,
@@ -438,7 +516,6 @@ namespace LaunchPad.Mobile.ViewModels
         {
             try
             {
-                IsLoading = true;
                 if (Salon == null || Salon.Id == Guid.Empty)
                 {
                     Salon = await DatabaseServices.Get<Salon>("salon");
@@ -450,7 +527,7 @@ namespace LaunchPad.Mobile.ViewModels
                 }
                 if (Salon.ProductCategories != null && Salon.ProductCategories.Count > 0)
                 {
-                    var healthPlans = await DatabaseServices.Get<List<Product>>("healthplans");
+                    var healthPlans = await DatabaseServices.Get<List<Product>>("healthplans"+Settings.ClientId);
                     NoFinishFound = false;
                     foreach (var item in Salon.ProductCategories.Where(item => item.Name.ToLower() == "finish"))
                     {
@@ -459,6 +536,7 @@ namespace LaunchPad.Mobile.ViewModels
                             var index = item.Products.IndexOf(product);
                             if (index % 2 == 0)
                             {
+                                if (FinishEvenProducts.Count(a => a.Product.Id == product.Id) > 0) continue;
                                 FinishEvenProducts.Add(new CustomProduct
                                 {
                                     Product = product,
@@ -475,6 +553,7 @@ namespace LaunchPad.Mobile.ViewModels
                             }
                             else
                             {
+                                if (FinishOddProducts.Count(a => a.Product.Id == product.Id) > 0) continue;
                                 FinishOddProducts.Add(new CustomProduct
                                 {
                                     Product = product,
@@ -503,8 +582,6 @@ namespace LaunchPad.Mobile.ViewModels
             {
                 Console.WriteLine(ex);
             }
-
-            IsLoading = false;
             FinishContentVisible = true;
         }
 
@@ -645,7 +722,7 @@ namespace LaunchPad.Mobile.ViewModels
                             filteredList.Add(item);
                         }
                     }
-                    var healthPlans = await DatabaseServices.Get<List<Product>>("healthplans");
+                    var healthPlans = await DatabaseServices.Get<List<Product>>("healthplans"+Settings.ClientId);
                     foreach (var product in filteredList)
                     {
                         var index = filteredList.IndexOf(product);
@@ -704,7 +781,7 @@ namespace LaunchPad.Mobile.ViewModels
                 }
                 else
                 {
-                    var healthPlans = await DatabaseServices.Get<List<Product>>("healthplans");
+                    var healthPlans = await DatabaseServices.Get<List<Product>>("healthplans"+Settings.ClientId);
                     var salonProduct = Salon.ProductCategories.First(a => a.Name.ToLower() == "fortify");
                     FortifyEvenProducts = new ObservableCollection<CustomProduct>();
                     FortifyOddProducts = new ObservableCollection<CustomProduct>();
@@ -776,7 +853,7 @@ namespace LaunchPad.Mobile.ViewModels
                 }
                 else
                 {
-                    var healthPlans = await DatabaseServices.Get<List<Product>>("healthplans");
+                    var healthPlans = await DatabaseServices.Get<List<Product>>("healthplans"+Settings.ClientId);
                     var salonProduct = Salon.ProductCategories.First(a => a.Name.ToLower() == "feed");
                     FeedsEvenProducts = new ObservableCollection<CustomProduct>();
                     FeedsOddsProducts = new ObservableCollection<CustomProduct>();
@@ -840,19 +917,19 @@ namespace LaunchPad.Mobile.ViewModels
         {
             try
             {
-                var cartItems = await DatabaseServices.Get<List<Product>>("healthplans");
+                var cartItems = await DatabaseServices.Get<List<Product>>("healthplans"+Settings.ClientId);
                 if (cartItems.Count > 0)
                 {
                     if (cartItems.Count(async => async.Id == product.Product.Id) == 0)
                     {
                         cartItems.Add(product.Product);
-                        await DatabaseServices.InsertData("healthplans", cartItems);
+                        await DatabaseServices.InsertData("healthplans"+Settings.ClientId, cartItems);
                     }
                 }
                 else
                 {
                     cartItems.Add(product.Product);
-                    await DatabaseServices.InsertData("healthplans", cartItems);
+                    await DatabaseServices.InsertData("healthplans"+Settings.ClientId, cartItems);
                 }
 
                 CartItemAdded?.Invoke(cartItems.Count);
@@ -865,28 +942,28 @@ namespace LaunchPad.Mobile.ViewModels
 
         private async void ViewHealthPlanAsync()
         {
-            var cartItems = await DatabaseServices.Get<List<Product>>("healthplans");
+            var cartItems = await DatabaseServices.Get<List<Product>>("healthplans"+Settings.ClientId);
             if (cartItems.Count > 0)
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Application.Current.MainPage.Navigation.PushAsync(new UserHealthPlanPage());
                 });
-             
+
             }
-          
+
         }
         private async void RemoveFromHealthPlanAsync(CustomProduct product)
         {
             try
             {
-                var cartItems = await DatabaseServices.Get<List<Product>>("healthplans");
+                var cartItems = await DatabaseServices.Get<List<Product>>("healthplans"+Settings.ClientId);
                 if (cartItems.Count > 0)
                 {
                     if (cartItems.Count(async => async.Id == product.Product.Id) > 0)
                     {
                         cartItems.RemoveAll(x => x.Id == product.Product.Id);
-                        await DatabaseServices.InsertData("healthplans", cartItems);
+                        await DatabaseServices.InsertData("healthplans"+Settings.ClientId, cartItems);
                     }
                 }
 

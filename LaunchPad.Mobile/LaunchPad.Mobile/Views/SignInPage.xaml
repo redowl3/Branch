@@ -15,7 +15,7 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <Grid HorizontalOptions="Center" RowDefinitions="56,*" Padding="20,40">
-            <Label Text="Welcome, Please login to continue" TextColor="#fff" FontSize="28" Style="{StaticResource TabTitleLabelStyle}" VerticalOptions="Center"/>
+            <Label Text="Welcome, please login to continue" TextColor="#fff" FontSize="28" Style="{StaticResource TabTitleLabelStyle}" VerticalOptions="Center"/>
             <ScrollView Grid.Row="1">
                 <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto" VerticalOptions="Center" RowSpacing="30" WidthRequest="500">
                     <Grid RowDefinitions="Auto,56" RowSpacing="20">

@@ -5,7 +5,8 @@
                          xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:customlayouts="clr-namespace:LaunchPad.Mobile.CustomLayouts"
                          BackgroundColor="#ffffff"
-                         x:Class="LaunchPad.Mobile.Views.UserHealthPlanPage">
+                         x:Class="LaunchPad.Mobile.Views.UserHealthPlanPage"
+                         NavigationPage.HasBackButton="False">
     <controls:AnimationPage.PageAnimation>
         <controls:PushPageAnimation Duration="Medium" Subtype="FromRight" />
     </controls:AnimationPage.PageAnimation>
@@ -17,22 +18,24 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid x:Name="GridLayout"  RowDefinitions="Auto,2,*">
-            <Grid ColumnDefinitions="2*,*" Padding="30" IsVisible="{Binding IsContentVisible}">
-                <Label Text="Sarah's Optimum Skin Health Plan" VerticalTextAlignment="Center" FontSize="18" Style="{StaticResource ContentTitle}"/>
+            <Grid ColumnDefinitions="*,*" Padding="30" IsVisible="{Binding IsContentVisible}">
+                <Label x:Name="HealthPlanHeader" VerticalTextAlignment="Center" FontSize="18" Style="{StaticResource ContentTitle}"/>
                 <StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="End" Spacing="20">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OpenBasketView" NumberOfTapsRequired="1"/>
                     </StackLayout.GestureRecognizers>
-                    <Label VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="18" Style="{StaticResource ContentTitle}">
-                        <Label.Text>
-                            <MultiBinding StringFormat="Sub Total : {0}">
-                                <Binding Path="SubTotal"/>
-                            </MultiBinding>
-                        </Label.Text>
-                    </Label>
+                    <Grid WidthRequest="400">
+                        <Label VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="18" Style="{StaticResource ContentTitle}">
+                            <Label.Text>
+                                <MultiBinding StringFormat="Sub Total : {0}">
+                                    <Binding Path="SubTotal"/>
+                                </MultiBinding>
+                            </Label.Text>
+                        </Label>
+                    </Grid>
+                   
                     <Button Clicked="OpenBasketView"  BackgroundColor="#ffffff" BorderColor="#000000" BorderWidth="1" WidthRequest="46" HeightRequest="46" CornerRadius="23" Text="{Binding BasketItemsCount}" FontSize="20" HorizontalOptions="End"/>
                 </StackLayout>
-               
             </Grid>
             <BoxView Grid.Row="1" BackgroundColor="#000000" HeightRequest="2" Margin="30,0"  IsVisible="{Binding IsContentVisible}"/>
             <ScrollView Grid.Row="2">
@@ -55,7 +58,7 @@
                                                 <StackLayout>
                                                     <Grid ColumnDefinitions="*,*">
                                                         <Label Text="{Binding Classification}" VerticalTextAlignment="Center" FontSize="18" Style="{StaticResource ContentTitle}"/>
-                                                        <Label Grid.Column="1" Opacity="0.5" Text="{Binding ProgramName}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="18" Style="{StaticResource ContentTitle}"/>
+                                                        <Label Grid.Column="1" Opacity="0.5" Text="{Binding ProgramName}" TextType="Html" VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="18" Style="{StaticResource ContentTitle}"/>
                                                     </Grid>
                                                     <BoxView BackgroundColor="Gray" HeightRequest="1"/>
                                                 </StackLayout>
@@ -150,7 +153,7 @@
                                                     <Grid.GestureRecognizers>
                                                         <SwipeGestureRecognizer Direction="Right" Command="{Binding LeftSwipedCommand}"/>
                                                     </Grid.GestureRecognizers>
-                                                    <Label Grid.Row="0" Opacity="0.5" Text="{Binding ProgramName}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" FontSize="14" Style="{StaticResource ContentTitle}"/>
+                                                    <Label Grid.Row="0" Opacity="0.5" Text="{Binding ProgramName}" TextType="Html" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" FontSize="14" Style="{StaticResource ContentTitle}"/>
                                                     <Grid Grid.Row="1" ColumnDefinitions="2*,*">
                                                         <Label Grid.Column="0" Text="{Binding ProductName}" VerticalTextAlignment="Center" FontSize="16" Style="{StaticResource ContentTitle}"/>
                                                         <Label Grid.Column="1" Text="{Binding Price}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="16" Style="{StaticResource ContentTitle}"/>

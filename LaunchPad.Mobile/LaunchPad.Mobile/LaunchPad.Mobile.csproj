@@ -41,6 +41,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="CustomLayouts\RecentConsumerLayoutView.xaml.cs">
+      <DependentUpon>RecentConsumerLayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="CustomLayouts\ConsumerLayoutView.xaml.cs">
+      <DependentUpon>ConsumerLayoutView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Filters\FinishFilterPage.xaml.cs">
       <DependentUpon>FinishFilterPage.xaml</DependentUpon>
     </Compile>

@@ -22,12 +22,27 @@ namespace IIAADataModels.Transfer.Base
 
 		public decimal LowestPrice()
 		{
-			return this.Variants.Min(e => e.Price);
+			if (this.Variants != null)
+			{
+				if (this.Variants.Any())
+				{
+					return this.Variants.Min(e => e.Price);
+				}
+			}
+			return 9999999.99M;
 		}
 
 		public bool HasOffers()
 		{
-			return this.Variants.Any(e => e.Price < e.RRP);			
+			if (this.Variants != null)
+			{
+				if (this.Variants.Any())
+				{
+
+					return this.Variants.Any(e => e.Price < e.RRP);
+				}
+			}
+			return false;
 		}
 	}
 }

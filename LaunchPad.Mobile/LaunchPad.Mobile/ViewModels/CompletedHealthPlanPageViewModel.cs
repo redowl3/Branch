@@ -1,6 +1,7 @@
 ﻿using FormsControls.Base;
 using IIAADataModels.Transfer;
 using LaunchPad.Client;
+using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Models;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.Views;
@@ -18,6 +19,8 @@ namespace LaunchPad.Mobile.ViewModels
 {
     public class CompletedHealthPlanPageViewModel : ViewModelBase
     {
+        public ICommand GoBackCommand => new Command(() => Application.Current.MainPage.Navigation.PopAsync());
+        public ICommand HomeCommand => new Command(() => Application.Current.MainPage = new AnimationNavigationPage(new SalonClientsPage()));
         private string _loggedInUserName;
         public string LoggedInUserName
         {
@@ -97,8 +100,8 @@ namespace LaunchPad.Mobile.ViewModels
                 Task.Run(async () =>
                 {
                     SecureStorage.RemoveAll();
-                    await DatabaseServices.Delete<List<Product>>("healthplans");
-                    await DatabaseServices.Delete<List<Product>>("basketItems");
+                    await DatabaseServices.Delete<List<Product>>("healthplans"+Settings.ClientId);
+                    await DatabaseServices.Delete<List<Product>>("basketItems"+Settings.ClientId);
                     await DatabaseServices.Delete<List<HealthPlanToComplete>>("healthPlanCompleted");
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -134,7 +137,7 @@ namespace LaunchPad.Mobile.ViewModels
             Device.BeginInvokeOnMainThread(() => ExceptionHandler(async () =>
             {
                 LoggedInUserName = await SecureStorage.GetAsync("currentUserName");
-                var basket = await DatabaseServices.Get<CustomBasket>("basketItems");
+                var basket = await DatabaseServices.Get<CustomBasket>("basketItems"+Settings.ClientId);
                 var salon = await DatabaseServices.Get<Salon>("salon");
                 if (basket != null && basket.ItemsCollection.Count > 0)
                 {
@@ -280,7 +283,7 @@ namespace LaunchPad.Mobile.ViewModels
             {
                 if (param != null)
                 {
-                    var basket = await DatabaseServices.Get<CustomBasket>("basketItems");
+                    var basket = await DatabaseServices.Get<CustomBasket>("basketItems"+Settings.ClientId);
                     if (basket != null && basket.Basket != null && basket.Basket.Items != null)
                     {
                         CompletedHealthPlansCollection.Where(a => !a.IsProductScanned).ForEach(a => a.HealthPlanToComplete.ProductScanned = false);
@@ -349,7 +352,7 @@ namespace LaunchPad.Mobile.ViewModels
         {
             Device.BeginInvokeOnMainThread(() => ExceptionHandler(async () =>
             {
-                var basket = await DatabaseServices.Get<CustomBasket>("basketItems");
+                var basket = await DatabaseServices.Get<CustomBasket>("basketItems"+Settings.ClientId);
                 if (basket != null && basket.Basket != null && basket.Basket.Items != null)
                 {
                     //CompletedHealthPlansCollection.Where(a => a.HealthPlanToComplete.Product.Id == basket.Basket.Items.First(x => x.ProductId == _selectedProduct.Id).ProductId).ForEach(x =>

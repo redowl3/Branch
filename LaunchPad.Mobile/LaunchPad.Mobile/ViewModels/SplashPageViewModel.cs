@@ -56,10 +56,8 @@ namespace LaunchPad.Mobile.ViewModels
                 ProgressBarVisible = true;
                 await Task.Delay(200);
                 Progress = 0.10;
-                await Task.Delay(100);
-                Progress = 0.25;
                 var salon = await ApiServices.Client.GetAsync<Salon>("salon");
-                Progress = 0.50;
+                Progress = 0.25;
                 if (salon != null || salon.Id != Guid.Empty)
                 {
                     App.SalonName = salon.Name;
@@ -68,6 +66,17 @@ namespace LaunchPad.Mobile.ViewModels
                     if (result)
                     {
                         Console.WriteLine("salon stored to local cache");
+                    }
+
+                }
+                var consumers = await ApiServices.Client.GetAsync<List<Consumer>>("Salon/Consumers");
+                Progress = 0.50;
+                if (consumers?.Count>0)
+                {
+                    var result = await DatabaseServices.InsertData("consumers", consumers);
+                    if (result)
+                    {
+                        Console.WriteLine("consumers stored to local cache");
                     }
 
                 }
@@ -106,7 +115,7 @@ namespace LaunchPad.Mobile.ViewModels
                 var currentTherapist = await SecureStorage.GetAsync("currentTherapist");
                 if (!string.IsNullOrEmpty(currentTherapist))
                 {
-                    Application.Current.MainPage = new AnimationNavigationPage(new SalonProductsPage());
+                    Application.Current.MainPage = new AnimationNavigationPage(new SalonClientsPage());
                 }
                 else
                 {
