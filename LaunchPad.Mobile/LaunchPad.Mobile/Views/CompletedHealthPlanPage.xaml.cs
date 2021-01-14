@@ -6,6 +6,7 @@ using LaunchPad.Mobile.Models;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.ViewModels;
 using System.Linq;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
@@ -20,6 +21,18 @@ namespace LaunchPad.Mobile.Views
             InitializeComponent();
             CompletedHealthPlanPageViewModel.BadgeCountAction += AddOrUpdateBadge;
             CompleteHealthPlanHeaderLabel.Text = $"{Settings.ClientFirstName}'s optimum skin health plan is now complete";
+            var mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
+            var screenWidth = mainDisplayInfo.Width;
+            if (screenWidth <= 2050)
+            {
+                CompleteHealthPlanHeaderLabel.FontSize = 32;
+                ToScanMessageLabel.FontSize = 26;
+            }
+            else
+            {
+                CompleteHealthPlanHeaderLabel.FontSize = 40;
+                ToScanMessageLabel.FontSize = 32;
+            }
         }
         protected override void OnAppearing()
         {
@@ -102,5 +115,6 @@ namespace LaunchPad.Mobile.Views
         {
             Application.Current.MainPage.Navigation.PopAsync();
         }
+
     }
 }

@@ -95,6 +95,7 @@ namespace LaunchPad.Mobile.ViewModels
                         SecureStorage.SetAsync("currentTherapist", jsonString);
                         SecureStorage.SetAsync("currentUserName", $"{SelectedTherapist.Firstname} {SelectedTherapist.Surname}");
                         SecureStorage.SetAsync("currentUserImage", SelectedTherapist.ImageUrl);
+                        Settings.CurrentTherapistId = SelectedTherapist.Id.ToString();
                         App.UserName = $"{SelectedTherapist.Firstname}  {SelectedTherapist.Surname}";
                         Settings.CurrentUserName = $"{SelectedTherapist.Firstname}  {SelectedTherapist.Surname}";
                         Application.Current.MainPage=new AnimationNavigationPage(new SalonClientsPage());

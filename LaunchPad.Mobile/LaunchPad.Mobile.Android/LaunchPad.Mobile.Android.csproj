@@ -93,6 +93,7 @@
     <Compile Include="CustomRenderers\BorderlessPickerRenderer.cs" />
     <Compile Include="CustomRenderers\BorderlessEntryRenderer.cs" />
     <Compile Include="CustomRenderers\FixedFontLabelRenderer.cs" />
+    <Compile Include="CustomServices\ToastServices.cs" />
     <Compile Include="CustomServices\ToolbarItemBadgeService.cs" />
     <Compile Include="CustomServices\WifiUtility.cs" />
     <Compile Include="MainActivity.cs" />

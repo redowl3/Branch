@@ -12,12 +12,38 @@ namespace LaunchPad.Mobile.Views
         public SignInPage()
         {
             InitializeComponent();
+            this.PinEntry.Focused += (s, e) => { SetLayoutPosition(onFocus: true); };
+            this.PinEntry.Unfocused += (s, e) => { SetLayoutPosition(onFocus: false); };
         }
         protected override bool OnBackButtonPressed()
         {
             return true;
         }
-
+        void SetLayoutPosition(bool onFocus)
+        {
+            if (onFocus)
+            {
+                if (Device.RuntimePlatform == Device.iOS)
+                {
+                    this.CenteredStackLayout.TranslateTo(0, -50, 50);
+                }
+                else if (Device.RuntimePlatform == Device.Android)
+                {
+                    this.CenteredStackLayout.TranslateTo(0, -50, 50);
+                }
+            }
+            else
+            {
+                if (Device.RuntimePlatform == Device.iOS)
+                {
+                    this.CenteredStackLayout.TranslateTo(0, 0, 50);
+                }
+                else if (Device.RuntimePlatform == Device.Android)
+                {
+                    this.CenteredStackLayout.TranslateTo(0, 0, 50);
+                }
+            }
+        }
         private void searchuserlist(object sender, System.EventArgs e)
         {
             UserListDropdownContainer.IsVisible = !UserListDropdownContainer.IsVisible;

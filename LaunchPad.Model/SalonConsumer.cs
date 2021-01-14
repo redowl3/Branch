@@ -14,6 +14,7 @@ namespace IIAADataModels.Transfer
 		public string Email { get; set; }
 		public string Mobile { get; set; }
 
+		public DateTime DateOfBirth { get; set; }
 		public List<Transfer.ConsumerAddress> Addresses { get; set; }
 		
 		public Transfer.Consultation CurrentConsultation { get; set; }

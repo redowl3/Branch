@@ -40,7 +40,6 @@ namespace LaunchPad.Mobile.Views
         protected async override void OnAppearing()
         {
             base.OnAppearing();
-            this.BindingContext = new UserHealthPlanPageViewModel();
             await Task.Delay(1000);
             var count=await (this.BindingContext as UserHealthPlanPageViewModel)?.RefreshBadgeCountAsync();
             if (ToolbarItems.Count > 0)

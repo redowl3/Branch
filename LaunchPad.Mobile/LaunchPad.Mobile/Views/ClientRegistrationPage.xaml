@@ -3,16 +3,21 @@
                         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                         xmlns:controls="clr-namespace:FormsControls.Base;assembly=FormsControls.Base"
                         xmlns:customlayouts="clr-namespace:LaunchPad.Mobile.CustomLayouts"
+                        xmlns:viewmodels="clr-namespace:LaunchPad.Mobile.ViewModels"
                         x:Class="LaunchPad.Mobile.Views.ClientRegistrationPage"
-                        BackgroundColor="#ffffff">
+                        BackgroundColor="#ffffff"
+                        NavigationPage.HasBackButton="False">
     <controls:AnimationPage.PageAnimation>
         <controls:PushPageAnimation Duration="Medium" Subtype="FromRight" />
     </controls:AnimationPage.PageAnimation>
     <NavigationPage.TitleView>
         <customlayouts:TitleBarLayoutV1/>
     </NavigationPage.TitleView>
+    <ContentPage.BindingContext>
+        <viewmodels:ClientRegistrationPageViewModel/>
+    </ContentPage.BindingContext>
     <ScrollView>
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="40" Padding="20,40">
+        <Grid x:Name="CenteredStackLayout" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="40" Padding="20,40">
             <Grid Grid.Row="0" RowDefinitions="Auto" HorizontalOptions="Center">
                 <Frame Grid.Column="0" BackgroundColor="Transparent" Padding="0" HasShadow="False" CornerRadius="0">
                     <Grid>
@@ -32,7 +37,7 @@
                     <Label Text="First Name" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                     <Frame Grid.Row="1" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry BackgroundColor="#f2f2f2"/>
+                            <Entry x:Name="FirstnameEntry" Text="{Binding Firstname}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
                         </Grid>
                     </Frame>
@@ -41,7 +46,7 @@
                     <Label Text="Surname" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                     <Frame Grid.Row="1" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry BackgroundColor="#f2f2f2"/>
+                            <Entry x:Name="LastnameEntry" Text="{Binding Lastname}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
                         </Grid>
                     </Frame>
@@ -50,7 +55,7 @@
                     <Label Text="Email" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                     <Frame Grid.Row="1" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry BackgroundColor="#f2f2f2"/>
+                            <Entry  x:Name="EmailEntry" Text="{Binding Email}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
                         </Grid>
                     </Frame>
@@ -59,31 +64,31 @@
                     <Label Text="Confirm Email" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                     <Frame Grid.Row="1" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry BackgroundColor="#f2f2f2"/>
+                            <Entry x:Name="ConfirmEmailEntry" Text="{Binding ConfirmEmail}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
                         </Grid>
                     </Frame>
                 </Grid>
             </Grid>
 
-            <Grid  Grid.Row="3" ColumnDefinitions="250,350,200,200" ColumnSpacing="30" HorizontalOptions="Center">
+            <Grid  Grid.Row="3" ColumnDefinitions="250,350,200,150" x:Name="MidDobContainerGrid" HorizontalOptions="Center">
                 <Grid ColumnSpacing="20" HorizontalOptions="End" RowDefinitions="56,56" ColumnDefinitions="70,70,70">
                     <Label Text="Date Of Birth" Grid.ColumnSpan="3" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                     <Frame Grid.Row="1" Grid.Column="0" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry BackgroundColor="#f2f2f2"/>
+                            <Entry x:Name="DDEntry" Text="{Binding DD}" HorizontalTextAlignment="Center" BackgroundColor="#f2f2f2" MaxLength="2" Keyboard="Numeric"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
                         </Grid>
                     </Frame>
                     <Frame Grid.Row="1" Grid.Column="1" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry BackgroundColor="#f2f2f2"/>
+                            <Entry x:Name="MMEntry" Text="{Binding MM}" HorizontalTextAlignment="Center" BackgroundColor="#f2f2f2" MaxLength="2" Keyboard="Numeric"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
                         </Grid>
                     </Frame>
                     <Frame Grid.Row="1" Grid.Column="2" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry BackgroundColor="#f2f2f2"/>
+                            <Entry x:Name="YYEntry" Text="{Binding YY}" HorizontalTextAlignment="Center" BackgroundColor="#f2f2f2" MaxLength="4" Keyboard="Numeric"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
                         </Grid>
                     </Frame>
@@ -94,7 +99,7 @@
                         <Label Text="Phone" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                         <Frame Grid.Row="1" Padding="10,5" BorderColor="#000000" CornerRadius="0" HasShadow="False">
                             <Grid ColumnDefinitions="2*,Auto">
-                                <Picker FontSize="20" ItemsSource="{Binding HealthPlanToComplete.PrescribingOptions}" ItemDisplayBinding="{Binding Title}" SelectedItem="{Binding HealthPlanToComplete.SelectedOption}" />
+                                <Picker FontSize="20" ItemsSource="{Binding IddCodes}" SelectedItem="{Binding SelectedIddCode}" />
                                 <Image Grid.Column="1" Source="icon_down_arrow" WidthRequest="36" HeightRequest="36" HorizontalOptions="End"/>
                             </Grid>
                         </Frame>
@@ -104,7 +109,7 @@
                         <Label Text="( incluce area code if landline )" FontSize="16.5" VerticalTextAlignment="Center" TextColor="Gray" Style="{StaticResource ContentTitle}"/>
                         <Frame Grid.Row="1" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                             <Grid>
-                                <Entry BackgroundColor="#f2f2f2"/>
+                                <Entry x:Name="MobileEntry" Text="{Binding Mobile}" BackgroundColor="#f2f2f2" Keyboard="Telephone" MaxLength="16"/>
                                 <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
                             </Grid>
                         </Frame>
@@ -116,7 +121,7 @@
                     <Label Text="Postcode" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                     <Frame Grid.Row="1" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry BackgroundColor="#f2f2f2"/>
+                            <Entry x:Name="PostcodeEntry" Text="{Binding PostCode}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
                         </Grid>
                     </Frame>
@@ -129,15 +134,13 @@
                         </Grid>
                     </Frame>
                 </Grid>
-
             </Grid>
-
             <Grid Grid.Row="4" ColumnDefinitions="*,*,*" ColumnSpacing="40">
                 <Grid RowDefinitions="56,56" Grid.Column="0">
                     <Label Text="Address Line 1" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                     <Frame Grid.Row="1" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry BackgroundColor="#f2f2f2"/>
+                            <Entry x:Name="AddressLine1Entry" Text="{Binding AddressLine1}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
                         </Grid>
                     </Frame>
@@ -146,7 +149,7 @@
                     <Label Text="Address Line 2" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                     <Frame Grid.Row="1" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry BackgroundColor="#f2f2f2"/>
+                            <Entry x:Name="AddressLine2Entry" Text="{Binding AddressLine2}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
                         </Grid>
                     </Frame>
@@ -155,7 +158,7 @@
                     <Label Text="Address Line 3" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                     <Frame Grid.Row="1" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry BackgroundColor="#f2f2f2"/>
+                            <Entry x:Name="AddressLine3Entry" Text="{Binding AddressLine3}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
                         </Grid>
                     </Frame>
@@ -167,7 +170,7 @@
                     <Label Text="Town/City" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                     <Frame Grid.Row="1" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry BackgroundColor="#f2f2f2"/>
+                            <Entry x:Name="CityEntry" Text="{Binding City}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
                         </Grid>
                     </Frame>
@@ -176,7 +179,7 @@
                     <Label Text="County" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                     <Frame Grid.Row="1" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry BackgroundColor="#f2f2f2"/>
+                            <Entry x:Name="CountyEntry" Text="{Binding County}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
                         </Grid>
                     </Frame>
@@ -185,19 +188,16 @@
                     <Label Text="Country/Region" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                     <Frame Grid.Row="1" Padding="10,5" BorderColor="#000000" CornerRadius="0" HasShadow="False">
                         <Grid ColumnDefinitions="2*,Auto">
-                            <Picker x:Name="SubVariantsPicker" FontSize="20" ItemsSource="{Binding HealthPlanToComplete.PrescribingOptions}" ItemDisplayBinding="{Binding Title}" SelectedItem="{Binding HealthPlanToComplete.SelectedOption}" />
+                            <Picker x:Name="SubVariantsPicker" FontSize="20" ItemsSource="{Binding Countries}" SelectedItem="{Binding Country}" />
                             <Image Grid.Column="1" Source="icon_down_arrow" WidthRequest="36" HeightRequest="36" HorizontalOptions="End"/>
                         </Grid>
                     </Frame>
                 </Grid>
             </Grid>
-            
+
             <Grid Grid.Row="6" RowDefinitions="56,56" HorizontalOptions="Center" WidthRequest="400">
-                <Frame Grid.Row="1" Grid.Column="0" BackgroundColor="#cccccc" Padding="0" HasShadow="False" CornerRadius="0">
-                    <Grid>
-                        <Label Text="Save &amp; Continue" FontSize="22" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="#ffff" Style="{StaticResource ContentTitle}"/>
-                    </Grid>
-                </Frame>
+                <Button Grid.Row="1" BackgroundColor="#000" TextColor="#fff" IsVisible="{Binding IsButtonEnabled}" BorderWidth="1" Text="Save &amp; Continue" FontSize="20" Command="{Binding AddClientCommand}"/>            
+                <Button Grid.Row="1" BackgroundColor="#ccc" TextColor="#fff" IsVisible="{Binding IsButtonEnabled,Converter={StaticResource InverseConverter}}" BorderWidth="1" Text="Save &amp; Continue" FontSize="20"/>            
             </Grid>
         </Grid>
     </ScrollView>

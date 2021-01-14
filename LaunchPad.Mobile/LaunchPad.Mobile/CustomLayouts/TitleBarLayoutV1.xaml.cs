@@ -1,4 +1,5 @@
 ﻿using LaunchPad.Mobile.Helpers;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 namespace LaunchPad.Mobile.CustomLayouts
@@ -10,6 +11,13 @@ namespace LaunchPad.Mobile.CustomLayouts
         {
             InitializeComponent();
             LoggedInUserDetailLabel.Text = $"{Settings.CurrentUserName} | {Settings.SalonName}";
+            var mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
+            var screenWidth = mainDisplayInfo.Width;
+        }
+
+        private void ImageButton_Clicked(object sender, System.EventArgs e)
+        {
+            Application.Current.MainPage.Navigation.PopAsync();
         }
     }
 }

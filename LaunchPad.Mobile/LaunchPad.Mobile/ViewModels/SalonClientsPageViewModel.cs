@@ -1,4 +1,5 @@
-﻿using IIAADataModels.Transfer;
+﻿using FormsControls.Base;
+using IIAADataModels.Transfer;
 using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.Views;
@@ -8,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -22,6 +24,17 @@ namespace LaunchPad.Mobile.ViewModels
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
         }
+        private string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                SetProperty(ref _searchText, value);
+                FilterCollectionAsync(SearchText);
+            }
+        }
+
         private ObservableCollection<AlphabetsModel> _alphabetsCollection;
         public ObservableCollection<AlphabetsModel> AlphabetsCollection
         {
@@ -53,7 +66,24 @@ namespace LaunchPad.Mobile.ViewModels
         public ICommand SelectConsumerCommand => new Command<Consumer>((param) => GoToSalonProductPageAsync(param));
         public ICommand NewClientCommand => new Command(() => GoToCLientRegistrationPage());
         public ICommand RefreshCommand => new Command(() => FetchConsumerCollectionAsync());
+        public ICommand SignOutCommand => new Command(() =>
+        {
+            try
+            {
+                Task.Run(async () =>
+                {
+                    SecureStorage.RemoveAll();
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Application.Current.MainPage = new AnimationNavigationPage(new SignInPage());
+                    });
+                });
 
+            }
+            catch (Exception)
+            {
+            }
+        });
         public SalonClientsPageViewModel()
         {
             AlphabetsCollection = new ObservableCollection<AlphabetsModel>();
@@ -89,13 +119,13 @@ namespace LaunchPad.Mobile.ViewModels
                     var consumers = await DatabaseServices.Get<List<Consumer>>("consumers");
                     if (consumers.Count > 0)
                     {
-                        ConsumerCollection = new ObservableCollection<Consumer>(consumers);
+                        ConsumerCollection = new ObservableCollection<Consumer>(consumers.OrderBy(a=>a.Lastname)); 
                     }
-                    var recentConsumers = await DatabaseServices.Get<List<RecentConsumer>>("recentconsumers");
+                    var recentConsumers = await DatabaseServices.Get<List<RecentConsumer>>("recentconsumers"+Settings.CurrentTherapistId);
                     if (recentConsumers.Count > 0)
                     {
 
-                        RecentConsumerCollection = new ObservableCollection<RecentConsumer>(recentConsumers);
+                        RecentConsumerCollection = new ObservableCollection<RecentConsumer>(recentConsumers.OrderByDescending(a=>a.LastLogin));
                     }
                 });
                
@@ -139,7 +169,32 @@ namespace LaunchPad.Mobile.ViewModels
             }
             IsBusy = false;
         }
+        private async void FilterCollectionAsync(string searchText)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                {
+                    var consumers = await DatabaseServices.Get<List<Consumer>>("consumers");
+                    if (consumers.Count ==0) return;
+                    ConsumerCollection = new ObservableCollection<Consumer>(consumers.Where(a => a.Lastname.ToLower().Contains(searchText.ToLower()) || a.Firstname.ToLower().Contains(searchText.ToLower())));
+                }
+                else
+                {
+                    AlphabetsCollection.ForEach(x => x.IsSelected = false);
+                    var consumers = await DatabaseServices.Get<List<Consumer>>("consumers");
+                    if (consumers.Count > 0)
+                    {
+                        ConsumerCollection = new ObservableCollection<Consumer>(consumers);
+                    }
+                }
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
         private void GoToSalonProductPageAsync(Consumer param)
         {
             if (IsBusy) return;
@@ -150,20 +205,22 @@ namespace LaunchPad.Mobile.ViewModels
                 {
                     if (param != null)
                     {
-                        var isStored = await DatabaseServices.InsertData<Consumer>("current_consumer", param);
+                        var isStored = await DatabaseServices.InsertData<Consumer>("current_consumer"+Settings.CurrentTherapistId, param);
                         if (isStored)
                         {
                             Settings.ClientId = param.Id.ToString();
                             Settings.ClientFirstName = $"{param.Firstname}";
                             Settings.ClientName = $"{param.Firstname} {param.Lastname}";
-                            Settings.ClientHeader = $"{param.Firstname}'s Skin Healt Plan";
+                            Settings.ClientHeader = $"{param.Firstname}'s Skin Health Plan";
+                            var lastLogin = DateTime.Now;
                             var recentConsumer = new RecentConsumer
                             {
                                 Consumer=param,
-                                LastLoginDateTime=DateTime.Now.ToString("dd/MM/yyyy - hh:mm tt")
+                                LastLogin=lastLogin,
+                                LastLoginDateTime=lastLogin.ToString("dd/MM/yyyy - hh:mm tt")
                             };
 
-                            var recentConsumerList = await DatabaseServices.Get<List<RecentConsumer>>("recentconsumers");
+                            var recentConsumerList = await DatabaseServices.Get<List<RecentConsumer>>("recentconsumers"+Settings.CurrentTherapistId);
                             if (recentConsumerList.Count == 0)
                             {
                                 recentConsumerList.Add(recentConsumer);
@@ -178,11 +235,11 @@ namespace LaunchPad.Mobile.ViewModels
                                 }
                                 else
                                 {
-                                    recentConsumerList.Add(recentConsumer);
+                                    recentConsumerList.Insert(0, recentConsumer);
                                 }
                             }
 
-                            await DatabaseServices.InsertData<List<RecentConsumer>>("recentconsumers",recentConsumerList);
+                            await DatabaseServices.InsertData<List<RecentConsumer>>("recentconsumers"+Settings.CurrentTherapistId,recentConsumerList);
                             Device.BeginInvokeOnMainThread(() =>
                             {
                                 Application.Current.MainPage.Navigation.PushAsync(new SalonProductsPage());
@@ -220,6 +277,7 @@ namespace LaunchPad.Mobile.ViewModels
     public class RecentConsumer
     {
         public Consumer Consumer { get; set; }
+        public DateTime LastLogin { get; set; }
         public string LastLoginDateTime { get; set; }
     }
     public class AlphabetsModel:ViewModelBase

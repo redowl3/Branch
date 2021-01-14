@@ -3,7 +3,8 @@
                          xmlns="http://xamarin.com/schemas/2014/forms"
                          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                          xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             xmlns:customlayouts="clr-namespace:LaunchPad.Mobile.CustomLayouts"
+             xmlns:customlayouts="clr-namespace:LaunchPad.Mobile.CustomLayouts" 
+                         xmlns:viewmodels="clr-namespace:LaunchPad.Mobile.ViewModels"
                          BackgroundColor="#ffffff"
                          x:Class="LaunchPad.Mobile.Views.UserHealthPlanPage"
                          NavigationPage.HasBackButton="False">
@@ -13,6 +14,9 @@
     <NavigationPage.TitleView>
         <customlayouts:TitleBarLayout/>
     </NavigationPage.TitleView>
+    <ContentPage.BindingContext>
+        <viewmodels:UserHealthPlanPageViewModel/>
+    </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="icon_list"/>
     </ContentPage.ToolbarItems>
@@ -67,7 +71,7 @@
                                                         <BindableLayout.ItemTemplate>
                                                             <DataTemplate>
                                                                 <Grid RowDefinitions="150,Auto,Auto" ColumnDefinitions="200" RowSpacing="20">
-                                                                    <forms:CachedImage Source="{Binding ImageUrl}" Aspect="Fill"/>
+                                                                    <Image Source="{Binding ImageUrl}"/>
                                                                     <StackLayout Grid.Row="1">
                                                                         <Label Text="{Binding Product.Name}" TextType="Html" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="16"/>
                                                                         <Label Text="{Binding Price}" LineBreakMode="WordWrap" HorizontalTextAlignment="Start" Style="{StaticResource ContentTitle}" FontSize="16"/>

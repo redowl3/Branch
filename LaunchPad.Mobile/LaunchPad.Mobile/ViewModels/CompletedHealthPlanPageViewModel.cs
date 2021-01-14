@@ -5,6 +5,7 @@ using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Models;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.Views;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,6 +22,8 @@ namespace LaunchPad.Mobile.ViewModels
     {
         public ICommand GoBackCommand => new Command(() => Application.Current.MainPage.Navigation.PopAsync());
         public ICommand HomeCommand => new Command(() => Application.Current.MainPage = new AnimationNavigationPage(new SalonClientsPage()));
+        private IToastServices ToastServices => DependencyService.Get<IToastServices>();
+
         private string _loggedInUserName;
         public string LoggedInUserName
         {
@@ -93,6 +96,16 @@ namespace LaunchPad.Mobile.ViewModels
             get => _isContentVisible;
             set => SetProperty(ref _isContentVisible, value);
         }
+
+        private bool _canPlaceOrder=true;
+        public bool CanPlaceOrder
+        {
+            get => _canPlaceOrder;
+            set => SetProperty(ref _canPlaceOrder, value);
+        }
+
+        public ICommand PlaceOrderCommand => new Command(() => PlaceOrderAsync());
+
         public ICommand SignOutCommand => new Command(() =>
         {
             try
@@ -100,9 +113,6 @@ namespace LaunchPad.Mobile.ViewModels
                 Task.Run(async () =>
                 {
                     SecureStorage.RemoveAll();
-                    await DatabaseServices.Delete<List<Product>>("healthplans"+Settings.ClientId);
-                    await DatabaseServices.Delete<List<Product>>("basketItems"+Settings.ClientId);
-                    await DatabaseServices.Delete<List<HealthPlanToComplete>>("healthPlanCompleted");
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Application.Current.MainPage = new AnimationNavigationPage(new SignInPage());
@@ -137,12 +147,17 @@ namespace LaunchPad.Mobile.ViewModels
             Device.BeginInvokeOnMainThread(() => ExceptionHandler(async () =>
             {
                 LoggedInUserName = await SecureStorage.GetAsync("currentUserName");
-                var basket = await DatabaseServices.Get<CustomBasket>("basketItems"+Settings.ClientId);
+                var basket = await DatabaseServices.Get<CustomBasket>("basketItems" + Settings.ClientId);
                 var salon = await DatabaseServices.Get<Salon>("salon");
                 if (basket != null && basket.ItemsCollection.Count > 0)
                 {
                     AmountToBePaid = $"{basket.ItemsCollection.Sum(a => a.Variant.Price).ToString("F2")}";
                     BadgeCountAction?.Invoke(basket.ItemsCollection.Count);
+                    var healthPlansCompleted = await DatabaseServices.Get<List<HealthPlanToComplete>>("healthPlanCompleted");
+                    if (healthPlansCompleted?.Count > 0)
+                    {
+                        CanPlaceOrder = true;
+                    }
                     foreach (var item in basket.Basket.Items)
                     {
                         foreach (var productCategory in salon.ProductCategories)
@@ -153,7 +168,7 @@ namespace LaunchPad.Mobile.ViewModels
                                 foreach (var product in products)
                                 {
                                     var completedHealthPlan = new CompletedHealthPlan();
-                                    var healthPlansCompleted = await DatabaseServices.Get<List<HealthPlanToComplete>>("healthPlanCompleted");
+
                                     if (healthPlansCompleted.Count > 0 && healthPlansCompleted.Count(a => a.Product.Id == product.Id) > 0)
                                     {
                                         var healthPlan = healthPlansCompleted.First(a => a.Product.Id == product.Id);
@@ -283,7 +298,7 @@ namespace LaunchPad.Mobile.ViewModels
             {
                 if (param != null)
                 {
-                    var basket = await DatabaseServices.Get<CustomBasket>("basketItems"+Settings.ClientId);
+                    var basket = await DatabaseServices.Get<CustomBasket>("basketItems" + Settings.ClientId);
                     if (basket != null && basket.Basket != null && basket.Basket.Items != null)
                     {
                         CompletedHealthPlansCollection.Where(a => !a.IsProductScanned).ForEach(a => a.HealthPlanToComplete.ProductScanned = false);
@@ -352,7 +367,7 @@ namespace LaunchPad.Mobile.ViewModels
         {
             Device.BeginInvokeOnMainThread(() => ExceptionHandler(async () =>
             {
-                var basket = await DatabaseServices.Get<CustomBasket>("basketItems"+Settings.ClientId);
+                var basket = await DatabaseServices.Get<CustomBasket>("basketItems" + Settings.ClientId);
                 if (basket != null && basket.Basket != null && basket.Basket.Items != null)
                 {
                     //CompletedHealthPlansCollection.Where(a => a.HealthPlanToComplete.Product.Id == basket.Basket.Items.First(x => x.ProductId == _selectedProduct.Id).ProductId).ForEach(x =>
@@ -421,6 +436,69 @@ namespace LaunchPad.Mobile.ViewModels
             {
                 CompletedHealthPlansCollection.Where(a => a.HealthPlanToComplete.Product.Id != param.Id).ForEach(x => x.IsScanning = false);
             }));
+        }
+
+        private async void PlaceOrderAsync()
+        {
+            try
+            {
+
+                var consumer = await DatabaseServices.Get<Consumer>("current_consumer"+Settings.CurrentTherapistId);
+                if (consumer != null && consumer.Id != Guid.Empty)
+                {
+                    var basket = await DatabaseServices.Get<CustomBasket>("basketItems" + Settings.ClientId);
+                    if (basket != null && basket.Basket != null && basket.Basket.Items?.Count > 0)
+                    {
+                        var currentTherapistJson = await SecureStorage.GetAsync("currentTherapist");
+                        var currentTherapist = JsonConvert.DeserializeObject<Therapist>(currentTherapistJson);
+                        var saloConsumer = new SalonConsumer
+                        {
+                            Id = consumer.Id,
+                            Firstname = consumer.Firstname,
+                            Lastname = consumer.Lastname,
+                            Email = consumer.Email,
+                            Mobile = consumer.Mobile,
+                            TherapistId = currentTherapist.Id,
+                            DateOfBirth=consumer.DateOfBirth,
+                            CurrentConsultation = new Consultation
+                            {
+                                Id = Guid.NewGuid(),
+                                Basket = new Basket
+                                {
+                                    Id = basket.Basket.Id,
+                                    Items = CompletedHealthPlansCollection.Select(a => new BasketItem
+                                    {
+                                        ProductId = a.HealthPlanToComplete.Product.Id,
+                                        VariantId = a.HealthPlanToComplete.SelectedVariant.Id,
+                                        PrescribingOption = a.HealthPlanToComplete.SelectedOption != null? a.HealthPlanToComplete.SelectedOption.Title:""
+                                    }).ToList()
+                                },
+                                HealthPlan = new Basket
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Items = new List<IIAADataModels.Transfer.BasketItem>()
+                                }
+                            }
+                        };
+
+                        var isCompleted = await ApiServices.Client.PostAsync<bool>("salon/consumer/consultation/finalise", saloConsumer);
+                        if (isCompleted)
+                        {
+                            ToastServices.ShowToast("Order has been placed successfully");
+                            CanPlaceOrder = false;
+                        }
+                        else
+                        {
+                            ToastServices.ShowToast("Order failed");
+                        }
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+                ToastServices.ShowToast("Something went wrong.Please try again");
+            }
         }
 
         private void ExceptionHandler(Action action)

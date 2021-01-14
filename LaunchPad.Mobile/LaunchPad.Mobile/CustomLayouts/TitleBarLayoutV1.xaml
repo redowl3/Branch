@@ -4,9 +4,14 @@
              x:Class="LaunchPad.Mobile.CustomLayouts.TitleBarLayoutV1">
   <ContentView.Content>
         <Grid ColumnDefinitions="*,1,*,1,*" ColumnSpacing="0">
-            <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalOptions="Start" Spacing="35">
-                <Image Source="icon_home" WidthRequest="32" HeightRequest="32"/>
-                <ImageButton BackgroundColor="Transparent" Source="icon_back" WidthRequest="28" HeightRequest="28"/>
+            
+            <BoxView Grid.Column="1" BackgroundColor="#000"/>
+            <Grid Grid.Column="2" Margin="30,0,0,0">
+                <Label Text="Eventis" HorizontalOptions="Center" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}" Margin="15,0,0,0"/>
+            </Grid>
+            <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalOptions="Start" Spacing="25">
+                <ImageButton BackgroundColor="Transparent" Source="icon_home" WidthRequest="32" HeightRequest="32" Clicked="ImageButton_Clicked"/>
+                <ImageButton BackgroundColor="Transparent" Source="icon_back" WidthRequest="28" HeightRequest="28" Clicked="ImageButton_Clicked"/>
                 <StackLayout Orientation="Horizontal">
                     <Image Source="icon_user_circle" WidthRequest="40" HeightRequest="40"/>
                     <Label x:Name="LoggedInUserDetailLabel" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}" FontSize="18"/>
@@ -14,10 +19,6 @@
 
                 <ImageButton BackgroundColor="Transparent" Source="icon_sign_out" WidthRequest="28" HeightRequest="28" Command="{Binding SignOutCommand}"/>
             </StackLayout>
-            <BoxView Grid.Column="1" BackgroundColor="#000"/>
-            <Grid Grid.Column="2" Margin="30,0,0,0">
-                <Label Text="Eventis" HorizontalOptions="Center" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}" Margin="15,0,0,0"/>
-            </Grid>
         </Grid>
     </ContentView.Content>
 </ContentView>

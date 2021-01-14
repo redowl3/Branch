@@ -31,6 +31,8 @@ namespace LaunchPad.Mobile.Helpers
         private const string ClientNameKey = "client_name_key";
         private const string ClientHeaderTitle = "client_header_key";
         private const string ClientIdKey = "client_Id_key";
+        private const string CountryJsonKey = "country_json_key";
+        private const string TherapistIdKey = "therapist_id_key";
         private static readonly string SettingsDefault = string.Empty;
 
         #endregion
@@ -113,6 +115,29 @@ namespace LaunchPad.Mobile.Helpers
             set
             {
                 AppSettings.AddOrUpdateValue(ClientIdKey, value);
+            }
+        } 
+        public static string CountryJson
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(CountryJsonKey, SettingsDefault);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(CountryJsonKey, value);
+            }
+        } 
+        
+        public static string CurrentTherapistId
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(TherapistIdKey, SettingsDefault);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(TherapistIdKey, value);
             }
         }
 

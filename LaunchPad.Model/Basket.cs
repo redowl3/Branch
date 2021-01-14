@@ -10,5 +10,9 @@ namespace IIAADataModels.Transfer
 	{
 		public Guid Id { get; set; }
 		public List<BasketItem> Items { get; set; }
+        public Basket()
+        {
+			Items = new List<BasketItem>();
+        }
 	}
 }

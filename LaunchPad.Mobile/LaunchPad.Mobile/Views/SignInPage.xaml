@@ -14,7 +14,7 @@
         <viewmodels:SignInPageViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <Grid HorizontalOptions="Center" RowDefinitions="56,*" Padding="20,40">
+        <Grid HorizontalOptions="Center" RowDefinitions="56,*" Padding="20,40" x:Name="CenteredStackLayout">
             <Label Text="Welcome, please login to continue" TextColor="#fff" FontSize="28" Style="{StaticResource TabTitleLabelStyle}" VerticalOptions="Center"/>
             <ScrollView Grid.Row="1">
                 <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto" VerticalOptions="Center" RowSpacing="30" WidthRequest="500">
@@ -33,7 +33,7 @@
                     <Grid Grid.Row="1" RowDefinitions="Auto,56" RowSpacing="20">
                         <Label Text="PIN" TextColor="#fff"  Style="{StaticResource ContentTitle}" FontSize="22"/>
                         <Grid Grid.Row="1">
-                            <customcontrols:CustomEntry Text="{Binding Password}" TextColor="#fff" IsPassword="{Binding Source={x:Reference ShowPasswordActualTrigger}, Path=HidePassword}" FontSize="20" BorderColor="#fff" BorderWidth="3" HeightRequest="56"/>
+                            <customcontrols:CustomEntry x:Name="PinEntry" Text="{Binding Password}" TextColor="#fff" IsPassword="{Binding Source={x:Reference ShowPasswordActualTrigger}, Path=HidePassword}" FontSize="20" BorderColor="#fff" BorderWidth="3" HeightRequest="56"/>
                             <!--<Entry Placeholder="Password"
                 IsPassword="{Binding Source={x:Reference ShowPasswordActualTrigger}, Path=HidePassword}"/>-->
 

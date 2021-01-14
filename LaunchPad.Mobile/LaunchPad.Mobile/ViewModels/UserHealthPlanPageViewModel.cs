@@ -97,9 +97,6 @@ namespace LaunchPad.Mobile.ViewModels
                 Task.Run(async () =>
                 {
                     SecureStorage.RemoveAll();
-                    await DatabaseServices.Delete<List<Product>>("healthplans"+Settings.ClientId);
-                    await DatabaseServices.Delete<List<Product>>("basketItems"+Settings.ClientId);
-                    await DatabaseServices.Delete<List<HealthPlanToComplete>>("healthPlanCompleted");
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Application.Current.MainPage = new AnimationNavigationPage(new SignInPage());
