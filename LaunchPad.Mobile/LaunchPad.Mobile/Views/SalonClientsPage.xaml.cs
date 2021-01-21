@@ -13,6 +13,13 @@ namespace LaunchPad.Mobile.Views
         {
             InitializeComponent();
         }
+
+        public SalonClientsPage(PageAnimation pageAnimation)
+        {
+            PageAnimation = pageAnimation;
+            InitializeComponent();
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -38,6 +45,11 @@ namespace LaunchPad.Mobile.Views
             base.OnDisappearing();
 
             (this.BindingContext as SalonClientsPageViewModel)?.RefreshCommand.Execute(null);
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
         }
     }
 }

@@ -513,6 +513,18 @@
           "buildTransitive/Xamarin.Forms.targets": {}
         }
       },
+      "Xamarin.Forms.InputKit/3.4.4": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Drawing.Common.dll"
+        ],
+        "compile": {
+          "lib/xamarinios10/Plugin.InputKit.dll": {}
+        },
+        "runtime": {
+          "lib/xamarinios10/Plugin.InputKit.dll": {}
+        }
+      },
       "Xamarin.Forms.Visual.Material/4.8.0.1687": {
         "type": "package",
         "dependencies": {
@@ -601,6 +613,7 @@
           "Xamarin.Essentials": "1.5.3.2",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.8.0.1687",
+          "Xamarin.Forms.InputKit": "3.4.4",
           "Xamarin.Forms.Visual.Material": "4.8.0.1687",
           "ZXing.Net.Mobile": "2.4.1",
           "ZXing.Net.Mobile.Forms": "2.4.1",
@@ -1139,6 +1152,18 @@
           "buildTransitive/Xamarin.Forms.targets": {}
         }
       },
+      "Xamarin.Forms.InputKit/3.4.4": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Drawing.Common.dll"
+        ],
+        "compile": {
+          "lib/xamarinios10/Plugin.InputKit.dll": {}
+        },
+        "runtime": {
+          "lib/xamarinios10/Plugin.InputKit.dll": {}
+        }
+      },
       "Xamarin.Forms.Visual.Material/4.8.0.1687": {
         "type": "package",
         "dependencies": {
@@ -1227,6 +1252,7 @@
           "Xamarin.Essentials": "1.5.3.2",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.8.0.1687",
+          "Xamarin.Forms.InputKit": "3.4.4",
           "Xamarin.Forms.Visual.Material": "4.8.0.1687",
           "ZXing.Net.Mobile": "2.4.1",
           "ZXing.Net.Mobile.Forms": "2.4.1",
@@ -1765,6 +1791,18 @@
           "buildTransitive/Xamarin.Forms.targets": {}
         }
       },
+      "Xamarin.Forms.InputKit/3.4.4": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Drawing.Common.dll"
+        ],
+        "compile": {
+          "lib/xamarinios10/Plugin.InputKit.dll": {}
+        },
+        "runtime": {
+          "lib/xamarinios10/Plugin.InputKit.dll": {}
+        }
+      },
       "Xamarin.Forms.Visual.Material/4.8.0.1687": {
         "type": "package",
         "dependencies": {
@@ -1853,6 +1891,7 @@
           "Xamarin.Essentials": "1.5.3.2",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.8.0.1687",
+          "Xamarin.Forms.InputKit": "3.4.4",
           "Xamarin.Forms.Visual.Material": "4.8.0.1687",
           "ZXing.Net.Mobile": "2.4.1",
           "ZXing.Net.Mobile.Forms": "2.4.1",
@@ -2391,6 +2430,18 @@
           "buildTransitive/Xamarin.Forms.targets": {}
         }
       },
+      "Xamarin.Forms.InputKit/3.4.4": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Drawing.Common.dll"
+        ],
+        "compile": {
+          "lib/xamarinios10/Plugin.InputKit.dll": {}
+        },
+        "runtime": {
+          "lib/xamarinios10/Plugin.InputKit.dll": {}
+        }
+      },
       "Xamarin.Forms.Visual.Material/4.8.0.1687": {
         "type": "package",
         "dependencies": {
@@ -2479,6 +2530,7 @@
           "Xamarin.Essentials": "1.5.3.2",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.8.0.1687",
+          "Xamarin.Forms.InputKit": "3.4.4",
           "Xamarin.Forms.Visual.Material": "4.8.0.1687",
           "ZXing.Net.Mobile": "2.4.1",
           "ZXing.Net.Mobile.Forms": "2.4.1",
@@ -4400,6 +4452,28 @@
         "xamarin.forms.nuspec"
       ]
     },
+    "Xamarin.Forms.InputKit/3.4.4": {
+      "sha512": "8LTkXu1lljnvKfZivfilElzx3sefM/bTJf84xFS/RykY4ANdTrnFche1NXv+j5YCY9y+MzKtKykSO4ILe8D5/A==",
+      "type": "package",
+      "path": "xamarin.forms.inputkit/3.4.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/monoandroid10.0/Plugin.InputKit.dll",
+        "lib/monoandroid10.0/Plugin.InputKit.xml",
+        "lib/monoandroid90/Plugin.InputKit.dll",
+        "lib/monoandroid90/Plugin.InputKit.xml",
+        "lib/netstandard1.0/Plugin.InputKit.dll",
+        "lib/netstandard1.0/Plugin.InputKit.xml",
+        "lib/netstandard2.0/Plugin.InputKit.dll",
+        "lib/netstandard2.0/Plugin.InputKit.xml",
+        "lib/xamarinios10/Plugin.InputKit.dll",
+        "lib/xamarinios10/Plugin.InputKit.xml",
+        "xamarin.forms.inputkit.3.4.4.nupkg.sha512",
+        "xamarin.forms.inputkit.nuspec"
+      ]
+    },
     "Xamarin.Forms.Visual.Material/4.8.0.1687": {
       "sha512": "VsOqEG6Ii1boEKg3A/PCjY3jLGWzazJbFfqJj9xcwIhTjOyQTbXyvymg6m3BH2Td6vW2yOGUuYIDqCl9jFKpSA==",
       "type": "package",
@@ -4520,6 +4594,7 @@
       "Xam.Plugins.Settings >= 3.1.1",
       "Xamarin.Essentials >= 1.5.3.2",
       "Xamarin.Forms >= 4.8.0.1687",
+      "Xamarin.Forms.InputKit >= 3.4.4",
       "Xamarin.Forms.Visual.Material >= 4.8.0.1687",
       "ZXing.Net.Mobile >= 2.4.1",
       "ZXing.Net.Mobile.Forms >= 2.4.1",
@@ -4583,6 +4658,10 @@
           "Xamarin.Forms": {
             "target": "Package",
             "version": "[4.8.0.1687, )"
+          },
+          "Xamarin.Forms.InputKit": {
+            "target": "Package",
+            "version": "[3.4.4, )"
           },
           "Xamarin.Forms.Visual.Material": {
             "target": "Package",

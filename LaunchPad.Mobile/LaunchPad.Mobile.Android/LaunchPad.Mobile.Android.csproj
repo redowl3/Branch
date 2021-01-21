@@ -74,6 +74,9 @@
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="Xamarin.Forms.InputKit">
+      <Version>3.4.4</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms.Visual.Material">
       <Version>4.8.0.1687</Version>
     </PackageReference>
@@ -92,6 +95,7 @@
     <Compile Include="CustomEntryRenderer.cs" />
     <Compile Include="CustomRenderers\BorderlessPickerRenderer.cs" />
     <Compile Include="CustomRenderers\BorderlessEntryRenderer.cs" />
+    <Compile Include="CustomRenderers\CustomImageRenderer.cs" />
     <Compile Include="CustomRenderers\FixedFontLabelRenderer.cs" />
     <Compile Include="CustomServices\ToastServices.cs" />
     <Compile Include="CustomServices\ToolbarItemBadgeService.cs" />
@@ -230,6 +234,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon_sort.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon_tick.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon_sort_desc_asc.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

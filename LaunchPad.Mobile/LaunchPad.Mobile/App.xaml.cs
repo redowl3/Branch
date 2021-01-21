@@ -11,15 +11,14 @@ namespace LaunchPad.Mobile
     {
         public static string UserName { get; set; }
         public static string SalonName { get; set; }
+        public static Page CurrentPage { get; set; }
+        public static Page NextPage { get; set; }
         public App()
         {
             InitializeComponent();
-
-            MainPage = new AnimationNavigationPage(new SplashPage())
-            {
-                BarBackgroundColor=Color.Black,
-                BarTextColor=Color.White
-            };
+            Device.SetFlags(new string[] { "RadioButton_Experimental"});
+            CurrentPage = new AnimationNavigationPage(new SplashPage());
+            MainPage = CurrentPage;
         }
 
         protected override void OnStart()

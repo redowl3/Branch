@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:AnimationPage xmlns="http://xamarin.com/schemas/2014/forms"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:controls="clr-namespace:FormsControls.Base;assembly=FormsControls.Base"
+                        xmlns:customlayouts="clr-namespace:LaunchPad.Mobile.CustomLayouts"
+                        xmlns:viewmodels="clr-namespace:LaunchPad.Mobile.ViewModels" xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
+                        x:Class="LaunchPad.Mobile.Views.SurveyPage"
+                        NavigationPage.HasBackButton="False"
+                        BackgroundColor="#fff">
+    <controls:AnimationPage.PageAnimation>
+        <controls:PushPageAnimation Duration="Medium" Subtype="FromRight" />
+    </controls:AnimationPage.PageAnimation>
+    <NavigationPage.TitleView>
+        <customlayouts:TitleBarLayoutV2/>
+    </NavigationPage.TitleView>
+    <ContentPage.BindingContext>
+        <viewmodels:SurveyPageViewModel/>
+    </ContentPage.BindingContext>
+    <Grid RowDefinitions="66,*,70" HorizontalOptions="FillAndExpand">
+        <FlexLayout BindableLayout.ItemsSource="{Binding Pages}" JustifyContent="SpaceAround" AlignContent="SpaceEvenly" HorizontalOptions="FillAndExpand">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <Grid RowDefinitions="56,10" FlexLayout.Basis="50%">
+                        <Grid HorizontalOptions="FillAndExpand">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectedCommand}" CommandParameter="{Binding .}"/>
+                            </Grid.GestureRecognizers>
+                            <Label Text="{Binding Title}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="22" TextColor="#000" Style="{StaticResource ContentTitle}"/>
+                        </Grid>
+                        <BoxView Grid.Row="1">
+                            <BoxView.Triggers>
+                                <MultiTrigger TargetType="BoxView">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding Path=IsSelected}" Value="True"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="BackgroundColor" Value="#ccc"/>
+                                </MultiTrigger>
+                                <MultiTrigger TargetType="BoxView">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding Path=IsSelected}" Value="False"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="BackgroundColor" Value="#fff"/>
+                                </MultiTrigger>
+                            </BoxView.Triggers>
+                        </BoxView>
+                    </Grid>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </FlexLayout>
+        <ScrollView Grid.Row="1">
+            <StackLayout BindableLayout.ItemsSource="{Binding Questions}" Padding="20,20">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Grid RowDefinitions="Auto,Auto" Padding="20,10" RowSpacing="20">
+                            <Label Text="{Binding FormQuestionData.QuestionText}" VerticalTextAlignment="Center" FontSize="18" TextColor="#000" Style="{StaticResource ContentDescription}"/>
+                            <Frame Grid.Row="1" CornerRadius="28" BorderColor="#000" HasShadow="False" HorizontalOptions="Start" WidthRequest="500" Padding="0" IsVisible="{Binding IsTextBox}">
+                                <Grid RowDefinitions="56">
+                                    <Entry Placeholder="Text box" Margin="20,0"/>                                    
+                                </Grid>                                
+                            </Frame>
+                            <Frame Grid.Row="1" CornerRadius="28" BorderColor="#000" HasShadow="False" HorizontalOptions="Start" WidthRequest="450" IsVisible="{Binding IsTextArea}">
+                                <Grid RowDefinitions="100">
+                                    <Editor Placeholder="Text area" HeightRequest="100"/>
+                                </Grid>                                
+                            </Frame>
+                            <input:RadioButtonGroupView Grid.Row="1" BindableLayout.ItemsSource="{Binding FormQuestionData.Answers}" IsVisible="{Binding IsRadio}" Spacing="20">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <input:RadioButton CircleColor="#000" Color="#000" Text="{Binding ResponseText}" IsChecked="{Binding Selected}" FontFamily="RegularFont" TextFontSize="18"/>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </input:RadioButtonGroupView>
+                            <StackLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding FormQuestionData.Answers}" IsVisible="{Binding IsCheckBox}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout Orientation="Horizontal">
+                                            <input:CheckBox Color="#000" BorderColor="#000" BoxBackgroundColor="#000" Text="{Binding ResponseText}" IsChecked="{Binding Selected}" FontFamily="RegularFont" TextFontSize="18" Type="Material" />
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
+                            <input:RadioButtonGroupView Grid.Row="1" Orientation="Horizontal" Spacing="20" IsVisible="{Binding IsYesNo}">
+                                <input:RadioButton CircleColor="#000" Color="#000" Text="Yes" FontFamily="RegularFont" TextFontSize="18"/>
+                                <input:RadioButton CircleColor="#000" Color="#000" Text="No" FontFamily="RegularFont" TextFontSize="18"/>
+                            </input:RadioButtonGroupView>
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+        </ScrollView>
+        <Grid Grid.Row="2" Padding="20,0">
+            <Button BackgroundColor="#000" TextColor="#fff" BorderWidth="1" Text="Finish" FontSize="20" Command="{Binding FinishCommand}" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="400" HeightRequest="56"/>
+        </Grid>
+    </Grid>   
+</controls:AnimationPage>

@@ -46,7 +46,6 @@
                 <Setter Property="FontFamily" Value="RegularFont"/>
             </Style>
             <Style TargetType="Entry">
-                <Setter Property="ClearButtonVisibility" Value="WhileEditing"/>
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="FontFamily" Value="RegularFont"/>
             </Style>

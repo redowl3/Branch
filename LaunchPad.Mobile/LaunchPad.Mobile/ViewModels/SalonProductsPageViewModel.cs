@@ -167,7 +167,7 @@ namespace LaunchPad.Mobile.ViewModels
             get => _isContentLoading;
             set => SetProperty(ref _isContentLoading, value);
         }
-        public ICommand GoBackCommand => new Command(() => Application.Current.MainPage.Navigation.PopAsync());
+        public ICommand GoBackCommand => new Command(() => Application.Current.MainPage = new AnimationNavigationPage(new SalonClientsPage()));
         public ICommand HomeCommand => new Command(() => Application.Current.MainPage = new AnimationNavigationPage(new SalonClientsPage()));
         public ICommand SignOutCommand => new Command(() =>
         {

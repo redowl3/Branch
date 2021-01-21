@@ -5,6 +5,7 @@ using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Models;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.Views;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -67,7 +68,6 @@ namespace LaunchPad.Mobile.ViewModels
                     {
                         Console.WriteLine("salon stored to local cache");
                     }
-
                 }
                 var consumers = await ApiServices.Client.GetAsync<List<Consumer>>("Salon/Consumers");
                 Progress = 0.50;
@@ -119,7 +119,8 @@ namespace LaunchPad.Mobile.ViewModels
                 }
                 else
                 {
-                    await Application.Current.MainPage.Navigation.PushAsync(new SignInPage());
+
+                    Application.Current.MainPage = new AnimationNavigationPage(new SignInPage());
                 }
 
             }));

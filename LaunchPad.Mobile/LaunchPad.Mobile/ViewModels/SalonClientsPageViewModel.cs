@@ -24,284 +24,303 @@ namespace LaunchPad.Mobile.ViewModels
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
         }
-        private string _searchText;
-        public string SearchText
+        private bool _isAscToDesc = true;
+        public bool IsAscToDesc
         {
-            get => _searchText;
+            get => _isAscToDesc;
             set
             {
-                SetProperty(ref _searchText, value);
-                FilterCollectionAsync(SearchText);
-            }
+                SetProperty(ref _isAscToDesc, value);
+                ConsumerCollection = new ObservableCollection<Consumer>(ConsumerCollection.Reverse());
+            }           
         }
+    private string _searchText;
+    public string SearchText
+    {
+        get => _searchText;
+        set
+        {
+            SetProperty(ref _searchText, value);
+            FilterCollectionAsync(SearchText);
+        }
+    }
 
-        private ObservableCollection<AlphabetsModel> _alphabetsCollection;
-        public ObservableCollection<AlphabetsModel> AlphabetsCollection
-        {
-            get => _alphabetsCollection;
-            set => SetProperty(ref _alphabetsCollection, value);
-        }
-         
-        private ObservableCollection<Consumer> _consumerCollection;
-        public ObservableCollection<Consumer> ConsumerCollection
-        {
-            get => _consumerCollection;
-            set => SetProperty(ref _consumerCollection, value);
-        }
-        
-        private ObservableCollection<RecentConsumer> _recentConsumerCollection;
-        public ObservableCollection<RecentConsumer> RecentConsumerCollection
-        {
-            get => _recentConsumerCollection;
-            set => SetProperty(ref _recentConsumerCollection, value);
-        }
+    private ObservableCollection<AlphabetsModel> _alphabetsCollection;
+    public ObservableCollection<AlphabetsModel> AlphabetsCollection
+    {
+        get => _alphabetsCollection;
+        set => SetProperty(ref _alphabetsCollection, value);
+    }
 
-        private Consumer _selectedConsumer;
-        public Consumer SelectedConsumer
-        {
-            get => _selectedConsumer;
-            set => SetProperty(ref _selectedConsumer, value);
-        }
+    private ObservableCollection<Consumer> _consumerCollection;
+    public ObservableCollection<Consumer> ConsumerCollection
+    {
+        get => _consumerCollection;
+        set => SetProperty(ref _consumerCollection, value);
+    }
 
-        public ICommand SelectConsumerCommand => new Command<Consumer>((param) => GoToSalonProductPageAsync(param));
-        public ICommand NewClientCommand => new Command(() => GoToCLientRegistrationPage());
-        public ICommand RefreshCommand => new Command(() => FetchConsumerCollectionAsync());
-        public ICommand SignOutCommand => new Command(() =>
+    private ObservableCollection<RecentConsumer> _recentConsumerCollection;
+    public ObservableCollection<RecentConsumer> RecentConsumerCollection
+    {
+        get => _recentConsumerCollection;
+        set => SetProperty(ref _recentConsumerCollection, value);
+    }
+
+    private Consumer _selectedConsumer;
+    public Consumer SelectedConsumer
+    {
+        get => _selectedConsumer;
+        set => SetProperty(ref _selectedConsumer, value);
+    }
+
+    private List<Consumer> ListOfConsumers = new List<Consumer>();
+    public ICommand AscToDescCommand => new Command<Consumer>((param) =>
+    {
+        IsAscToDesc = false;
+    });
+    public ICommand DescToAscCommand => new Command<Consumer>((param) =>
+    {
+        IsAscToDesc = true;
+    });
+    public ICommand SelectConsumerCommand => new Command<Consumer>((param) => GoToSalonProductPageAsync(param));
+    public ICommand NewClientCommand => new Command(() => GoToCLientRegistrationPage());
+    public ICommand RefreshCommand => new Command(() => FetchConsumerCollectionAsync());
+    public ICommand SignOutCommand => new Command(() =>
+    {
+        try
         {
-            try
+            Task.Run(async () =>
             {
-                Task.Run(async () =>
+                SecureStorage.RemoveAll();
+                Device.BeginInvokeOnMainThread(() =>
                 {
-                    SecureStorage.RemoveAll();
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        Application.Current.MainPage = new AnimationNavigationPage(new SignInPage());
-                    });
+                    Application.Current.MainPage = new AnimationNavigationPage(new SignInPage());
                 });
-
-            }
-            catch (Exception)
-            {
-            }
-        });
-        public SalonClientsPageViewModel()
-        {
-            AlphabetsCollection = new ObservableCollection<AlphabetsModel>();
-            char[] az = Enumerable.Range('a', 'z' - 'a' + 1).Select(i => (Char)i).ToArray();
-            foreach (var c in az)
-            {
-                AlphabetsCollection.Add(new AlphabetsModel
-                {
-                    Alphabet = c.ToString(),
-                    AlphabetSelectedCommand = new Command<string>((param) =>
-                    {
-                        FilterByAlphabetAsync(param);
-                    }),
-                    RemoveSelectedCommand = new Command<string>((param) =>
-                    {
-                        FilterByAlphabetAsync(param);
-                    })
-                });
-            }
-            FetchConsumerCollectionAsync();
+            });
 
         }
-
-        private void FetchConsumerCollectionAsync()
+        catch (Exception)
         {
-            if (IsBusy) return;
-            IsBusy = true;
-            try
-            {
-                
-                Device.BeginInvokeOnMainThread(async() =>
-                {
-                    var consumers = await DatabaseServices.Get<List<Consumer>>("consumers");
-                    if (consumers.Count > 0)
-                    {
-                        ConsumerCollection = new ObservableCollection<Consumer>(consumers.OrderBy(a=>a.Lastname)); 
-                    }
-                    var recentConsumers = await DatabaseServices.Get<List<RecentConsumer>>("recentconsumers"+Settings.CurrentTherapistId);
-                    if (recentConsumers.Count > 0)
-                    {
-
-                        RecentConsumerCollection = new ObservableCollection<RecentConsumer>(recentConsumers.OrderByDescending(a=>a.LastLogin));
-                    }
-                });
-               
-            }
-            catch (Exception)
-            {
-
-            }
-            IsBusy = false;
         }
-
-        private async void FilterByAlphabetAsync(string param)
+    });
+    public SalonClientsPageViewModel()
+    {
+        AlphabetsCollection = new ObservableCollection<AlphabetsModel>();
+        char[] az = Enumerable.Range('a', 'z' - 'a' + 1).Select(i => (Char)i).ToArray();
+        foreach (var c in az)
         {
-            if (IsBusy) return;
-            IsBusy = true;
-            try
+            AlphabetsCollection.Add(new AlphabetsModel
             {
-                if (!string.IsNullOrEmpty(param))
+                Alphabet = c.ToString(),
+                AlphabetSelectedCommand = new Command<string>((param) =>
                 {
-                    AlphabetsCollection.Where(a => a.Alphabet != param).ForEach(x => x.IsSelected = false);
-                    var consumers = await DatabaseServices.Get<List<Consumer>>("consumers");
-                    if (consumers.Count > 0)
-                    {
-                        ConsumerCollection = new ObservableCollection<Consumer>(consumers.Where(a => a.Lastname.ToLower().StartsWith(param.ToLower())));
-                    }
-                }
-                else
+                    FilterByAlphabetAsync(param);
+                }),
+                RemoveSelectedCommand = new Command<string>((param) =>
                 {
-                    AlphabetsCollection.ForEach(x => x.IsSelected = false);
-                    var consumers = await DatabaseServices.Get<List<Consumer>>("consumers");
-                    if (consumers.Count > 0)
-                    {
-                        ConsumerCollection = new ObservableCollection<Consumer>(consumers);
-                    }
-                }
-               
-            }
-            catch (Exception ex)
-            {
-
-            }
-            IsBusy = false;
+                    FilterByAlphabetAsync(param);
+                })
+            });
         }
-        private async void FilterCollectionAsync(string searchText)
+        FetchConsumerCollectionAsync();
+
+    }
+
+    private void FetchConsumerCollectionAsync()
+    {
+        if (IsBusy) return;
+        IsBusy = true;
+        try
         {
-            try
+
+            Device.BeginInvokeOnMainThread(async () =>
             {
-                if (!string.IsNullOrEmpty(searchText))
+                ListOfConsumers = await DatabaseServices.Get<List<Consumer>>("consumers");
+                if (ListOfConsumers.Count > 0)
                 {
-                    var consumers = await DatabaseServices.Get<List<Consumer>>("consumers");
-                    if (consumers.Count ==0) return;
-                    ConsumerCollection = new ObservableCollection<Consumer>(consumers.Where(a => a.Lastname.ToLower().Contains(searchText.ToLower()) || a.Firstname.ToLower().Contains(searchText.ToLower())));
+                    ConsumerCollection = new ObservableCollection<Consumer>(ListOfConsumers.OrderByDescending(a => a.Lastname));
                 }
-                else
+                var recentConsumers = await DatabaseServices.Get<List<RecentConsumer>>("recentconsumers" + Settings.CurrentTherapistId);
+                if (recentConsumers.Count > 0)
                 {
-                    AlphabetsCollection.ForEach(x => x.IsSelected = false);
-                    var consumers = await DatabaseServices.Get<List<Consumer>>("consumers");
-                    if (consumers.Count > 0)
-                    {
-                        ConsumerCollection = new ObservableCollection<Consumer>(consumers);
-                    }
+
+                    RecentConsumerCollection = new ObservableCollection<RecentConsumer>(recentConsumers.OrderByDescending(a => a.LastLogin));
+                }
+            });
+
+        }
+        catch (Exception)
+        {
+
+        }
+        IsBusy = false;
+    }
+
+    private async void FilterByAlphabetAsync(string param)
+    {
+        if (IsBusy) return;
+        IsBusy = true;
+        try
+        {
+            if (!string.IsNullOrEmpty(param))
+            {
+                AlphabetsCollection.Where(a => a.Alphabet != param).ForEach(x => x.IsSelected = false);
+                var consumers = await DatabaseServices.Get<List<Consumer>>("consumers");
+                if (consumers.Count > 0)
+                {
+                    ConsumerCollection = new ObservableCollection<Consumer>(consumers.Where(a => a.Lastname.ToLower().StartsWith(param.ToLower())));
                 }
             }
-            catch (Exception)
+            else
             {
+                AlphabetsCollection.ForEach(x => x.IsSelected = false);
+                var consumers = await DatabaseServices.Get<List<Consumer>>("consumers");
+                if (consumers.Count > 0)
+                {
+                    ConsumerCollection = new ObservableCollection<Consumer>(consumers);
+                }
+            }
 
-                throw;
+        }
+        catch (Exception ex)
+        {
+
+        }
+        IsBusy = false;
+    }
+    private async void FilterCollectionAsync(string searchText)
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                var consumers = await DatabaseServices.Get<List<Consumer>>("consumers");
+                if (consumers.Count == 0) return;
+                ConsumerCollection = new ObservableCollection<Consumer>(consumers.Where(a => a.Lastname.ToLower().Contains(searchText.ToLower()) || a.Firstname.ToLower().Contains(searchText.ToLower())));
+            }
+            else
+            {
+                AlphabetsCollection.ForEach(x => x.IsSelected = false);
+                var consumers = await DatabaseServices.Get<List<Consumer>>("consumers");
+                if (consumers.Count > 0)
+                {
+                    ConsumerCollection = new ObservableCollection<Consumer>(consumers);
+                }
             }
         }
-        private void GoToSalonProductPageAsync(Consumer param)
+        catch (Exception)
         {
-            if (IsBusy) return;
-            IsBusy = true;
-            try
+
+            throw;
+        }
+    }
+    private void GoToSalonProductPageAsync(Consumer param)
+    {
+        if (IsBusy) return;
+        IsBusy = true;
+        try
+        {
+            Task.Run(async () =>
             {
-                Task.Run(async () =>
+                if (param != null)
                 {
-                    if (param != null)
+                    var isStored = await DatabaseServices.InsertData<Consumer>("current_consumer" + Settings.CurrentTherapistId, param);
+                    if (isStored)
                     {
-                        var isStored = await DatabaseServices.InsertData<Consumer>("current_consumer"+Settings.CurrentTherapistId, param);
-                        if (isStored)
+                        Settings.ClientId = param.Id.ToString();
+                        Settings.ClientFirstName = $"{param.Firstname}";
+                        Settings.ClientName = $"{param.Firstname} {param.Lastname}";
+                        Settings.ClientHeader = $"{param.Firstname}'s Skin Health Plan";
+                        var lastLogin = DateTime.Now;
+                        var recentConsumer = new RecentConsumer
                         {
-                            Settings.ClientId = param.Id.ToString();
-                            Settings.ClientFirstName = $"{param.Firstname}";
-                            Settings.ClientName = $"{param.Firstname} {param.Lastname}";
-                            Settings.ClientHeader = $"{param.Firstname}'s Skin Health Plan";
-                            var lastLogin = DateTime.Now;
-                            var recentConsumer = new RecentConsumer
-                            {
-                                Consumer=param,
-                                LastLogin=lastLogin,
-                                LastLoginDateTime=lastLogin.ToString("dd/MM/yyyy - hh:mm tt")
-                            };
+                            Consumer = param,
+                            LastLogin = lastLogin,
+                            LastLoginDateTime = lastLogin.ToString("dd/MM/yyyy - hh:mm tt")
+                        };
 
-                            var recentConsumerList = await DatabaseServices.Get<List<RecentConsumer>>("recentconsumers"+Settings.CurrentTherapistId);
-                            if (recentConsumerList.Count == 0)
+                        var recentConsumerList = await DatabaseServices.Get<List<RecentConsumer>>("recentconsumers" + Settings.CurrentTherapistId);
+                        if (recentConsumerList.Count == 0)
+                        {
+                            recentConsumerList.Add(recentConsumer);
+                        }
+                        else
+                        {
+                            var consumer = recentConsumerList.FirstOrDefault(a => a.Consumer.Id == param.Id);
+                            if (consumer != null)
                             {
-                                recentConsumerList.Add(recentConsumer);
+                                recentConsumerList.Remove(consumer);
+                                recentConsumerList.Insert(0, recentConsumer);
                             }
                             else
                             {
-                                var consumer = recentConsumerList.FirstOrDefault(a => a.Consumer.Id == param.Id);
-                                if (consumer != null)
-                                {
-                                    recentConsumerList.Remove(consumer);
-                                    recentConsumerList.Insert(0, recentConsumer);
-                                }
-                                else
-                                {
-                                    recentConsumerList.Insert(0, recentConsumer);
-                                }
+                                recentConsumerList.Insert(0, recentConsumer);
                             }
-
-                            await DatabaseServices.InsertData<List<RecentConsumer>>("recentconsumers"+Settings.CurrentTherapistId,recentConsumerList);
-                            Device.BeginInvokeOnMainThread(() =>
-                            {
-                                Application.Current.MainPage.Navigation.PushAsync(new SalonProductsPage());
-                            });
                         }
+
+                        await DatabaseServices.InsertData<List<RecentConsumer>>("recentconsumers" + Settings.CurrentTherapistId, recentConsumerList);
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            Application.Current.MainPage = new AnimationNavigationPage(new SurveyPage());
+                        });
                     }
-                });
+                }
+            });
 
-            }
-            catch (Exception)
-            {
-
-            }
-            IsBusy = false;
         }
-
-        private void GoToCLientRegistrationPage()
+        catch (Exception)
         {
-            try
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    Application.Current.MainPage.Navigation.PushAsync(new ClientRegistrationPage());
-                });
-            }
-            catch (Exception)
-            {
 
-            }
         }
-
-
+        IsBusy = false;
     }
 
-    public class RecentConsumer
+    private void GoToCLientRegistrationPage()
     {
-        public Consumer Consumer { get; set; }
-        public DateTime LastLogin { get; set; }
-        public string LastLoginDateTime { get; set; }
-    }
-    public class AlphabetsModel:ViewModelBase
-    {
-        public string Alphabet { get; set; }
-
-        private bool _isSelected;
-        public bool IsSelected
+        try
         {
-            get => _isSelected;
-            set => SetProperty(ref _isSelected, value);
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                Application.Current.MainPage = new AnimationNavigationPage(new ClientRegistrationPage());
+            });
         }
+        catch (Exception)
+        {
 
-        public ICommand SelectCommand => new Command<string>((param) =>
-          {
-              IsSelected = true;
-              AlphabetSelectedCommand.Execute(param);
-          }); 
-        public ICommand RemoveSelectionCommand => new Command<string>((param) =>
-          {
-              IsSelected = false;
-              RemoveSelectedCommand.Execute(param);
-          });
-        public ICommand AlphabetSelectedCommand { get; set; }
-        public ICommand RemoveSelectedCommand { get; set; }
+        }
     }
+
+
+}
+
+public class RecentConsumer
+{
+    public Consumer Consumer { get; set; }
+    public DateTime LastLogin { get; set; }
+    public string LastLoginDateTime { get; set; }
+}
+public class AlphabetsModel : ViewModelBase
+{
+    public string Alphabet { get; set; }
+
+    private bool _isSelected;
+    public bool IsSelected
+    {
+        get => _isSelected;
+        set => SetProperty(ref _isSelected, value);
+    }
+
+    public ICommand SelectCommand => new Command<string>((param) =>
+      {
+          IsSelected = true;
+          AlphabetSelectedCommand.Execute(param);
+      });
+    public ICommand RemoveSelectionCommand => new Command<string>((param) =>
+      {
+          IsSelected = false;
+          RemoveSelectedCommand.Execute(param);
+      });
+    public ICommand AlphabetSelectedCommand { get; set; }
+    public ICommand RemoveSelectedCommand { get; set; }
+}
 }

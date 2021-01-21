@@ -1,10 +1,13 @@
-﻿using IIAADataModels.Transfer;
+﻿using FormsControls.Base;
+using IIAADataModels.Transfer;
 using LaunchPad.Client;
 using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Services;
+using LaunchPad.Mobile.Views;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -228,16 +231,12 @@ namespace LaunchPad.Mobile.ViewModels
         {
             Countries = new List<string>
             {
-                "United Kingdom",
-                "United States",
-                "India"
+                "United Kingdom"
             };
             Country = Countries[0];
             IddCodes = new List<string>
             {
-                "+1",
-                "+44",
-                "+91"
+                "+44"
             };
 
             SelectedIddCode = IddCodes[0];
@@ -285,10 +284,50 @@ namespace LaunchPad.Mobile.ViewModels
                         if (isSaved)
                         {
                             ToastServices.ShowToast("Consumer has been added successfully");
-                            Device.BeginInvokeOnMainThread(() =>
+                            var param = consumers.First(a => a.Id == consumerRequest.Id);
+                            if (param != null)
                             {
-                                Application.Current.MainPage.Navigation.PopAsync();
-                            });
+                                var isStored = await DatabaseServices.InsertData<Consumer>("current_consumer" + Settings.CurrentTherapistId, param);
+                                if (isStored)
+                                {
+                                    Settings.ClientId = param.Id.ToString();
+                                    Settings.ClientFirstName = $"{param.Firstname}";
+                                    Settings.ClientName = $"{param.Firstname} {param.Lastname}";
+                                    Settings.ClientHeader = $"{param.Firstname}'s Skin Health Plan";
+                                    var lastLogin = DateTime.Now;
+                                    var recentConsumer = new RecentConsumer
+                                    {
+                                        Consumer = param,
+                                        LastLogin = lastLogin,
+                                        LastLoginDateTime = lastLogin.ToString("dd/MM/yyyy - hh:mm tt")
+                                    };
+
+                                    var recentConsumerList = await DatabaseServices.Get<List<RecentConsumer>>("recentconsumers" + Settings.CurrentTherapistId);
+                                    if (recentConsumerList.Count == 0)
+                                    {
+                                        recentConsumerList.Add(recentConsumer);
+                                    }
+                                    else
+                                    {
+                                        var consumer = recentConsumerList.FirstOrDefault(a => a.Consumer.Id == param.Id);
+                                        if (consumer != null)
+                                        {
+                                            recentConsumerList.Remove(consumer);
+                                            recentConsumerList.Insert(0, recentConsumer);
+                                        }
+                                        else
+                                        {
+                                            recentConsumerList.Insert(0, recentConsumer);
+                                        }
+                                    }
+
+                                    await DatabaseServices.InsertData("recentconsumers" + Settings.CurrentTherapistId, recentConsumerList);
+                                    Device.BeginInvokeOnMainThread(() =>
+                                    {
+                                        Application.Current.MainPage = new AnimationNavigationPage(new SurveyPage());
+                                    });
+                                }
+                            }
                         }
 
                     }
@@ -298,7 +337,7 @@ namespace LaunchPad.Mobile.ViewModels
                     ToastServices.ShowToast("Consumer registration failed");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ToastServices.ShowToast("Something went wrong.Please try again");
             }

@@ -39,6 +39,7 @@
                         <Grid>
                             <Entry x:Name="FirstnameEntry" Text="{Binding Firstname}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
+                            <Image Source="icon_tick" HorizontalOptions="End" IsVisible="False"/>
                         </Grid>
                     </Frame>
                 </Grid>
@@ -48,6 +49,7 @@
                         <Grid>
                             <Entry x:Name="LastnameEntry" Text="{Binding Lastname}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
+                            <Image Source="icon_tick" HorizontalOptions="End" IsVisible="False"/>
                         </Grid>
                     </Frame>
                 </Grid>
@@ -55,8 +57,9 @@
                     <Label Text="Email" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                     <Frame Grid.Row="1" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry  x:Name="EmailEntry" Text="{Binding Email}" BackgroundColor="#f2f2f2"/>
+                            <Entry  x:Name="EmailEntry" Text="{Binding Email}" BackgroundColor="#f2f2f2" Keyboard="Email"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
+                            <Image Source="icon_tick" HorizontalOptions="End" IsVisible="False"/>
                         </Grid>
                     </Frame>
                 </Grid>
@@ -64,8 +67,9 @@
                     <Label Text="Confirm Email" FontSize="22" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                     <Frame Grid.Row="1" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry x:Name="ConfirmEmailEntry" Text="{Binding ConfirmEmail}" BackgroundColor="#f2f2f2"/>
+                            <Entry x:Name="ConfirmEmailEntry" Text="{Binding ConfirmEmail}" BackgroundColor="#f2f2f2" Keyboard="Email"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
+                            <Image Source="icon_tick" HorizontalOptions="End" IsVisible="False"/>
                         </Grid>
                     </Frame>
                 </Grid>
@@ -88,8 +92,9 @@
                     </Frame>
                     <Frame Grid.Row="1" Grid.Column="2" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
                         <Grid>
-                            <Entry x:Name="YYEntry" Text="{Binding YY}" HorizontalTextAlignment="Center" BackgroundColor="#f2f2f2" MaxLength="4" Keyboard="Numeric"/>
+                            <Entry x:Name="YYEntry" Text="{Binding YY}" BackgroundColor="#f2f2f2" MaxLength="4" Keyboard="Numeric"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
+                            <Image Source="icon_tick" HorizontalOptions="End" IsVisible="False"/>
                         </Grid>
                     </Frame>
                 </Grid>
@@ -111,6 +116,7 @@
                             <Grid>
                                 <Entry x:Name="MobileEntry" Text="{Binding Mobile}" BackgroundColor="#f2f2f2" Keyboard="Telephone" MaxLength="16"/>
                                 <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
+                                <Image Source="icon_tick" HorizontalOptions="End" IsVisible="False"/>
                             </Grid>
                         </Frame>
                     </Grid>
@@ -123,6 +129,7 @@
                         <Grid>
                             <Entry x:Name="PostcodeEntry" Text="{Binding PostCode}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
+                            <Image Source="icon_tick" HorizontalOptions="End" IsVisible="False"/>
                         </Grid>
                     </Frame>
                 </Grid>
@@ -142,6 +149,7 @@
                         <Grid>
                             <Entry x:Name="AddressLine1Entry" Text="{Binding AddressLine1}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
+                            <Image Source="icon_tick" HorizontalOptions="End" IsVisible="False"/>
                         </Grid>
                     </Frame>
                 </Grid>
@@ -151,6 +159,7 @@
                         <Grid>
                             <Entry x:Name="AddressLine2Entry" Text="{Binding AddressLine2}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
+                            <Image Source="icon_tick" HorizontalOptions="End" IsVisible="False"/>
                         </Grid>
                     </Frame>
                 </Grid>
@@ -160,6 +169,7 @@
                         <Grid>
                             <Entry x:Name="AddressLine3Entry" Text="{Binding AddressLine3}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
+                            <Image Source="icon_tick" HorizontalOptions="End" IsVisible="False"/>
                         </Grid>
                     </Frame>
                 </Grid>
@@ -172,6 +182,7 @@
                         <Grid>
                             <Entry x:Name="CityEntry" Text="{Binding City}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
+                            <Image Source="icon_tick" HorizontalOptions="End" IsVisible="False"/>
                         </Grid>
                     </Frame>
                 </Grid>
@@ -181,6 +192,7 @@
                         <Grid>
                             <Entry x:Name="CountyEntry" Text="{Binding County}" BackgroundColor="#f2f2f2"/>
                             <BoxView BackgroundColor="#000" HeightRequest="1" VerticalOptions="End"/>
+                            <Image Source="icon_tick" HorizontalOptions="End" IsVisible="False"/>
                         </Grid>
                     </Frame>
                 </Grid>
