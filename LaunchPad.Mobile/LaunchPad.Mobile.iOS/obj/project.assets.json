@@ -4608,11 +4608,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
+      "projectUniqueName": "E:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
       "projectName": "LaunchPad.Mobile.iOS",
-      "projectPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
+      "projectPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
       "packagesPath": "C:\\Users\\Amit Kumar\\.nuget\\packages\\",
-      "outputPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\obj\\",
+      "outputPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
@@ -4633,8 +4633,8 @@
       "frameworks": {
         "xamarinios10": {
           "projectReferences": {
-            "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj": {
-              "projectPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj"
+            "E:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj": {
+              "projectPath": "E:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj"
             }
           }
         }

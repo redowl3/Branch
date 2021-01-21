@@ -16,7 +16,6 @@ namespace LaunchPad.Mobile
         public App()
         {
             InitializeComponent();
-            Device.SetFlags(new string[] { "RadioButton_Experimental"});
             CurrentPage = new AnimationNavigationPage(new SplashPage());
             MainPage = CurrentPage;
         }

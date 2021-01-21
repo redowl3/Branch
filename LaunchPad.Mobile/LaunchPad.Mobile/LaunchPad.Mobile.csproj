@@ -11,6 +11,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\SplashPage.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Views\SplashPage.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\Fonts\UniNeueBook.ttf" />
     <None Remove="Resources\Fonts\UniNeueRegular.ttf" />
   </ItemGroup>

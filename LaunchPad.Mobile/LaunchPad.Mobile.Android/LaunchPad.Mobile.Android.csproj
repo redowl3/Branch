@@ -131,12 +131,6 @@
     <AndroidResource Include="Resources\drawable\icon_checkmark.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LaunchPad.Mobile\LaunchPad.Mobile.csproj">
-      <Project>{9D898CBF-D33B-4C74-B78D-D04CB0D8EAEC}</Project>
-      <Name>LaunchPad.Mobile</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon_filter.png" />
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +234,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon_sort_desc_asc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LaunchPad.Mobile\LaunchPad.Mobile.csproj">
+      <Project>{23cab9ad-5a09-448c-899f-fdddce8ed0bf}</Project>
+      <Name>LaunchPad.Mobile</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
