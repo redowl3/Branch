@@ -33,8 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AiForms.Layouts" Version="1.1.0" />
     <PackageReference Include="akavache" Version="7.1.1" />
     <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
+    <PackageReference Include="Xam.TabView" Version="1.0.5" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
@@ -59,6 +61,9 @@
     <Compile Update="CustomLayouts\TitleBarLayoutV2.xaml.cs">
       <DependentUpon>TitleBarLayoutV2.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\ConcernsSurveyPage.xaml.cs">
+      <DependentUpon>ConcernsSurveyPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Filters\FinishFilterPage.xaml.cs">
       <DependentUpon>FinishFilterPage.xaml</DependentUpon>
     </Compile>
@@ -70,6 +75,9 @@
     </Compile>
     <Compile Update="Views\CompletedHealthPlanPage.xaml.cs">
       <DependentUpon>CompletedHealthPlanPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\HealthQuestionsSurveyPage.xaml.cs">
+      <DependentUpon>HealthQuestionsSurveyPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\NetworkConfigPage.xaml.cs">
       <DependentUpon>NetworkConfigPage.xaml</DependentUpon>
@@ -86,6 +94,24 @@
     <EmbeddedResource Update="CustomControls\CustomPickerView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="CustomLayouts\ConcernAndSkinCareQuestionsLayout.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="CustomLayouts\ConcernsQuestionContainerLayout.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="CustomLayouts\HealthQuestionsContainerLayout.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="CustomLayouts\HealthQuestionsLayout.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="CustomLayouts\LifeStylesQuestionContainerLayout.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="CustomLayouts\LifestylesQuestionsLayout.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="CustomLayouts\ProductLayoutView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -98,10 +124,28 @@
     <EmbeddedResource Update="CustomLayouts\TitleBarLayoutV1.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="CustomLayouts\YesNoWithTextAreaLayout.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ViewModels\SurveyQuestionsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\ClientRegistrationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\ConcernsSurveyPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Filters\FeedFilterPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\HealthQuestionsSurveyPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\LegalPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\LifeStylesSurveyPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\PickerItemsView.xaml">

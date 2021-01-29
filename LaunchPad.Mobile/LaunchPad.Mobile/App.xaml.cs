@@ -1,4 +1,5 @@
 ﻿using FormsControls.Base;
+using LaunchPad.Mobile.ViewModels;
 using LaunchPad.Mobile.Views;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,11 @@ namespace LaunchPad.Mobile
         public static string SalonName { get; set; }
         public static Page CurrentPage { get; set; }
         public static Page NextPage { get; set; }
+        public static SurveyPageViewModel surveyPageViewModelInstance { get; set; }
+        public static ConcernsAndSkinCareSurveyViewModel ConcernsAndSkinCareSurveyViewModel { get; set; }
+        public static HealthQuestionsSurveyViewModel HealthQuestionsSurveyViewModel { get; set; }
+        public static LifestylesSurveyViewModel LifestylesSurveyViewModel { get; set; }
+        public static AnimationNavigationPage SurveyPageInstance { get; set; }
         public App()
         {
             InitializeComponent();

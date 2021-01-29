@@ -22,7 +22,9 @@ namespace LaunchPad.Mobile.Droid
             Forms.SetFlags("SwipeView_Experimental");
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Forms.SetFlags("UseLegacyRenderers");
             global::Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);
+            Plugin.InputKit.Platforms.Droid.Config.Init(this, savedInstanceState);
             CachedImageRenderer.Init(true);
             CachedImageRenderer.InitImageViewHandler();
             FormsControls.Droid.Main.Init(this);

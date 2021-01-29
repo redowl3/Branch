@@ -206,6 +206,10 @@
       "frameworks": {
         "netstandard2.0": {
           "dependencies": {
+            "AiForms.Layouts": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
             "NETStandard.Library": {
               "suppressParent": "All",
               "target": "Package",
@@ -219,6 +223,10 @@
             "Xam.Plugins.Settings": {
               "target": "Package",
               "version": "[3.1.1, )"
+            },
+            "Xam.TabView": {
+              "target": "Package",
+              "version": "[1.0.5, )"
             },
             "Xamarin.Essentials": {
               "target": "Package",

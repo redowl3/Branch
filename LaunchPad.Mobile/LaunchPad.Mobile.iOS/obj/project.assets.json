@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     "Xamarin.iOS,Version=v1.0": {
+      "AiForms.Layouts/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Xamarin.Forms": "3.0.0.482510"
+        },
+        "compile": {
+          "lib/netstandard2.0/AiForms.Layouts.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/AiForms.Layouts.dll": {}
+        }
+      },
       "akavache/7.1.1": {
         "type": "package",
         "dependencies": {
@@ -350,6 +362,18 @@
           "lib/Xamarin.iOS10/Plugin.Settings.dll": {}
         }
       },
+      "Xam.TabView/1.0.5": {
+        "type": "package",
+        "dependencies": {
+          "Xamarin.Forms": "3.4.0.1008975"
+        },
+        "compile": {
+          "lib/netstandard2.0/Xam.TabView.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Xam.TabView.dll": {}
+        }
+      },
       "Xamarin.Essentials/1.5.3.2": {
         "type": "package",
         "frameworkAssemblies": [
@@ -607,9 +631,11 @@
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
+          "AiForms.Layouts": "1.1.0",
           "LaunchPad.Client": "1.0.0",
           "XForms.Plugin.AnimationNavigationPage": "1.0.8",
           "Xam.Plugins.Settings": "3.1.1",
+          "Xam.TabView": "1.0.5",
           "Xamarin.Essentials": "1.5.3.2",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.8.0.1687",
@@ -641,6 +667,18 @@
       }
     },
     "Xamarin.iOS,Version=v1.0/win": {
+      "AiForms.Layouts/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Xamarin.Forms": "3.0.0.482510"
+        },
+        "compile": {
+          "lib/netstandard2.0/AiForms.Layouts.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/AiForms.Layouts.dll": {}
+        }
+      },
       "akavache/7.1.1": {
         "type": "package",
         "dependencies": {
@@ -989,6 +1027,18 @@
           "lib/Xamarin.iOS10/Plugin.Settings.dll": {}
         }
       },
+      "Xam.TabView/1.0.5": {
+        "type": "package",
+        "dependencies": {
+          "Xamarin.Forms": "3.4.0.1008975"
+        },
+        "compile": {
+          "lib/netstandard2.0/Xam.TabView.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Xam.TabView.dll": {}
+        }
+      },
       "Xamarin.Essentials/1.5.3.2": {
         "type": "package",
         "frameworkAssemblies": [
@@ -1246,9 +1296,11 @@
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
+          "AiForms.Layouts": "1.1.0",
           "LaunchPad.Client": "1.0.0",
           "XForms.Plugin.AnimationNavigationPage": "1.0.8",
           "Xam.Plugins.Settings": "3.1.1",
+          "Xam.TabView": "1.0.5",
           "Xamarin.Essentials": "1.5.3.2",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.8.0.1687",
@@ -1280,6 +1332,18 @@
       }
     },
     "Xamarin.iOS,Version=v1.0/win-x64": {
+      "AiForms.Layouts/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Xamarin.Forms": "3.0.0.482510"
+        },
+        "compile": {
+          "lib/netstandard2.0/AiForms.Layouts.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/AiForms.Layouts.dll": {}
+        }
+      },
       "akavache/7.1.1": {
         "type": "package",
         "dependencies": {
@@ -1628,6 +1692,18 @@
           "lib/Xamarin.iOS10/Plugin.Settings.dll": {}
         }
       },
+      "Xam.TabView/1.0.5": {
+        "type": "package",
+        "dependencies": {
+          "Xamarin.Forms": "3.4.0.1008975"
+        },
+        "compile": {
+          "lib/netstandard2.0/Xam.TabView.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Xam.TabView.dll": {}
+        }
+      },
       "Xamarin.Essentials/1.5.3.2": {
         "type": "package",
         "frameworkAssemblies": [
@@ -1885,9 +1961,11 @@
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
+          "AiForms.Layouts": "1.1.0",
           "LaunchPad.Client": "1.0.0",
           "XForms.Plugin.AnimationNavigationPage": "1.0.8",
           "Xam.Plugins.Settings": "3.1.1",
+          "Xam.TabView": "1.0.5",
           "Xamarin.Essentials": "1.5.3.2",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.8.0.1687",
@@ -1919,6 +1997,18 @@
       }
     },
     "Xamarin.iOS,Version=v1.0/win-x86": {
+      "AiForms.Layouts/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Xamarin.Forms": "3.0.0.482510"
+        },
+        "compile": {
+          "lib/netstandard2.0/AiForms.Layouts.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/AiForms.Layouts.dll": {}
+        }
+      },
       "akavache/7.1.1": {
         "type": "package",
         "dependencies": {
@@ -2267,6 +2357,18 @@
           "lib/Xamarin.iOS10/Plugin.Settings.dll": {}
         }
       },
+      "Xam.TabView/1.0.5": {
+        "type": "package",
+        "dependencies": {
+          "Xamarin.Forms": "3.4.0.1008975"
+        },
+        "compile": {
+          "lib/netstandard2.0/Xam.TabView.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Xam.TabView.dll": {}
+        }
+      },
       "Xamarin.Essentials/1.5.3.2": {
         "type": "package",
         "frameworkAssemblies": [
@@ -2524,9 +2626,11 @@
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
+          "AiForms.Layouts": "1.1.0",
           "LaunchPad.Client": "1.0.0",
           "XForms.Plugin.AnimationNavigationPage": "1.0.8",
           "Xam.Plugins.Settings": "3.1.1",
+          "Xam.TabView": "1.0.5",
           "Xamarin.Essentials": "1.5.3.2",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.8.0.1687",
@@ -2559,6 +2663,19 @@
     }
   },
   "libraries": {
+    "AiForms.Layouts/1.1.0": {
+      "sha512": "Euzf/1QCH/muR9BBvmvsfy06ofyJjndGErAwwFgJJNDUMuZECPtiRUVniYjVmEqL9wvD8V8wBv+gEbhZoewGyw==",
+      "type": "package",
+      "path": "aiforms.layouts/1.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "aiforms.layouts.1.1.0.nupkg.sha512",
+        "aiforms.layouts.nuspec",
+        "lib/netstandard2.0/AiForms.Layouts.dll",
+        "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/AiForms.Layouts.dll"
+      ]
+    },
     "akavache/7.1.1": {
       "sha512": "LXPnc+ytb1V8Dopmuj/MCLuNqJesMvS9jhD7OmjwSlQRLNZ/E07tl/DNSJ2CSHXystONmJJG5qwbj2KHQRE0bA==",
       "type": "package",
@@ -3976,6 +4093,19 @@
         "readme.txt",
         "xam.plugins.settings.3.1.1.nupkg.sha512",
         "xam.plugins.settings.nuspec"
+      ]
+    },
+    "Xam.TabView/1.0.5": {
+      "sha512": "eMuVAELQKjVWfsBImRI17FlcETl25XG+exsEj7nOjN5CsGy0Ws0/T+f9rLy31lHE23H8a+XRKLtWJ7wXBNAxCA==",
+      "type": "package",
+      "path": "xam.tabview/1.0.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "License.txt",
+        "lib/netstandard2.0/Xam.TabView.dll",
+        "xam.tabview.1.0.5.nupkg.sha512",
+        "xam.tabview.nuspec"
       ]
     },
     "Xamarin.Essentials/1.5.3.2": {

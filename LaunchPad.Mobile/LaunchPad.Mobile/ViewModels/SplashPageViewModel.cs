@@ -8,6 +8,8 @@ using LaunchPad.Mobile.Views;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -55,7 +57,6 @@ namespace LaunchPad.Mobile.ViewModels
             Device.BeginInvokeOnMainThread(() => ExceptionHandler(async () =>
             {
                 ProgressBarVisible = true;
-                await Task.Delay(200);
                 Progress = 0.10;
                 var salon = await ApiServices.Client.GetAsync<Salon>("salon");
                 Progress = 0.25;
@@ -68,10 +69,91 @@ namespace LaunchPad.Mobile.ViewModels
                     {
                         Console.WriteLine("salon stored to local cache");
                     }
+
+                    var concernQuestions = new List<CustomFormQuestion>();
+                    var healthQuestions = new List<CustomFormQuestion>();
+                    var lifestylesQuestions = new List<CustomFormQuestion>();
+                    if (salon.Surveys?.Count > 0)
+                    {
+                        foreach (var survey in salon.Surveys)
+                        {
+                            foreach (var page in survey.Pages)
+                            {
+                                var questions = new List<CustomFormQuestion>(page.Questions.Select(a => new CustomFormQuestion
+                                {
+                                    QuestionGuid=Guid.NewGuid().ToString(),
+                                    ConcernPage = survey.Title.ToLower() == "concerns + skin type",
+                                    HealthQuestions = survey.Title.ToLower() == "health questions",
+                                    LifeStyles = survey.Title.ToLower() == "you + your lifestyle",
+                                    PageGuid = page.Id,
+                                    FormQuestion = a,
+                                    FormQuestionData = JsonConvert.DeserializeObject<FormQuestionData>(a.QuestionData.ToString()),
+                                    ChildQuestions = a.ChildQuestions.Select(x => new CustomFormQuestion
+                                    {
+                                        PageFormQuestionData = JsonConvert.DeserializeObject<FormQuestionData>(a.QuestionData.ToString()),
+                                        ConcernPage = survey.Title.ToLower() == "concerns + skin type",
+                                        HealthQuestions = survey.Title.ToLower() == "health questions",
+                                        LifeStyles = survey.Title.ToLower() == "you + your lifestyle",
+                                        FormQuestion = x,
+                                        FormQuestionData = JsonConvert.DeserializeObject<FormQuestionData>(x.QuestionData.ToString()),
+                                        ChildQuestions = x.ChildQuestions.Select(t => new CustomFormQuestion
+                                        {
+                                            ConcernPage = survey.Title.ToLower() == "concerns + skin type",
+                                            HealthQuestions = survey.Title.ToLower() == "health questions",
+                                            LifeStyles = survey.Title.ToLower() == "you + your lifestyle",
+                                            FormQuestion = t,
+                                            FormQuestionData = JsonConvert.DeserializeObject<FormQuestionData>(t.QuestionData.ToString()),
+                                            IsCheck = t.QuestionType.ToLower() == "check",
+                                            IsRadio = t.QuestionType.ToLower() == "radio",
+                                            IsTextArea = t.QuestionType.ToLower() == "textarea",
+                                            IsTextBox = t.QuestionType.ToLower() == "textbox",
+                                            IsYesNo = x.QuestionType.ToLower() == "yesno",
+                                            IsYesNoWithNoTextArea = t.QuestionType.ToLower() == "yesno",
+                                            IsGroup = t.QuestionType.ToLower() == "group",
+                                            IsHtml = t.QuestionType.ToLower() == "html",
+                                            IsDropdown = t.QuestionType.ToLower() == "dropdown",
+                                            ConfigText = t.Config.Count(config => !string.IsNullOrEmpty(config.Value)) > 0 ? t.Config.First(config => !string.IsNullOrEmpty(config.Value)).Value : ""
+                                        }).ToList(),
+                                        IsCheck = x.QuestionType.ToLower() == "check",
+                                        IsRadio = x.QuestionType.ToLower() == "radio",
+                                        IsTextArea = x.QuestionType.ToLower() == "textarea",
+                                        IsTextBox = x.QuestionType.ToLower() == "textbox",
+                                        IsYesNo = x.QuestionType.ToLower() == "yesno",
+                                        IsCheckWithMultipleYesNo = a.ChildQuestions.Count(q => q.QuestionType.ToLower() == "check") > 0 && a.ChildQuestions.Count(q => q.QuestionType.ToLower() == "yesno") >= 1,
+                                        IsYesNoWithNoTextArea = a.ChildQuestions.Count(q => q.QuestionType.ToLower() == "yesno") > 0 && a.ChildQuestions.Count(q => q.QuestionType.ToLower() == "textarea") == 0,
+                                        IsGroup = x.QuestionType.ToLower() == "group",
+                                        IsHtml = x.QuestionType.ToLower() == "html",
+                                        IsDropdown = x.QuestionType.ToLower() == "dropdown",
+                                        IsYesNoWithTextArea = a.ChildQuestions.Count(q => q.QuestionType.ToLower() == "yesno") > 0 && a.ChildQuestions.Count(q => q.QuestionType.ToLower() == "textarea") > 0,
+                                        ConfigText = x.Config.Count(config => !string.IsNullOrEmpty(config.Value)) > 0 ? x.Config.First(config => !string.IsNullOrEmpty(config.Value)).Value : ""
+                                    }).ToList(),
+                                    IsCheck = a.QuestionType.ToLower() == "check",
+                                    IsRadio = a.QuestionType.ToLower() == "radio",
+                                    IsTextArea = a.QuestionType.ToLower() == "textarea",
+                                    IsTextBox = a.QuestionType.ToLower() == "textbox",
+                                    IsYesNoWithNoTextArea = a.QuestionType.ToLower() == "yesno" && a.ChildQuestions.Count(t1 => t1.QuestionType.ToLower() == "textarea") == 0,
+                                    IsGroup = a.QuestionType.ToLower() == "group" && a.ChildQuestions?.First().QuestionType.ToLower() != "group",
+                                    IsHtml = a.QuestionType.ToLower() == "html",
+                                    IsDropdown = a.QuestionType.ToLower() == "dropdown",
+                                    IsNestedGroup = a.QuestionType.ToLower() == "group" && a.ChildQuestions?.First().QuestionType.ToLower() == "group",
+                                    IsYesNoWithTextArea = a.ChildQuestions.Count(t1 => t1.QuestionType.ToLower() == "yesno") > 0 && a.ChildQuestions.Count(t1 => t1.QuestionType.ToLower() == "textarea") > 0,
+                                    IsCheckWithMultipleYesNo = a.ChildQuestions.Count(q => q.QuestionType.ToLower() == "check") > 0 && a.ChildQuestions.Count(q => q.QuestionType.ToLower() == "yesno") >= 1,
+                                    YesNoQuestionsList = new List<CustomFormQuestion>(a.ChildQuestions.Where(q => q.QuestionType.ToLower() == "yesno").Select(yn => new CustomFormQuestion
+                                    {
+                                        FormQuestion = yn,
+                                        FormQuestionData = JsonConvert.DeserializeObject<FormQuestionData>(yn.QuestionData.ToString())
+                                    })),
+                                }));
+
+                                await DatabaseServices.InsertData("survey_page" + page.Id + "_" + survey.Id,questions);
+                            }
+                        }
+                    }
                 }
+
                 var consumers = await ApiServices.Client.GetAsync<List<Consumer>>("Salon/Consumers");
                 Progress = 0.50;
-                if (consumers?.Count>0)
+                if (consumers?.Count > 0)
                 {
                     var result = await DatabaseServices.InsertData("consumers", consumers);
                     if (result)
@@ -81,6 +163,12 @@ namespace LaunchPad.Mobile.ViewModels
 
                 }
 
+                App.surveyPageViewModelInstance = new SurveyPageViewModel();
+                await App.surveyPageViewModelInstance.GetSurveyDataAsync();
+                App.ConcernsAndSkinCareSurveyViewModel = new ConcernsAndSkinCareSurveyViewModel();
+                App.HealthQuestionsSurveyViewModel = new HealthQuestionsSurveyViewModel();
+                App.LifestylesSurveyViewModel = new LifestylesSurveyViewModel();
+                await Task.Delay(2000);
                 Progress = 0.75;
                 IsBusy = false;
                 var locationStatus = await Permissions.CheckStatusAsync<Permissions.LocationAlways>();

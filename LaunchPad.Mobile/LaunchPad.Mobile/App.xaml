@@ -9,6 +9,14 @@
         <ResourceDictionary>
             <converters:InverseConverter x:Key="InverseConverter"/>
             <converters:IntToBoolConverter x:Key="IntToBoolConverter"/>
+            <converters:TextToDoubleConverter x:Key="TextToDoubleConverter"/>
+            <converters:SecondaryTextToDoubleConverter x:Key="SecondaryTextToDoubleConverter"/>
+            <converters:ComparisionConverter x:Key="ComparisionConverter"/>
+            <converters:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverter"/>
+            <converters:InverseCollectionToVisibilityConverter x:Key="InverseCollectionToVisibilityConverter"/>
+            <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+            <converters:CollectionToBasisConverter x:Key="CollectionToBasisConverter"/>
+            <converters:TextToWidthConverter x:Key="TextToWidthConverter"/>
             
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="#000000"/>

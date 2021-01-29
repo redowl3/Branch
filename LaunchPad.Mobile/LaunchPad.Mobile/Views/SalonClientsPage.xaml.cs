@@ -1,6 +1,9 @@
 ﻿using FormsControls.Base;
 using IIAADataModels.Transfer;
+using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.ViewModels;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -24,10 +27,10 @@ namespace LaunchPad.Mobile.Views
         {
             base.OnAppearing();
         }
-        private void item_tapped(object sender, System.EventArgs e)
+        private async void item_tapped(object sender, System.EventArgs e)
         {
             try
-            {
+            {               
                 var param = (e as TappedEventArgs)?.Parameter as Consumer;
                 if (param != null)
                 {
@@ -40,6 +43,7 @@ namespace LaunchPad.Mobile.Views
             }
         }
 
+     
         protected override void OnDisappearing()
         {
             base.OnDisappearing();

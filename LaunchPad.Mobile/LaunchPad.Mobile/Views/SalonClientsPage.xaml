@@ -16,8 +16,8 @@
         <Grid Grid.Row="0" RowDefinitions="56" ColumnDefinitions="*,*,*">
             <Frame Grid.Column="0" BackgroundColor="Transparent" Padding="0" HasShadow="False" CornerRadius="0">
                 <StackLayout Orientation="Horizontal">
-                    <ImageButton Source="icon_sort" WidthRequest="56" HeightRequest="56" BackgroundColor="Transparent" IsVisible="{Binding IsAscToDesc}" Command="{Binding AscToDescCommand}"/>
-                    <ImageButton Source="icon_sort_desc_asc" WidthRequest="56" HeightRequest="56" BackgroundColor="Transparent" IsVisible="{Binding IsAscToDesc,Converter={StaticResource InverseConverter}}" Command="{Binding DescToAscCommand}"/>
+                    <ImageButton Source="icon_sort" WidthRequest="40" HeightRequest="40" BackgroundColor="Transparent" IsVisible="{Binding IsAscToDesc}" Command="{Binding AscToDescCommand}"/>
+                    <ImageButton Source="icon_sort_desc_asc" WidthRequest="40" HeightRequest="40" BackgroundColor="Transparent" IsVisible="{Binding IsAscToDesc,Converter={StaticResource InverseConverter}}" Command="{Binding DescToAscCommand}"/>
                     <Label Text="Surname" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                 </StackLayout>
             </Frame>
