@@ -49,6 +49,7 @@
     <BundleAssemblies>false</BundleAssemblies>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
+    <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -103,6 +104,8 @@
     <Compile Include="CustomRenderers\BorderlessEntryRenderer.cs" />
     <Compile Include="CustomRenderers\CustomImageRenderer.cs" />
     <Compile Include="CustomRenderers\FixedFontLabelRenderer.cs" />
+    <Compile Include="CustomRenderers\HtmlLabelRenderer.cs" />
+    <Compile Include="CustomRenderers\renderimg.cs" />
     <Compile Include="CustomServices\ToastServices.cs" />
     <Compile Include="CustomServices\ToolbarItemBadgeService.cs" />
     <Compile Include="CustomServices\WifiUtility.cs" />

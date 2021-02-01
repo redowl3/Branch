@@ -17,6 +17,7 @@ namespace LaunchPad.Mobile.ViewModels
 {
     public class ClientRegistrationPageViewModel : ViewModelBase
     {
+        private Guid _currentConsumerId { get; set; }
         private IDatabaseServices DatabaseServices => DependencyService.Get<IDatabaseServices>();
         private IToastServices ToastServices => DependencyService.Get<IToastServices>();
         private string _firstname;
@@ -211,7 +212,48 @@ namespace LaunchPad.Mobile.ViewModels
                 CanExecute();
             }
         }
-        public ICommand AddClientCommand => new Command(AddClientAsync);
+
+        private bool _isTerms=false;
+        public bool IsTerms
+        {
+            get => _isTerms;
+            set
+            {
+                SetProperty(ref _isTerms, value);
+                CanExecute();
+            }
+        }
+        private bool _isDeclarations=false;
+        public bool IsDeclarations
+        {
+            get => _isDeclarations;
+            set
+            {
+                SetProperty(ref _isDeclarations, value);
+                CanExecute();
+            }
+        }
+        private bool _isConsents=false;
+        public bool IsConsents
+        {
+            get => _isConsents;
+            set
+            {
+                SetProperty(ref _isConsents, value);
+                CanExecute();
+            }
+        }
+
+        private bool _isRegistrationCompleted=false;
+        public bool IsRegistrationCompleted
+        {
+            get => _isRegistrationCompleted;
+            set => SetProperty(ref _isRegistrationCompleted, value);
+        }
+        public ICommand AddClientCommand => new Command(()=>
+        {
+            AddClientAsync();
+        });
 
         private void CanExecute()
         {
@@ -227,8 +269,33 @@ namespace LaunchPad.Mobile.ViewModels
             set => SetProperty(ref _isButtonEnabled, value);
         }
 
+
+        public ICommand TermsAcceptedCommand => new Command(() =>
+          {
+              IsRegistrationCompleted = true;
+              IsTerms = false;
+              IsDeclarations = true;
+              IsConsents = false;
+          }); 
+        
+        public ICommand DeclarationAcceptedCommand => new Command(() =>
+          {
+              IsRegistrationCompleted = true;
+              IsTerms = false;
+              IsDeclarations = false;
+              IsConsents = true;
+          });
+        public ICommand ConsentsAcceptedCommand => new Command(() =>
+          {
+              IsRegistrationCompleted = true;
+              IsTerms = false;
+              IsDeclarations = false;
+              PerformPostRegistrationExecutionsAsync();
+          });
+
         public ClientRegistrationPageViewModel()
         {
+            _currentConsumerId = Guid.NewGuid();
             Countries = new List<string>
             {
                 "United Kingdom"
@@ -241,22 +308,22 @@ namespace LaunchPad.Mobile.ViewModels
 
             SelectedIddCode = IddCodes[0];
         }
-        private async void AddClientAsync(object obj)
+        private async void AddClientAsync()
         {
             try
-            {
-                var currentTherapistJson = await SecureStorage.GetAsync("currentTherapist");
-                var currentTherapist = JsonConvert.DeserializeObject<Therapist>(currentTherapistJson);
+            {               
+                //var currentTherapistJson = await SecureStorage.GetAsync("currentTherapist");
+                //var currentTherapist = JsonConvert.DeserializeObject<Therapist>(currentTherapistJson);
 
                 var consumerRequest = new SalonConsumer
                 {
-                    Id = Guid.NewGuid(),
+                    Id = _currentConsumerId,
                     Firstname = Firstname,
                     Lastname = Lastname,
                     Email = Email,
                     Mobile = $"{SelectedIddCode}-{Mobile}",
                     DateOfBirth = new DateTime(int.Parse(YY), int.Parse(MM), int.Parse(DD)),
-                    TherapistId = currentTherapist.Id,
+                    TherapistId = new Guid(Settings.CurrentTherapistId),
                     Addresses = new List<ConsumerAddress>
                     {
                         new ConsumerAddress
@@ -277,60 +344,8 @@ namespace LaunchPad.Mobile.ViewModels
                 var isCompleted = await ApiServices.Client.PostAsync<bool>("Salon/Consumer", consumerRequest);
                 if (isCompleted)
                 {
-                    var consumers = await ApiServices.Client.GetAsync<List<Consumer>>("Salon/Consumers");
-                    if (consumers?.Count > 0)
-                    {
-                        var isSaved = await DatabaseServices.InsertData("consumers", consumers);
-                        if (isSaved)
-                        {
-                            ToastServices.ShowToast("Consumer has been added successfully");
-                            var param = consumers.First(a => a.Id == consumerRequest.Id);
-                            if (param != null)
-                            {
-                                var isStored = await DatabaseServices.InsertData<Consumer>("current_consumer" + Settings.CurrentTherapistId, param);
-                                if (isStored)
-                                {
-                                    Settings.ClientId = param.Id.ToString();
-                                    Settings.ClientFirstName = $"{param.Firstname}";
-                                    Settings.ClientName = $"{param.Firstname} {param.Lastname}";
-                                    Settings.ClientHeader = $"{param.Firstname}'s Skin Health Plan";
-                                    var lastLogin = DateTime.Now;
-                                    var recentConsumer = new RecentConsumer
-                                    {
-                                        Consumer = param,
-                                        LastLogin = lastLogin,
-                                        LastLoginDateTime = lastLogin.ToString("dd/MM/yyyy - hh:mm tt")
-                                    };
-
-                                    var recentConsumerList = await DatabaseServices.Get<List<RecentConsumer>>("recentconsumers" + Settings.CurrentTherapistId);
-                                    if (recentConsumerList.Count == 0)
-                                    {
-                                        recentConsumerList.Add(recentConsumer);
-                                    }
-                                    else
-                                    {
-                                        var consumer = recentConsumerList.FirstOrDefault(a => a.Consumer.Id == param.Id);
-                                        if (consumer != null)
-                                        {
-                                            recentConsumerList.Remove(consumer);
-                                            recentConsumerList.Insert(0, recentConsumer);
-                                        }
-                                        else
-                                        {
-                                            recentConsumerList.Insert(0, recentConsumer);
-                                        }
-                                    }
-
-                                    await DatabaseServices.InsertData("recentconsumers" + Settings.CurrentTherapistId, recentConsumerList);
-                                    Device.BeginInvokeOnMainThread(() =>
-                                    {
-                                        Application.Current.MainPage = new AnimationNavigationPage(new SurveyPage());
-                                    });
-                                }
-                            }
-                        }
-
-                    }
+                    IsRegistrationCompleted = true;
+                    IsTerms = true;                   
                 }
                 else
                 {
@@ -340,6 +355,70 @@ namespace LaunchPad.Mobile.ViewModels
             catch (Exception ex)
             {
                 ToastServices.ShowToast("Something went wrong.Please try again");
+            }
+        }
+
+        private async void PerformPostRegistrationExecutionsAsync()
+        {
+            try
+            {
+                var consumers = await ApiServices.Client.GetAsync<List<Consumer>>("Salon/Consumers");
+                if (consumers?.Count > 0)
+                {
+                    var isSaved = await DatabaseServices.InsertData("consumers", consumers);
+                    if (isSaved)
+                    {
+                        ToastServices.ShowToast("Consumer has been added successfully");
+                        var param = consumers.First(a => a.Id == _currentConsumerId);
+                        if (param != null)
+                        {
+                            var isStored = await DatabaseServices.InsertData<Consumer>("current_consumer" + Settings.CurrentTherapistId, param);
+                            if (isStored)
+                            {
+                                Settings.ClientId = param.Id.ToString();
+                                Settings.ClientFirstName = $"{param.Firstname}";
+                                Settings.ClientName = $"{param.Firstname} {param.Lastname}";
+                                Settings.ClientHeader = $"{param.Firstname}'s Skin Health Plan";
+                                var lastLogin = DateTime.Now;
+                                var recentConsumer = new RecentConsumer
+                                {
+                                    Consumer = param,
+                                    LastLogin = lastLogin,
+                                    LastLoginDateTime = lastLogin.ToString("dd/MM/yyyy - hh:mm tt")
+                                };
+
+                                var recentConsumerList = await DatabaseServices.Get<List<RecentConsumer>>("recentconsumers" + Settings.CurrentTherapistId);
+                                if (recentConsumerList.Count == 0)
+                                {
+                                    recentConsumerList.Add(recentConsumer);
+                                }
+                                else
+                                {
+                                    var consumer = recentConsumerList.FirstOrDefault(a => a.Consumer.Id == param.Id);
+                                    if (consumer != null)
+                                    {
+                                        recentConsumerList.Remove(consumer);
+                                        recentConsumerList.Insert(0, recentConsumer);
+                                    }
+                                    else
+                                    {
+                                        recentConsumerList.Insert(0, recentConsumer);
+                                    }
+                                }
+
+                                await DatabaseServices.InsertData("recentconsumers" + Settings.CurrentTherapistId, recentConsumerList);
+                                Device.BeginInvokeOnMainThread(() =>
+                                {
+                                    Application.Current.MainPage = new AnimationNavigationPage(new SurveyPage());
+                                });
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
             }
         }
 

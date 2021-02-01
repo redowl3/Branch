@@ -11,7 +11,7 @@
             </Grid>
             <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalOptions="Start" Spacing="25">
                 <ImageButton BackgroundColor="Transparent" Source="icon_home" WidthRequest="32" HeightRequest="32" Clicked="ImageButton_Clicked"/>
-                <ImageButton BackgroundColor="Transparent" Source="icon_back" WidthRequest="28" HeightRequest="28" Clicked="ImageButton_Clicked"/>
+                <ImageButton BackgroundColor="Transparent" Source="icon_back" WidthRequest="20" HeightRequest="20" Clicked="ImageButton_Clicked"/>
                 <StackLayout Orientation="Horizontal">
                     <Image Source="icon_user_circle" WidthRequest="40" HeightRequest="40"/>
                     <Label x:Name="LoggedInUserDetailLabel" VerticalTextAlignment="Center" TextColor="White" Style="{StaticResource ContentTitle}" FontSize="18"/>
