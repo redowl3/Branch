@@ -43,7 +43,7 @@ namespace LaunchPad.Mobile.Converters
                 if (!string.IsNullOrEmpty(text))
                 {
                     if (text.Length < 20)
-                        return 220;
+                        return 230;
                     else if (text.Length <25)
                         return 250; 
                     else if (25<text.Length && text.Length < 30)

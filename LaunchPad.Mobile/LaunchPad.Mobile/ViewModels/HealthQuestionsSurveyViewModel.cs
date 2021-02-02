@@ -82,6 +82,14 @@ namespace LaunchPad.Mobile.ViewModels
         {
             Next?.Invoke();
         });
+        public ICommand EditCommand => new Command(async() =>
+        {
+            SurveySummaries = new ObservableCollection<SurveySummary>();
+            await DatabaseServices.Delete<List<SurveySummary>>("healthsurvey_done_" + Settings.ClientId + "_" + Settings.CurrentTherapistId);
+            SecureStorage.Remove("SurveyDone_" + Settings.ClientId + "_" + Settings.CurrentTherapistId);
+            IsDone = false;
+            CanContinue = false;
+        });
         public HealthQuestionsSurveyViewModel()
         {
             GetConcernsQuestionsAsync();
