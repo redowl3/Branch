@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -70,25 +71,38 @@ namespace LaunchPad.Mobile.ViewModels
             get => _CanContinue;
             set => SetProperty(ref _CanContinue, value);
         }
-        public ICommand SaveAndContinueCommand => new Command<List<SurveySummary>>(async(param) =>
-        {
-            SurveySummaries = new ObservableCollection<SurveySummary>(param);
-            await DatabaseServices.InsertData("healthsurvey_done_"+Settings.ClientId+"_"+Settings.CurrentTherapistId,param);
-            await SecureStorage.SetAsync("SurveyDone_" + Settings.ClientId + "_" + Settings.CurrentTherapistId, "true");
-            IsDone = true;
-            CanContinue = true;
+        public ICommand SaveAndContinueCommand => new Command<List<SurveySummary>>((param) =>
+        {           
+            Task.Run(async () =>
+            {
+                await DatabaseServices.Delete<List<SurveySummary>>("healthsurvey_done_" + Settings.ClientId + "_" + Settings.CurrentTherapistId);
+                SecureStorage.Remove("SurveyDone_" + Settings.ClientId + "_" + Settings.CurrentTherapistId);
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    SurveySummaries = new ObservableCollection<SurveySummary>(param);
+                    IsDone = true;
+                    CanContinue = true;
+                });
+            });
+
         });
         public ICommand ContinueCommand => new Command<List<SurveySummary>>(async(param) =>
         {
             Next?.Invoke();
         });
-        public ICommand EditCommand => new Command(async() =>
+        public ICommand EditCommand => new Command(() =>
         {
-            SurveySummaries = new ObservableCollection<SurveySummary>();
-            await DatabaseServices.Delete<List<SurveySummary>>("healthsurvey_done_" + Settings.ClientId + "_" + Settings.CurrentTherapistId);
-            SecureStorage.Remove("SurveyDone_" + Settings.ClientId + "_" + Settings.CurrentTherapistId);
-            IsDone = false;
-            CanContinue = false;
+            Task.Run(async() =>
+            {
+                await DatabaseServices.Delete<List<SurveySummary>>("healthsurvey_done_" + Settings.ClientId + "_" + Settings.CurrentTherapistId);
+                SecureStorage.Remove("SurveyDone_" + Settings.ClientId + "_" + Settings.CurrentTherapistId);
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    IsDone = false;
+                    CanContinue = false;
+                });
+            });
+          
         });
         public HealthQuestionsSurveyViewModel()
         {

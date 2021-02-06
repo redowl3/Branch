@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LaunchPad.Mobile.CustomLayouts.LifeStylesQuestionContainerLayout"
              x:Name="LifeStylesView"
-             VerticalOptions="FillAndExpand">
+             VerticalOptions="FillAndExpand"
+             BackgroundColor="#fff">
     <ContentView.Content>
         <StackLayout VerticalOptions="FillAndExpand">
             <ScrollView VerticalOptions="FillAndExpand">
@@ -59,9 +60,10 @@
                                                                         <StackLayout IsVisible="{Binding IsGroup}" BindableLayout.ItemsSource="{Binding ChildQuestions}" HorizontalOptions="FillAndExpand" Margin="2,0">
                                                                             <BindableLayout.ItemTemplate>
                                                                                 <DataTemplate>
-                                                                                    <StackLayout Spacing="0">
+                                                                                    <StackLayout Spacing="20">
                                                                                         <Label  IsVisible="{Binding IsHtml}" Text="{Binding FormQuestionData.QuestionText}" FontSize="28" TextType="Html" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource TabTitleLabelStyle}"/>
-
+                                                                                        <Image Source="{Binding FormQuestionData.ImageUrl}" VerticalOptions="Start" HeightRequest="100"/>
+                                                                                        
                                                                                         <Grid ColumnDefinitions="*,*,*" ColumnSpacing="0" HorizontalOptions="FillAndExpand" RowDefinitions="60" IsVisible="{Binding IsTextBox}">
                                                                                             <Label Grid.Column="0" Text="{Binding FormQuestionData.QuestionText}" TextType="Html" LineBreakMode="WordWrap" FontSize="22" HorizontalTextAlignment="End" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentAdditionalInfoTitle}"/>
                                                                                             <Frame Grid.Column="1" Margin="10,0" BackgroundColor="#f2f2f2" Padding="0" HasShadow="False" CornerRadius="0">
@@ -72,7 +74,7 @@
                                                                                             </Frame>
                                                                                             <Label Grid.Column="2" Text="{Binding ConfigText}" TextType="Html" FontSize="22" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentAdditionalInfoTitle}"/>
                                                                                         </Grid>
-                                                                                        <Grid RowDefinitions="46" IsVisible="{Binding IsYesNoWithNoTextArea}">
+                                                                                        <Grid RowDefinitions="46" IsVisible="{Binding IsYesNoWithNoTextArea}" Margin="0,-100,0,0">
                                                                                             <Button Text="{Binding FormQuestionData.QuestionText}" BackgroundColor="#fff" TextTransform="None" FontSize="18" CornerRadius="23" BorderColor="#000" BorderWidth="2"  Clicked="OptionSelected"/>
                                                                                         </Grid>
                                                                                         <StackLayout BindableLayout.ItemsSource="{Binding FormQuestionData.Answers}" HorizontalOptions="Start" Margin="2,0" IsVisible="{Binding IsCheck}">
@@ -88,7 +90,7 @@
                                                                                 </DataTemplate>
                                                                             </BindableLayout.ItemTemplate>
                                                                         </StackLayout>
-                                                                        <Label IsVisible="{Binding IsHtml}" Text="{Binding FormQuestionData.QuestionText}" FontSize="28" TextType="Html" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource TabTitleLabelStyle}"/>
+                                                                        <!--<Label IsVisible="{Binding IsHtml}" Text="{Binding FormQuestionData.QuestionText}" FontSize="28" TextType="Html" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource TabTitleLabelStyle}"/>-->
                                                                     </StackLayout>
                                                                 </DataTemplate>
                                                             </BindableLayout.ItemTemplate>

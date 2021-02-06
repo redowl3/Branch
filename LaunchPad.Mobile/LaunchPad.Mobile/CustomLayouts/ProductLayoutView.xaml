@@ -12,8 +12,7 @@
             </Grid.RowDefinitions>
             <Grid ColumnDefinitions="150,*" ColumnSpacing="10">
                 <Grid RowDefinitions="150" HeightRequest="150">
-                    <forms:CachedImage Source="{Binding ImageUrl}" WidthRequest="150" HeightRequest="150" HorizontalOptions="Center" VerticalOptions="Start"/>
-
+                    <Image Source="{Binding ImageUrl}" WidthRequest="150" HeightRequest="150" HorizontalOptions="Center" VerticalOptions="Start"/>
                 </Grid>
                 <Grid Grid.Column="1" HorizontalOptions="FillAndExpand">
                     <Grid.RowDefinitions>

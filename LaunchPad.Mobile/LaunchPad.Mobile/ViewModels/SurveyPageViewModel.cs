@@ -570,6 +570,7 @@ namespace LaunchPad.Mobile.ViewModels
         public bool IsDropdown { get; set; }
         public bool IsNestedGroup { get; set; }
         public bool IsYesNoWithTextArea { get; set; }
+        public bool IsImage { get; set; }
         public LayoutOptions HorizontalOption { get; set; }
 
         public string ConfigText { get; set; }
@@ -636,6 +637,7 @@ namespace LaunchPad.Mobile.ViewModels
     public class FormQuestionData
     {
         public string QuestionText { get; set; }
+        public string ImageUrl { get; set; }
         public string Condition { get; set; }
         public string conditionvalue { get; set; }
         public string visibility { get; set; }

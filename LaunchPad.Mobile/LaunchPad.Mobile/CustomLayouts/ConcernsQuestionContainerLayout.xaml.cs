@@ -42,7 +42,7 @@ namespace LaunchPad.Mobile.CustomLayouts
             foreach (var item in toggleContainerParent.Children)
             {
                 var child1 = item as StackLayout;
-                var child2 = child1.Children[1] as Frame;
+                var child2 = child1.Children[2] as Frame;
                 var child3 = child2.Content as Grid;
                 var grid = child3.Children[0] as Grid;
                 var label = grid.Children[0] as Label;
@@ -165,6 +165,39 @@ namespace LaunchPad.Mobile.CustomLayouts
 
             }
            
+        }
+
+        private void UnselectThis(object sender, EventArgs e)
+        {
+            try
+            {
+                var toggleContainerParent = ((StackLayout)((StackLayout)((Frame)((Grid)((Grid)sender).Parent).Parent).Parent).Parent);
+                var senderParent = (Grid)sender;
+                var parentOfSenderParent = (Grid)senderParent.Parent;
+                (parentOfSenderParent.Children[1] as StackLayout).IsVisible = false;
+                senderParent.BackgroundColor = Color.FromHex("#000");
+                ((Label)senderParent.Children[0]).TextColor = Color.FromHex("#fff");
+                ((Image)senderParent.Children[1]).Source = "icon_down_arrow";
+                //QuestionText = (e as TappedEventArgs)?.Parameter as string;
+                //QuestionGuid = Guid.NewGuid().ToString();
+                //foreach (var item in toggleContainerParent.Children)
+                //{
+                //    var child1 = item as StackLayout;
+                //    var child2 = child1.Children[2] as Frame;
+                //    var child3 = child2.Content as Grid;
+                //    var grid = child3.Children[0] as Grid;
+                //    var label = grid.Children[0] as Label;
+                //    if (label?.Text?.ToLower() != QuestionText.ToLower())
+                //    {
+                //        ((StackLayout)child3.Children[1]).IsVisible = false;
+                //    }
+
+                //}
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

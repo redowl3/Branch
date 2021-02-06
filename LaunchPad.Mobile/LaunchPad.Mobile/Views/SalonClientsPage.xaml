@@ -5,7 +5,8 @@
                         xmlns:customlayouts="clr-namespace:LaunchPad.Mobile.CustomLayouts"
                         xmlns:viewmodels="clr-namespace:LaunchPad.Mobile.ViewModels"
                         x:Class="LaunchPad.Mobile.Views.SalonClientsPage"
-                        NavigationPage.HasBackButton="False">
+                        NavigationPage.HasBackButton="False"
+                        BackgroundColor="#fff">
     <NavigationPage.TitleView>
         <customlayouts:TitleBarLayoutV1/>
     </NavigationPage.TitleView>

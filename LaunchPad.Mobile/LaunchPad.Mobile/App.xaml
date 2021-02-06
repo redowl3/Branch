@@ -15,6 +15,7 @@
             <converters:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverter"/>
             <converters:InverseCollectionToVisibilityConverter x:Key="InverseCollectionToVisibilityConverter"/>
             <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+            <converters:InverseStringToVisibilityConverter x:Key="InverseStringToVisibilityConverter"/>
             <converters:CollectionToBasisConverter x:Key="CollectionToBasisConverter"/>
             <converters:TextToWidthConverter x:Key="TextToWidthConverter"/>
             

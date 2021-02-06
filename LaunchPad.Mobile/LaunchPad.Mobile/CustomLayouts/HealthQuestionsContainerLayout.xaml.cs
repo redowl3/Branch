@@ -28,66 +28,28 @@ namespace LaunchPad.Mobile.CustomLayouts
         {
             try
             {
-                var layout = (((Grid)((Button)sender).Parent).Children[1] as StackLayout);
+                var senderLayout = (Frame)((Grid)sender).Parent;
+                var senderLayoutParent = (Grid)senderLayout.Parent;
+                var layout = senderLayoutParent.Children[1] as StackLayout;
                 var list = BindableLayout.GetItemsSource(layout) as List<CustomFormQuestion>;
                 if (list?.Count > 0)
-                {
-                    (((Grid)((Button)sender).Parent).Children[1] as StackLayout).IsVisible = !(((Grid)((Button)sender).Parent).Children[1] as StackLayout).IsVisible;
-                    if ((((Grid)((Button)sender).Parent).Children[1] as StackLayout).IsVisible)
+                {                    
+                    (senderLayoutParent.Children[1] as StackLayout).IsVisible = !(senderLayoutParent.Children[1] as StackLayout).IsVisible;
+                    if ((senderLayoutParent.Children[1] as StackLayout).IsVisible)
                     {
-                        ((Button)sender).BackgroundColor = Color.Black;
-                        ((Button)sender).TextColor = Color.FromHex("#fff");
-                        (((Grid)((Button)sender).Parent).Children[2] as BoxView).IsVisible = true;
-                        (((Grid)((Button)sender).Parent).Children[3] as BoxView).IsVisible = true;
+                        senderLayout.BackgroundColor = Color.Black;
+                        (((Grid)sender).Children[0] as Label).TextColor = Color.FromHex("#fff");
+                        (senderLayoutParent.Children[2] as BoxView).IsVisible = true;
+                        (senderLayoutParent.Children[3] as BoxView).IsVisible = true;
+                    }
+                    else
+                    {
+                        (senderLayoutParent.Children[2] as BoxView).IsVisible = false;
+                        (senderLayoutParent.Children[3] as BoxView).IsVisible = false;
                     }
                 }
 
-                CurrentActiveResponse = ((Button)sender).Text;
-                //var parent1 = ((Button)sender).Parent as Grid;
-                //var parent2 = parent1.Parent as Frame;
-                //var parent3 = parent2.Parent as StackLayout;
-                //var parent4 = parent3.Parent as FlexLayout;
-                //var parent5 = parent4.Parent as StackLayout;
-                //var parent6 = parent5.Parent as StackLayout;
-                //var parent7 = parent6.Parent as StackLayout;
-                //QuestionGuid = (parent7.Children[0] as Label)?.Text;
-                //CurrentQuestion = (parent7.Children[1] as Label)?.Text;
-                //var list1 = BindableLayout.GetItemsSource(parent4) as List<Answer>;
-                //var parameter = ((Button)sender).CommandParameter as Answer;
-                //CurrentAnswerText = parameter.ResponseText;
-                //list1.First(a => a.ResponseText.ToLower() == parameter.ResponseText.ToLower()).Selected = true;
-                //list1.Where(a => a.ResponseText.ToLower() != parameter.ResponseText.ToLower()).ForEach(a => a.Selected = false);
-                //BindableLayout.SetItemsSource(parent4, list1);
-                //var childrens = parent4.Children;
-                //foreach (var item in childrens)
-                //{
-                //    var child = item as StackLayout;
-                //    var nextChild = child.Children[0] as Frame;
-                //    var nextChild1 = nextChild.Content as Grid;
-                //    var nextChild2 = nextChild1.Children[0] as Grid;
-                //    var nextChild3 = nextChild2.Children[0] as Label;
-                //    if (nextChild3.Text?.ToLower() != parameter.ResponseText.ToLower())
-                //    {
-                //        nextChild3.TextColor = Color.Black;
-                //        nextChild2.BackgroundColor = Color.Transparent;
-                //        (nextChild1.Children[1] as StackLayout).IsVisible = false;
-                //        foreach (var view in (nextChild1.Children[1] as StackLayout).Children)
-                //        {
-                //            var stack = view as StackLayout;
-                //            foreach (var view1 in stack.Children)
-                //            {
-                //                var grid = view1 as Grid;
-                //                var stack1 = grid.Children[0] as StackLayout;
-                //                foreach (var view2 in stack1.Children)
-                //                {
-                //                    var button = view2 as Button;
-                //                    button.BackgroundColor = Color.FromHex("#fff");
-                //                    button.TextColor = Color.FromHex("#000");
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
+                CurrentActiveResponse = (((Grid)sender).Children[0] as Label).Text;
             }
             catch (Exception)
             {
@@ -112,49 +74,15 @@ namespace LaunchPad.Mobile.CustomLayouts
                 }
                 else
                 {
-                    SurveySummaries.Remove(new SurveySummary
+                    ((Button)sender).BackgroundColor = Color.FromHex("#fff");
+                    ((Button)sender).TextColor = Color.FromHex("#000");
+                    var surveySummary = SurveySummaries.FirstOrDefault(a => a.AnswerText.ToLower() == (((Button)sender).CommandParameter as Answer)?.ResponseText.ToLower());
+                    if (surveySummary != null)
                     {
-                        QuestionText = CurrentQuestion,
-                        AnswerText = (((Button)sender).CommandParameter as Answer)?.ResponseText
-                    });
+                        SurveySummaries.Remove(surveySummary);
+                    }
+                   
                 }
-                //var parent1 = ((Button)sender).Parent as StackLayout;
-                //var parent2 = parent1.Parent as FlexLayout;
-                //var parent5 = parent2.Parent as StackLayout;
-                //var parent6 = parent5.Parent as StackLayout;
-                //var parent7 = parent6.Parent as StackLayout;
-                //CurrentQuestion = (parent5.Children[0] as Label)?.Text;
-                //var parameter = ((Button)sender).CommandParameter as Answer;
-                //CurrentAnswerText = parameter.ResponseText;
-                //foreach (var child in parent2.Children)
-                //{
-                //    var stack = child as StackLayout;
-                //    if (stack.Children.Count > 1)
-                //    {
-                //        var button = stack.Children[1] as Button;
-                //        if (button.Text?.ToLower() != parameter?.ResponseText?.ToLower())
-                //        {
-                //            button.BackgroundColor = Color.FromHex("#fff");
-                //            button.TextColor = Color.FromHex("#000");
-                //        }
-                //    }
-                //}
-                //if (SurveySummaries.Count(a => a.QuestionGuid == QuestionGuid) == 0)
-                //{
-                //    SurveySummaries.Add(new SurveySummary
-                //    {
-                //        QuestionText = CurrentQuestion,
-                //        AnswerText = CurrentAnswerText
-                //    });
-                //}
-                //else
-                //{
-                //    var surveySummary = SurveySummaries.First(a => a.QuestionGuid == QuestionGuid);
-                //    var surveySummaryIndex = SurveySummaries.IndexOf(surveySummary);
-                //    surveySummary.QuestionText = CurrentQuestion;
-                //    surveySummary.AnswerText = CurrentAnswerText;
-                //    SurveySummaries.Insert(surveySummaryIndex, surveySummary);
-                //}
             }
             catch (Exception)
             {
@@ -194,6 +122,35 @@ namespace LaunchPad.Mobile.CustomLayouts
                             button.TextColor = Color.FromHex("#000");
                         }
                     }
+                }
+
+                var parent4 = parent3.Parent as StackLayout;
+                var paremt5 = parent4.Parent as Grid;
+                var child0 = ((Grid)((Frame)paremt5.Children[0]).Content).Children[0] as Label;
+                if (child0 != null)
+                {
+                    CurrentActiveResponse = child0.Text;
+                }
+
+                var child1 = (Entry)((Grid)((Frame)parent2.Children[1]).Content).Children[0];
+                if (child1 != null)
+                {
+                    child1.Text = string.Empty;
+                }
+                if (SurveySummaries.Count(a => a.AnswerText.ToLower() == CurrentActiveResponse.ToLower()) == 0)
+                {
+                    SurveySummaries.Add(new SurveySummary
+                    {
+                        AnswerText = CurrentActiveResponse,
+                        SubAnswerText = SubAnswerText
+                    });
+                }
+                else
+                {
+                    SurveySummaries.Where(a => a.AnswerText.ToLower() == CurrentActiveResponse.ToLower()).ForEach(x=>
+                    {
+                        x.SubAnswerText = SubAnswerText;
+                    });
                 }
             }
             catch (Exception)
@@ -274,6 +231,15 @@ namespace LaunchPad.Mobile.CustomLayouts
         {
             try
             {
+                if (string.IsNullOrEmpty(CurrentActiveResponse))
+                {
+                    var mainParent = (Grid)((StackLayout)((StackLayout)((Grid)((Frame)((Grid)((Entry)sender).Parent).Parent).Parent).Parent).Parent).Parent;
+                    var child0 = ((Grid)((Frame)mainParent.Children[0]).Content).Children[0] as Label;
+                    if (child0 != null)
+                    {
+                        CurrentActiveResponse = child0.Text;
+                    }
+                }
                 if (SurveySummaries.Count(a => a.AnswerText.ToLower() == CurrentActiveResponse.ToLower()) == 0)
                 {
                     SurveySummaries.Add(new SurveySummary
@@ -285,18 +251,16 @@ namespace LaunchPad.Mobile.CustomLayouts
                 }
                 else
                 {
-                    var surveySummary = SurveySummaries.First(a => a.AnswerText.ToLower() == CurrentActiveResponse.ToLower());
-                    var surveySummaryIndex = SurveySummaries.IndexOf(surveySummary);
-                    surveySummary.AnswerText = CurrentActiveResponse;
-                    surveySummary.SubAnswerText = SubAnswerText;
-                    surveySummary.ConfigAnswerText = ((Entry)sender).Text;
-                    SurveySummaries.Insert(surveySummaryIndex, surveySummary);
+                    SurveySummaries.Where(a => a.AnswerText.ToLower() == CurrentActiveResponse.ToLower()).ForEach(x =>
+                    {
+                        x.ConfigAnswerText = ((Entry)sender).Text;
+                    });
                 }
 
                 CurrentActiveResponse = string.Empty;
                 CurrentAnswerText = string.Empty;
                 SubAnswerText = string.Empty;
-                
+
             }
             catch (Exception)
             {
@@ -322,6 +286,47 @@ namespace LaunchPad.Mobile.CustomLayouts
             (this.BindingContext as HealthQuestionsSurveyViewModel).EditCommand.Execute(null);
             dotButton.Source = "icon_three_dots";
             EditButtonContainer.IsVisible = false;
+        }
+
+        private void UnSelect(object sender, EventArgs e)
+        {
+            try
+            {
+                var responseText = (((Grid)sender).Children[0] as Label).Text;
+                var senderLayout = (Frame)((Grid)sender).Parent;
+                var senderLayoutParent = (Grid)senderLayout.Parent;
+                (senderLayoutParent.Children[1] as StackLayout).IsVisible = false;
+                senderLayout.BackgroundColor = Color.FromHex("#fff");
+                (((Grid)sender).Children[0] as Label).TextColor = Color.FromHex("#000");
+                (senderLayoutParent.Children[2] as BoxView).IsVisible = false;
+                (senderLayoutParent.Children[3] as BoxView).IsVisible = false;
+                var parentlayout = senderLayoutParent.Children[1] as StackLayout;
+                var childQuestionContainer = parentlayout.Children[0] as StackLayout;
+                foreach (var item in childQuestionContainer.Children)
+                {
+                    var grid = item as Grid;
+                    var gridChildren = grid.Children[0] as StackLayout;
+                    foreach (var item1 in gridChildren.Children)
+                    {
+                        var button = item1 as Button;
+                        button.BackgroundColor = Color.FromHex("#fff");
+                        button.TextColor = Color.FromHex("#000");
+                    }
+
+                    var frameLayout = grid.Children[1] as Frame;
+                    var frameLayoutChild = frameLayout.Content as Grid;
+                    (frameLayoutChild.Children[0] as Entry).Text = string.Empty;
+                }
+
+                var surveySummary = SurveySummaries.FirstOrDefault(a => a.AnswerText.ToLower() == responseText.ToLower());
+                if (surveySummary != null)
+                {
+                    SurveySummaries.Remove(surveySummary);
+                }
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

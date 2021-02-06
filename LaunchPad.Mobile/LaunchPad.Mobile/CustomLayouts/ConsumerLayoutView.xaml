@@ -10,10 +10,10 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Label Text="{Binding LastLoginDateTime}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
-            <Frame Grid.Row="1"/>
+            <Frame Grid.Row="1" Padding="0"/>
             <Grid Grid.Row="1" RowDefinitions="*,*,*" RowSpacing="0" BackgroundColor="#fff" VerticalOptions="Center" Padding="10,10">
-                <Label Text="{Binding Mobile}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
-                <Label Grid.Row="1" FontSize="22" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}">
+                <Label Text="{Binding Mobile}" FontSize="20" HorizontalTextAlignment="End" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
+                <Label Grid.Row="1" FontSize="20" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}">
                     <Label.Text>
                         <MultiBinding StringFormat="{}{0} {1}">
                             <Binding Path="Firstname"/>
@@ -21,7 +21,7 @@
                         </MultiBinding>
                     </Label.Text>
                 </Label>
-                <Label Grid.Row="2" Text="{Binding Email}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
+                <Label Grid.Row="2" Text="{Binding Email}" FontSize="20" HorizontalTextAlignment="End" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
             </Grid>
         </Grid>
     </ContentView.Content>
