@@ -116,18 +116,6 @@ namespace LaunchPad.Mobile.ViewModels
                         await DatabaseServices.InsertData<List<FormResponse>>("SurveyResponse", dbSurveyResponse);
                     });
                     PostSurveyResponseAsync();
-                   
-                    //Task.Run(() =>
-                    //{
-                    //    App.ConcernsAndSkinCareSurveyViewModel = new ConcernsAndSkinCareSurveyViewModel();
-                    //    App.HealthQuestionsSurveyViewModel = new HealthQuestionsSurveyViewModel();
-                    //    App.LifestylesSurveyViewModel = new LifestylesSurveyViewModel();
-
-                    //    Device.BeginInvokeOnMainThread(() =>
-                    //    {
-                    //        Application.Current.MainPage = new AnimationNavigationPage(new SalonProductsPage());
-                    //    });
-                    //});
                 }
             }
             catch (Exception)
@@ -140,7 +128,6 @@ namespace LaunchPad.Mobile.ViewModels
         {
             try
             {
-                ///iiaaapi/salon/consumer/survey?ConsumerId=CONSUMERGUID&FormId=FORMGUID&Version=VersionNumber => to get answer of particular survey
                 var dbSurveyResponse = await DatabaseServices.Get<List<FormResponse>>("SurveyResponse");
                 var consumer = await DatabaseServices.Get<Consumer>("current_consumer" + Settings.CurrentTherapistId);
                 if (consumer != null && consumer.Id != Guid.Empty)
@@ -188,8 +175,9 @@ namespace LaunchPad.Mobile.ViewModels
                     var isCompleted = await ApiServices.Client.PostAsync<bool>("salon/consumer/consultation/finalise", saloConsumer);
                     if (isCompleted)
                     {                        
-                        Task.Run(() =>
+                        await Task.Run(async() =>
                         {
+                            await DatabaseServices.InsertData<List<FormResponse>>("survey_response_" + consumer.Id + "_" + currentTherapist.Id, list);
                             App.ConcernsAndSkinCareSurveyViewModel = new ConcernsAndSkinCareSurveyViewModel();
                             App.HealthQuestionsSurveyViewModel = new HealthQuestionsSurveyViewModel();
                             App.LifestylesSurveyViewModel = new LifestylesSurveyViewModel();
@@ -206,9 +194,9 @@ namespace LaunchPad.Mobile.ViewModels
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
         }
 
