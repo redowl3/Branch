@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 namespace IIAADataModels.Transfer
 {
 	public class Consultation
-	{
-		//TODO
+	{		
 		public Guid Id { get; set; }
 
 		public Basket HealthPlan { get; set; }
 		public Basket Basket { get; set; }
 
-		
-
+		public List<IIAADataModels.Transfer.Survey.FormResponse> SurveyResponses { get; set; }
 
 	}
 }

@@ -1,4 +1,5 @@
-﻿using LaunchPad.Mobile.Helpers;
+﻿using IIAADataModels.Transfer.Survey;
+using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Services;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace LaunchPad.Mobile.ViewModels
             set => SetProperty(ref _surveyIndexList, value);
         }
 
-        public ICommand ContinueCommand => new Command(async() =>
+        public ICommand ContinueCommand => new Command<List<SurveySummary>>(async(param) =>
           {
               try
               {
@@ -78,11 +79,30 @@ namespace LaunchPad.Mobile.ViewModels
                           Basis = new FlexBasis(1f, true);
                       }
                       ConcernAndSkinCareQuestions[0].IsSelected = true;
+                     
                   }
                   else
                   {
+                      await Task.Run(async () =>
+                      {
+                          var surveResponse = param.GroupBy(a => a.QuestionGuid).Select(a => new FormResponse
+                          {
+                              Id = Guid.NewGuid(),
+                              Created = DateTime.Now,
+                              FormId = SplashPageViewModel.ConcernsFormId,
+                              Version = SplashPageViewModel.ConcernsFormVersion,
+                              Answers = a.Distinct().Select(x => new FormQuestionResponse
+                              {
+                                  QuestionId = new Guid(a.Key),
+                                  Answer = string.Join("|", param.Where(t => t.QuestionGuid == a.Key).Select(t => string.IsNullOrEmpty(t.SubAnswerText) ? t.AnswerText : string.IsNullOrEmpty(t.ConfigAnswerText) ? t.AnswerText + "-" + t.SubAnswerText : t.AnswerText + "-" + t.SubAnswerText + "-" + t.ConfigAnswerText))
+                              }).ToList().Take(1).ToList()
+                          });
+
+                          var dbSurveyResponse = await DatabaseServices.Get<List<FormResponse>>("SurveyResponse");
+                          dbSurveyResponse.AddRange(surveResponse);
+                          await DatabaseServices.InsertData<List<FormResponse>>("SurveyResponse", dbSurveyResponse);
+                      });
                       Next?.Invoke();
-                      await SecureStorage.SetAsync("ConcernsSurveyDone_" + Settings.ClientId + "_" + Settings.CurrentTherapistId, "true");
                   }
               }
               catch (Exception)

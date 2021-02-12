@@ -8,20 +8,18 @@ using Xamarin.Forms;
 
 namespace LaunchPad.Mobile.Droid
 {
-    [Activity(Label = "Eventis", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = true,ScreenOrientation =ScreenOrientation.Landscape|ScreenOrientation.ReverseLandscape, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
+    [Activity(Label = "Eventis", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Landscape)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-
             base.OnCreate(savedInstanceState);
-           
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Forms.SetFlags("SwipeView_Experimental");
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
-            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Forms.Init(this, savedInstanceState);
             Forms.SetFlags("UseLegacyRenderers");
             global::Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);
             Plugin.InputKit.Platforms.Droid.Config.Init(this, savedInstanceState);

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace IIAADataModels.Transfer
 {
-	public class Basket
+	public class ConsumerFavourite
 	{
-		public Guid Id { get; set; }
-		public List<BasketItem> Items { get; set; }
+		public Guid ProductId { get; set; }
+		public DateTime Created { get; set; }
 	}
 }

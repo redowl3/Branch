@@ -16,9 +16,11 @@ namespace IIAADataModels.Transfer
 
 		public DateTime DateOfBirth { get; set; }
 		public List<Transfer.ConsumerAddress> Addresses { get; set; }
-		
+
 		public Transfer.Consultation CurrentConsultation { get; set; }
 
 		public Guid TherapistId { get; set; }
+
+		public List<Survey.FormResponseNoAnswers> PreviousResponses { get; set; }
 	}
 }

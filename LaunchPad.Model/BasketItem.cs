@@ -13,5 +13,6 @@ namespace IIAADataModels.Transfer
 		public string PrescribingOption { get; set; }
 		public string Notes { get; set; }
 		public int Quantity { get; set; }
+		public string BarcodeValue { get; set; }
 	}
 }

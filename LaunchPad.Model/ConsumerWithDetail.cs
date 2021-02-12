@@ -42,8 +42,12 @@ namespace IIAADataModels.Transfer
 		public IIAADataModels.Transfer.Salon SalonDetails { get; set; }
 
 		
-		public List<IIAADataModels.Transfer.ConsumerTermsAcceptance> TermsAcceptance {get;set;}
+		public List<Survey.FormResponseNoAnswers> PreviousSurveyResponses { get; set; }
 
+		//public List<IIAADataModels.Transfer.ConsumerTermsAcceptance> TermsAcceptance {get;set;}
+
+
+		public List<IIAADataModels.Transfer.ConsumerFavourite> Favourites { get; set; }
 
 		//public Consumer GetConsumer()
 		//{

@@ -14,6 +14,7 @@ namespace LaunchPad.Mobile.CustomLayouts
     {
         private List<SurveySummary> SurveySummaries = new List<SurveySummary>();
         private string CurrentActiveResponse { get; set; }
+        private string CurrentActiveQuestionId { get; set; }
         private string QuestionGuid { get; set; }
         private string CurrentQuestion { get; set; }
         private string CurrentAnswerText { get; set; }
@@ -33,7 +34,7 @@ namespace LaunchPad.Mobile.CustomLayouts
                 var layout = senderLayoutParent.Children[1] as StackLayout;
                 var list = BindableLayout.GetItemsSource(layout) as List<CustomFormQuestion>;
                 if (list?.Count > 0)
-                {                    
+                {
                     (senderLayoutParent.Children[1] as StackLayout).IsVisible = !(senderLayoutParent.Children[1] as StackLayout).IsVisible;
                     if ((senderLayoutParent.Children[1] as StackLayout).IsVisible)
                     {
@@ -50,6 +51,16 @@ namespace LaunchPad.Mobile.CustomLayouts
                 }
 
                 CurrentActiveResponse = (((Grid)sender).Children[0] as Label).Text;
+
+                var containerParent = (StackLayout)((FlexLayout)((StackLayout)(senderLayoutParent.Parent)).Parent).Parent;
+                if (containerParent != null)
+                {
+                    CurrentActiveQuestionId = ((Label)(containerParent.Children[0])).Text;
+                    if (string.IsNullOrEmpty(CurrentActiveQuestionId))
+                    {
+                        CurrentActiveQuestionId = (((StackLayout)((StackLayout)(containerParent.Parent)).Parent)?.Children[0] as Label)?.Text;
+                    }
+                }
             }
             catch (Exception)
             {
@@ -62,12 +73,23 @@ namespace LaunchPad.Mobile.CustomLayouts
         {
             try
             {
+                var senderLayoutParent = (Button)sender;
+                var containerParent = (StackLayout)((FlexLayout)((StackLayout)(senderLayoutParent.Parent)).Parent).Parent;
+                if (containerParent != null)
+                {
+                    CurrentActiveQuestionId = ((Label)(containerParent.Children[0])).Text;
+                    if (string.IsNullOrEmpty(CurrentActiveQuestionId))
+                    {
+                        CurrentActiveQuestionId = (((StackLayout)((StackLayout)(containerParent.Parent)).Parent)?.Children[0] as Label)?.Text;
+                    }
+                }
                 if (((Button)sender).BackgroundColor == Color.FromHex("#fff"))
                 {
                     ((Button)sender).BackgroundColor = Color.FromHex("#000");
                     ((Button)sender).TextColor = Color.FromHex("#fff");
                     SurveySummaries.Add(new SurveySummary
                     {
+                        QuestionGuid = CurrentActiveQuestionId,
                         QuestionText = CurrentQuestion,
                         AnswerText = (((Button)sender).CommandParameter as Answer)?.ResponseText
                     });
@@ -81,7 +103,7 @@ namespace LaunchPad.Mobile.CustomLayouts
                     {
                         SurveySummaries.Remove(surveySummary);
                     }
-                   
+
                 }
             }
             catch (Exception)
@@ -131,7 +153,15 @@ namespace LaunchPad.Mobile.CustomLayouts
                 {
                     CurrentActiveResponse = child0.Text;
                 }
-
+                var containerParent = (StackLayout)((FlexLayout)((StackLayout)(paremt5.Parent)).Parent).Parent;
+                if (containerParent != null)
+                {
+                    CurrentActiveQuestionId = ((Label)(containerParent.Children[0])).Text;
+                    if (string.IsNullOrEmpty(CurrentActiveQuestionId))
+                    {
+                        CurrentActiveQuestionId = (((StackLayout)((StackLayout)(containerParent.Parent)).Parent)?.Children[0] as Label)?.Text;
+                    }
+                }
                 var child1 = (Entry)((Grid)((Frame)parent2.Children[1]).Content).Children[0];
                 if (child1 != null)
                 {
@@ -141,13 +171,14 @@ namespace LaunchPad.Mobile.CustomLayouts
                 {
                     SurveySummaries.Add(new SurveySummary
                     {
+                        QuestionGuid=CurrentActiveQuestionId,
                         AnswerText = CurrentActiveResponse,
                         SubAnswerText = SubAnswerText
                     });
                 }
                 else
                 {
-                    SurveySummaries.Where(a => a.AnswerText.ToLower() == CurrentActiveResponse.ToLower()).ForEach(x=>
+                    SurveySummaries.Where(a => a.AnswerText.ToLower() == CurrentActiveResponse.ToLower()).ForEach(x =>
                     {
                         x.SubAnswerText = SubAnswerText;
                     });
@@ -168,17 +199,18 @@ namespace LaunchPad.Mobile.CustomLayouts
         {
             try
             {
+                
                 if (((Button)sender).BackgroundColor == Color.FromHex("#000"))
                 {
                     ((Button)sender).BackgroundColor = Color.FromHex("#fff");
                     ((Button)sender).TextColor = Color.FromHex("#000");
-                    ((Frame)((StackLayout)((Button)sender).Parent).Children[1]).IsVisible = false;
+                    ((Frame)((StackLayout)((Button)sender).Parent).Children[2]).IsVisible = false;
                 }
                 else
                 {
                     ((Button)sender).BackgroundColor = Color.FromHex("#000");
                     ((Button)sender).TextColor = Color.FromHex("#fff");
-                    ((Frame)((StackLayout)((Button)sender).Parent).Children[1]).IsVisible = true;
+                    ((Frame)((StackLayout)((Button)sender).Parent).Children[2]).IsVisible = true;
                 }
             }
             catch (Exception)
@@ -195,7 +227,9 @@ namespace LaunchPad.Mobile.CustomLayouts
                 if (!string.IsNullOrEmpty(((Editor)sender).Text))
                 {
                     CurrentAnswerText = ((Editor)sender).Text;
-                    var question = ((Button)((StackLayout)((Frame)((Grid)((Editor)sender).Parent).Parent).Parent).Children[0]).Text;
+                    var question = ((Button)((StackLayout)((Frame)((Grid)((Editor)sender).Parent).Parent).Parent).Children[1]).Text;
+                    QuestionGuid= ((Label)((StackLayout)((FlexLayout)((StackLayout)((Frame)((Grid)((Editor)sender).Parent).Parent).Parent).Parent).Parent).Children[0]).Text;
+                   
                     if (!string.IsNullOrEmpty(question))
                     {
                         var splittedString = question.Split('-');
@@ -205,6 +239,7 @@ namespace LaunchPad.Mobile.CustomLayouts
                         {
                             SurveySummaries.Add(new SurveySummary
                             {
+                                QuestionGuid=CurrentActiveQuestionId,
                                 AnswerText = CurrentQuestion,
                                 SubAnswerText = CurrentAnswerText
                             });
@@ -238,6 +273,16 @@ namespace LaunchPad.Mobile.CustomLayouts
                     if (child0 != null)
                     {
                         CurrentActiveResponse = child0.Text;
+                    }
+
+                    var containerParent = (StackLayout)((FlexLayout)((StackLayout)(mainParent.Parent)).Parent).Parent;
+                    if (containerParent != null)
+                    {
+                        CurrentActiveQuestionId = ((Label)(containerParent.Children[0])).Text;
+                        if (string.IsNullOrEmpty(CurrentActiveQuestionId))
+                        {
+                            CurrentActiveQuestionId = (((StackLayout)((StackLayout)(containerParent.Parent)).Parent)?.Children[0] as Label)?.Text;
+                        }
                     }
                 }
                 if (SurveySummaries.Count(a => a.AnswerText.ToLower() == CurrentActiveResponse.ToLower()) == 0)

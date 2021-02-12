@@ -19,6 +19,12 @@ namespace LaunchPad.Mobile.ViewModels
 {
     public class SplashPageViewModel : ViewModelBase
     {
+        public static Guid ConcernsFormId { get; set; }
+        public static int ConcernsFormVersion { get; set; }
+        public static Guid HealthFormId { get; set; }
+        public static int HealthFormVersion { get; set; }
+        public static Guid LifeStyleFormId { get; set; }
+        public static int LifestyleFormVersion { get; set; }
         public static Action<int> UpdateProgress;
         public static void OnUpdateProgress(int param)
         {
@@ -77,11 +83,28 @@ namespace LaunchPad.Mobile.ViewModels
                     {
                         foreach (var survey in salon.Surveys)
                         {
+                            if (survey.Title.ToLower() == "concerns + skin type")
+                            {
+                                ConcernsFormId = survey.Id;
+                                ConcernsFormVersion = survey.Version;
+                            }
+                            if (survey.Title.ToLower() == "health questions")
+                            {
+                                HealthFormId = survey.Id;
+                                HealthFormVersion = survey.Version;
+                            }
+                            if (survey.Title.ToLower() == "you + your lifestyle")
+                            {
+                                LifeStyleFormId = survey.Id;
+                                LifestyleFormVersion = survey.Version;
+                            }
                             foreach (var page in survey.Pages)
                             {
                                 var questions = new List<CustomFormQuestion>(page.Questions.Select(a => new CustomFormQuestion
                                 {
-                                    QuestionGuid=Guid.NewGuid().ToString(),
+                                    FormId = survey.Id,
+                                    Version = survey.Version,
+                                    QuestionGuid = a.Id.ToString(),
                                     ConcernPage = survey.Title.ToLower() == "concerns + skin type",
                                     HealthQuestions = survey.Title.ToLower() == "health questions",
                                     LifeStyles = survey.Title.ToLower() == "you + your lifestyle",
@@ -90,6 +113,7 @@ namespace LaunchPad.Mobile.ViewModels
                                     FormQuestionData = JsonConvert.DeserializeObject<FormQuestionData>(a.QuestionData.ToString()),
                                     ChildQuestions = a.ChildQuestions.Select(x => new CustomFormQuestion
                                     {
+                                        QuestionGuid = x.Id.ToString(),
                                         PageFormQuestionData = JsonConvert.DeserializeObject<FormQuestionData>(a.QuestionData.ToString()),
                                         ConcernPage = survey.Title.ToLower() == "concerns + skin type",
                                         HealthQuestions = survey.Title.ToLower() == "health questions",
@@ -98,6 +122,7 @@ namespace LaunchPad.Mobile.ViewModels
                                         FormQuestionData = JsonConvert.DeserializeObject<FormQuestionData>(x.QuestionData.ToString()),
                                         ChildQuestions = x.ChildQuestions.Select(t => new CustomFormQuestion
                                         {
+                                            QuestionGuid = t.Id.ToString(),
                                             ConcernPage = survey.Title.ToLower() == "concerns + skin type",
                                             HealthQuestions = survey.Title.ToLower() == "health questions",
                                             LifeStyles = survey.Title.ToLower() == "you + your lifestyle",
@@ -145,7 +170,7 @@ namespace LaunchPad.Mobile.ViewModels
                                     })),
                                 }));
 
-                                await DatabaseServices.InsertData("survey_page" + page.Id + "_" + survey.Id,questions);
+                                await DatabaseServices.InsertData("survey_page" + page.Id + "_" + survey.Id, questions);
                             }
                         }
                     }

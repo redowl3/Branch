@@ -546,6 +546,8 @@ namespace LaunchPad.Mobile.ViewModels
 
     public class CustomFormQuestion
     {
+        public Guid FormId { get; set; }
+        public int Version { get; set; }
         public string QuestionGuid { get; set; }
         public bool ConcernPage { get; set; }
         public bool HealthQuestions { get; set; }

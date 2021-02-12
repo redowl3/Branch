@@ -1,4 +1,5 @@
-﻿using LaunchPad.Mobile.Helpers;
+﻿using IIAADataModels.Transfer.Survey;
+using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Services;
 using Newtonsoft.Json;
 using System;
@@ -75,8 +76,20 @@ namespace LaunchPad.Mobile.ViewModels
         {           
             Task.Run(async () =>
             {
-                await DatabaseServices.Delete<List<SurveySummary>>("healthsurvey_done_" + Settings.ClientId + "_" + Settings.CurrentTherapistId);
-                SecureStorage.Remove("SurveyDone_" + Settings.ClientId + "_" + Settings.CurrentTherapistId);
+                var surveResponse = param.GroupBy(a => a.QuestionGuid).Select(a => new FormResponse
+                {
+                    Id=Guid.NewGuid(),
+                    Created=DateTime.Now,
+                    FormId=SplashPageViewModel.HealthFormId,
+                    Version=SplashPageViewModel.HealthFormVersion,
+                    Answers=a.Distinct().Select(x=>new FormQuestionResponse
+                    {
+                        QuestionId=new Guid(a.Key),
+                        Answer= string.Join("|", param.Where(t => t.QuestionGuid == a.Key).Select(t => string.IsNullOrEmpty(t.SubAnswerText) ? t.AnswerText : string.IsNullOrEmpty(t.ConfigAnswerText) ? t.AnswerText + "-" + t.SubAnswerText : t.AnswerText + "-" + t.SubAnswerText + "-" + t.ConfigAnswerText))
+                    }).ToList().Take(1).ToList()
+                });
+
+                await DatabaseServices.InsertData<List<FormResponse>>("SurveyResponse", surveResponse.ToList());
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     SurveySummaries = new ObservableCollection<SurveySummary>(param);
