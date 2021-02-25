@@ -262,17 +262,18 @@ namespace LaunchPad.Mobile.ViewModels
                         }
 
                         await DatabaseServices.InsertData<List<RecentConsumer>>("recentconsumers" + Settings.CurrentTherapistId, recentConsumerList);
-                        Device.BeginInvokeOnMainThread(async() =>
+                        Device.BeginInvokeOnMainThread(() =>
                         {
-                            var isSurveyDone = await IsSurveyDone();
-                            if (!isSurveyDone)
-                            {
-                                Application.Current.MainPage = new AnimationNavigationPage(new SurveyPage());
-                            }
-                            else
-                            {
-                                Application.Current.MainPage = new AnimationNavigationPage(new SalonProductsPage());
-                            }
+                            //var isSurveyDone = await IsSurveyDone();
+                            //if (!isSurveyDone)
+                            //{
+                            //    Application.Current.MainPage = new AnimationNavigationPage(new SurveyPage());
+                            //}
+                            //else
+                            //{
+                            //    Application.Current.MainPage = new AnimationNavigationPage(new SalonProductsPage());
+                            //}
+                            Application.Current.MainPage.Navigation.PushAsync(new DashboardPage());
                         });
                       
 
@@ -305,7 +306,7 @@ namespace LaunchPad.Mobile.ViewModels
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    Application.Current.MainPage = new AnimationNavigationPage(new ClientRegistrationPage());
+                    Application.Current.MainPage.Navigation.PushAsync(new ClientRegistrationPage());
                 });
             }
             catch (Exception)

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "C/eBGDOiCABXkOP67DsQRB3bqXXFXdkCXZNXMiwIa1ag9rNupZaRBIirdmsDniJJJEcRQgGhSPBDqZZvTZOBdg==",
+  "dgSpecHash": "G9vZDAXdLVynHT4A/9jgvKxdQK+aFjTGaU0BzLucBEAlttsauSghLItZL/smtpe24i/b/zFcba0dISz0vtnYrg==",
   "success": true,
   "projectFilePath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
   "expectedPackageFiles": [
@@ -38,6 +38,8 @@
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\webp.touch\\1.0.8\\webp.touch.1.0.8.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\xam.plugins.settings\\3.1.1\\xam.plugins.settings.3.1.1.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\xam.tabview\\1.0.5\\xam.tabview.1.0.5.nupkg.sha512",
+    "C:\\Users\\Amit Kumar\\.nuget\\packages\\xamarin.controls.signaturepad\\3.0.0\\xamarin.controls.signaturepad.3.0.0.nupkg.sha512",
+    "C:\\Users\\Amit Kumar\\.nuget\\packages\\xamarin.controls.signaturepad.forms\\3.0.0\\xamarin.controls.signaturepad.forms.3.0.0.nupkg.sha512",
     "C:\\Microsoft\\Xamarin\\NuGet\\xamarin.essentials\\1.5.3.2\\xamarin.essentials.1.5.3.2.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\xamarin.ffimageloading\\2.4.11.982\\xamarin.ffimageloading.2.4.11.982.nupkg.sha512",
     "C:\\Users\\Amit Kumar\\.nuget\\packages\\xamarin.ffimageloading.forms\\2.4.11.982\\xamarin.ffimageloading.forms.2.4.11.982.nupkg.sha512",

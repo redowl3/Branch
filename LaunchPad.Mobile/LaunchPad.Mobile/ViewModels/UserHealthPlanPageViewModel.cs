@@ -94,7 +94,7 @@ namespace LaunchPad.Mobile.ViewModels
         {
             try
             {
-                Task.Run(async () =>
+                Task.Run(() =>
                 {
                     SecureStorage.RemoveAll();
                     Device.BeginInvokeOnMainThread(() =>
@@ -251,6 +251,15 @@ namespace LaunchPad.Mobile.ViewModels
                                 ProductId=param.Product.Id,
                                 ProgramName = healthPlan.ProgramName,
                                 ProductName = param.Product.Name,
+                                Product=new CustomProduct
+                                {
+                                    Product=new Product
+                                    {
+                                        Id=param.Product.Id,
+                                        Name=param.Product.Name
+                                    },
+                                    ImageUrl=new Uri(param.Product.ImageUrls.First())
+                                },
                                 Price = param.Price,
                                 Variant=param.SelectedVariant
                             }
@@ -276,6 +285,15 @@ namespace LaunchPad.Mobile.ViewModels
                         ProgramName = healthPlan.ProgramName,
                         ProductName = param.Product.Name,
                         Price = param.Price,
+                        Product = new CustomProduct
+                        {
+                            Product = new Product
+                            {
+                                Id = param.Product.Id,
+                                Name = param.Product.Name
+                            },
+                            ImageUrl = new Uri(param.Product.ImageUrls.First())
+                        },
                         Variant = param.SelectedVariant
                     });
 
@@ -359,7 +377,7 @@ namespace LaunchPad.Mobile.ViewModels
                 var basket = await DatabaseServices.Get<CustomBasket>("basketItems"+Settings.ClientId);
                 if (basket != null && basket.ItemsCollection.Count > 0)
                 {
-                    await DatabaseServices.InsertData("CompletedHealthPlanItems", basket);
+                    await DatabaseServices.InsertData("CompletedHealthPlanItems", basket);                    
                     await Application.Current.MainPage.Navigation.PushAsync(new CompletedHealthPlanPage());
                     CompletedHealthPlanPageViewModel.BadgeCountAction?.Invoke(basket.ItemsCollection.Count);
                     CloseDrawer?.Invoke();

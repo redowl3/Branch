@@ -486,6 +486,29 @@ namespace LaunchPad.Mobile.ViewModels
                         {
                             ToastServices.ShowToast("Order has been placed successfully");
                             CanPlaceOrder = false;
+                            var userHistory = await DatabaseServices.Get<List<UserActivity>>("userhistory"+Settings.ClientId);
+                            if (userHistory.Count == 0)
+                            {
+                                userHistory.Add(new UserActivity
+                                {
+                                    Id = Guid.NewGuid(),
+                                    PerformedOn = DateTime.Now,
+                                    Activity = new Activity
+                                    {
+                                        Consultations = basket
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                var item = userHistory.FirstOrDefault(a => a.Activity.CreateOrUpdateDate.Date == DateTime.Now.Date);
+                                if (item != null)
+                                {
+                                    item.Activity.Consultations.ItemsCollection.AddRange(basket.ItemsCollection);
+                                }
+                            }
+
+                            await DatabaseServices.InsertData("userhistory"+Settings.ClientId, userHistory);
                         }
                         else
                         {

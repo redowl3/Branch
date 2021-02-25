@@ -1,6 +1,7 @@
 ﻿using IIAADataModels.Transfer.Survey;
 using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Services;
+using LaunchPad.Mobile.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -49,36 +50,21 @@ namespace LaunchPad.Mobile.ViewModels
               {
                   if (Counter < MaxCounter)
                   {
-                      ConcernAndSkinCareQuestions = new ObservableCollection<IndexedQuestions>();
+                      ConcernAndSkinCareQuestions[Counter].IsSelected = false;
                       ++Counter;
-                      foreach (var survey in App.surveyPageViewModelInstance.SurveyCollection.Where(a => a.Form.Title.ToLower() == "concerns + skin type"))
-                      {
-                          foreach (var page in survey.Form.Pages.Skip(Counter).Take(1))  //0,1,2,3
-                          {
-                              var questions = await DatabaseServices.Get<List<CustomFormQuestion>>("survey_page" + page.Id + "_" + survey.Form.Id);
-
-                              ConcernAndSkinCareQuestions.Add(new IndexedQuestions
-                              {
-                                  SurveyGuid = survey.Form.Id,
-                                  PageGuid = page.Id,
-                                  Questions = new ObservableCollection<CustomFormQuestion>(questions)
-                              });
-                          }
-                      }
-                      ConcernAndSkinCareQuestions[0].IsSelected = true;
-                      if (ConcernAndSkinCareQuestions[0].Questions?.Count == 3)
+                      if (ConcernAndSkinCareQuestions[Counter].Questions?.Count == 3)
                       {
                           Basis = new FlexBasis(0.333f, true);
                       }
-                      else if (ConcernAndSkinCareQuestions[0].Questions?.Count == 2)
+                      else if (ConcernAndSkinCareQuestions[Counter].Questions?.Count == 2)
                       {
                           Basis = new FlexBasis(0.5f, true);
                       }
-                      else if (ConcernAndSkinCareQuestions[0].Questions?.Count == 1)
+                      else if (ConcernAndSkinCareQuestions[Counter].Questions?.Count == 1)
                       {
                           Basis = new FlexBasis(1f, true);
                       }
-                      ConcernAndSkinCareQuestions[0].IsSelected = true;
+                      ConcernAndSkinCareQuestions[Counter].IsSelected = true;
                      
                   }
                   else
@@ -94,7 +80,8 @@ namespace LaunchPad.Mobile.ViewModels
                               Answers = a.Distinct().Select(x => new FormQuestionResponse
                               {
                                   QuestionId = new Guid(a.Key),
-                                  Answer = string.Join("|", param.Where(t => t.QuestionGuid == a.Key).Select(t => string.IsNullOrEmpty(t.SubAnswerText) ? t.AnswerText : string.IsNullOrEmpty(t.ConfigAnswerText) ? t.AnswerText + "-" + t.SubAnswerText : t.AnswerText + "-" + t.SubAnswerText + "-" + t.ConfigAnswerText))
+                                  Answer = string.Join("|", param.Where(t => t.QuestionGuid == a.Key).Select(t => string.IsNullOrEmpty(t.SubAnswerText) ? t.AnswerText : string.IsNullOrEmpty(t.ConfigAnswerText) ? t.AnswerText + "-" + t.SubAnswerText : t.AnswerText + "-" + t.SubAnswerText + "-" + t.ConfigAnswerText)),
+                                  Notes=x.Notes
                               }).ToList().Take(1).ToList()
                           });
 
@@ -114,7 +101,14 @@ namespace LaunchPad.Mobile.ViewModels
         public ConcernsAndSkinCareSurveyViewModel()
         {
             GetConcernsQuestionsAsync();
+            //SurveyPage.StartCounter += StartCounter;
         }
+
+        private void StartCounter()
+        {
+            GetConcernsQuestionsAsync();
+        }
+
         public void GetConcernsQuestionsAsync()
         {
             try
@@ -126,7 +120,7 @@ namespace LaunchPad.Mobile.ViewModels
 
                     foreach (var survey in App.surveyPageViewModelInstance.SurveyCollection.Where(a => a.Form.Title.ToLower() == "concerns + skin type"))
                     {
-                        foreach (var page in survey.Form.Pages.Take(1))
+                        foreach (var page in survey.Form.Pages)
                         {
                             var questions = await DatabaseServices.Get<List<CustomFormQuestion>>("survey_page" + page.Id + "_" + survey.Form.Id);
 

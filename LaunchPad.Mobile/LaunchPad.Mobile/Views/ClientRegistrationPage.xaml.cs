@@ -12,24 +12,6 @@ namespace LaunchPad.Mobile.Views
         public ClientRegistrationPage()
         {
             InitializeComponent();
-            var mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
-            var screenWidth = mainDisplayInfo.Width;
-            if (screenWidth <= 2050)
-            {
-                MidDobContainerGrid.ColumnSpacing = 20;
-                //MidDobContainerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(250) });
-                //MidDobContainerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(350) });
-                //MidDobContainerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200) });
-                //MidDobContainerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200) });
-            }
-            else
-            {
-                MidDobContainerGrid.ColumnSpacing = 30;
-                //MidDobContainerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(250) });
-                //MidDobContainerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(350) });
-                //MidDobContainerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200) });
-                //MidDobContainerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200) });
-            }
             this.FirstnameEntry.Focused += (s, e) => { SetLayoutPosition(onFocus: true); };
             this.FirstnameEntry.Unfocused += (s, e) =>
             { 

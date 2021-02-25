@@ -180,17 +180,17 @@ namespace LaunchPad.Mobile.CustomLayouts
                 ((Button)sender).TextColor = Color.FromHex("#fff");
                 QuestionGuid = (topParent.Children[0] as Label).Text;
                 AnswerText = ((Button)sender).Text;
-                foreach (var item in senderParent.Children)
-                {
-                    var grid = item as Grid;
-                    var button = grid.Children[0] as Button;
+                //foreach (var item in senderParent.Children)
+                //{
+                //    var grid = item as Grid;
+                //    var button = grid.Children[0] as Button;
 
-                    if (button?.Text?.ToLower() != ((Button)sender).Text.ToLower())
-                    {
-                        button.BackgroundColor = Color.FromHex("#fff");
-                        button.TextColor = Color.FromHex("#000");
-                    }
-                }
+                //    if (button?.Text?.ToLower() != ((Button)sender).Text.ToLower())
+                //    {
+                //        button.BackgroundColor = Color.FromHex("#fff");
+                //        button.TextColor = Color.FromHex("#000");
+                //    }
+                //}
 
                 if (SurveySummaries.Count(a => a.QuestionGuid == QuestionGuid) > 0)
                 {
@@ -225,6 +225,55 @@ namespace LaunchPad.Mobile.CustomLayouts
                 ((Image)senderParent.Children[2]).Source = "icon_down_arrow";
                 QuestionGuid = ((Label)senderParent.Children[0]).Text;
                 SurveySummaries.Remove(SurveySummaries.FirstOrDefault(a => a.QuestionGuid == QuestionGuid));
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void AllowNotes(object sender, EventArgs e)
+        {
+            try
+            {
+                var senderElement = (ImageButton)sender;
+                var parentOfSenderElement = (StackLayout)(senderElement.Parent);
+                ((Frame)parentOfSenderElement.Children[1]).IsVisible = !((Frame)parentOfSenderElement.Children[1]).IsVisible;
+                if (((Frame)parentOfSenderElement.Children[1]).IsVisible)
+                {
+                    senderElement.Source = "icon_notes_active";
+                }
+                else
+                {
+                    senderElement.Source = "icon_notes";
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void notes_added(object sender, FocusEventArgs e)
+        {
+            try
+            {
+                var senderElement = (Editor)sender;
+                var parent_sender_element = (Grid)(senderElement.Parent);
+                QuestionGuid = ((Label)(parent_sender_element.Children[0])).Text;
+
+                if (SurveySummaries.Count(a => a.QuestionGuid == QuestionGuid) > 0)
+                {
+                    SurveySummaries.Where(a => a.QuestionGuid == QuestionGuid).ForEach(a => a.Notes = senderElement.Text);
+                }
+                else
+                {
+                    SurveySummaries.Add(new SurveySummary
+                    {
+                        QuestionGuid = QuestionGuid,
+                        Notes = senderElement.Text
+                    });
+                }
             }
             catch (Exception)
             {

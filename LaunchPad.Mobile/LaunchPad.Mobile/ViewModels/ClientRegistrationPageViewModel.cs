@@ -20,6 +20,16 @@ namespace LaunchPad.Mobile.ViewModels
         private Guid _currentConsumerId { get; set; }
         private IDatabaseServices DatabaseServices => DependencyService.Get<IDatabaseServices>();
         private IToastServices ToastServices => DependencyService.Get<IToastServices>();
+        private string _gender;
+        public string Gender
+        {
+            get => _gender;
+            set
+            {
+                SetProperty(ref _gender, value);
+                CanExecute();
+            }
+        }
         private string _firstname;
         public string Firstname
         {
@@ -257,7 +267,7 @@ namespace LaunchPad.Mobile.ViewModels
 
         private void CanExecute()
         {
-            var shouldEnabled = !string.IsNullOrEmpty(Firstname) && !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(ConfirmEmail) && !string.IsNullOrEmpty(Mobile) && !string.IsNullOrEmpty(PostCode) && !string.IsNullOrEmpty(AddressLine1)
+            var shouldEnabled = !string.IsNullOrEmpty(Gender) && !string.IsNullOrEmpty(Firstname) && !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(ConfirmEmail) && !string.IsNullOrEmpty(Mobile) && !string.IsNullOrEmpty(PostCode) && !string.IsNullOrEmpty(AddressLine1)
                   && !string.IsNullOrEmpty(AddressLine2) && !string.IsNullOrEmpty(AddressLine3) && !string.IsNullOrEmpty(City) && !string.IsNullOrEmpty(County) && !string.IsNullOrEmpty(County);
             IsButtonEnabled = shouldEnabled;
         }
@@ -292,9 +302,19 @@ namespace LaunchPad.Mobile.ViewModels
               IsDeclarations = false;
               PerformPostRegistrationExecutionsAsync();
           });
+        public ICommand GoBackCommand => new Command(() =>
+        {
+            for (var counter = 1; counter < 1; counter++)
+            {
+                Application.Current.MainPage.Navigation.RemovePage(Application.Current.MainPage.Navigation.NavigationStack[Application.Current.MainPage.Navigation.NavigationStack.Count - 2]);
+            }
 
+            Application.Current.MainPage.Navigation.PopAsync();
+        });
+        public ICommand HomeCommand => new Command(() => Application.Current.MainPage = new AnimationNavigationPage(new SalonClientsPage()));
         public ClientRegistrationPageViewModel()
         {
+            Gender = "Male";
             _currentConsumerId = Guid.NewGuid();
             Countries = new List<string>
             {
@@ -322,8 +342,9 @@ namespace LaunchPad.Mobile.ViewModels
                     Lastname = Lastname,
                     Email = Email,
                     Mobile = $"{SelectedIddCode}-{Mobile}",
+                    Gender=Gender,
                     DateOfBirth = new DateTime(int.Parse(YY), int.Parse(MM), int.Parse(DD)),
-                    TherapistId = new Guid(Settings.CurrentTherapistId),
+                    TherapistId = new Guid(Settings.CurrentTherapistId),                    
                     Addresses = new List<ConsumerAddress>
                     {
                         new ConsumerAddress
@@ -409,7 +430,7 @@ namespace LaunchPad.Mobile.ViewModels
                                 await DatabaseServices.InsertData("recentconsumers" + Settings.CurrentTherapistId, recentConsumerList);
                                 Device.BeginInvokeOnMainThread(() =>
                                 {
-                                    Application.Current.MainPage = new AnimationNavigationPage(new SurveyPage());
+                                    Application.Current.MainPage = new AnimationNavigationPage(new DashboardPage());
                                 });
                             }
                         }

@@ -644,7 +644,7 @@ namespace LaunchPad.Mobile.ViewModels
         public string conditionvalue { get; set; }
         public string visibility { get; set; }
         public List<Answer> Answers { get; set; }
-
+        public bool AllowNotes { get; set; }
         public FormQuestionData()
         {
             Answers = new List<Answer>();
@@ -658,5 +658,6 @@ namespace LaunchPad.Mobile.ViewModels
         public string AnswerText { get; set; }
         public string SubAnswerText { get; set; }
         public string ConfigAnswerText { get; set; }
+        public string Notes { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace IIAADataModels.Transfer
 		public string Lastname { get; set; }
 		public string Email { get; set; }
 		public string Mobile { get; set; }
-
+		public string Gender { get; set; }
 		public DateTime DateOfBirth { get; set; }
 		public List<Transfer.ConsumerAddress> Addresses { get; set; }
 

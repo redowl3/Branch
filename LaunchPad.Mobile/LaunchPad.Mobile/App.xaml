@@ -18,6 +18,9 @@
             <converters:InverseStringToVisibilityConverter x:Key="InverseStringToVisibilityConverter"/>
             <converters:CollectionToBasisConverter x:Key="CollectionToBasisConverter"/>
             <converters:TextToWidthConverter x:Key="TextToWidthConverter"/>
+            <converters:DateTimeFormatter x:Key="DateTimeFormatter"/>
+            <converters:DaysGetter x:Key="DaysGetter"/>
+            <converters:CamelCaseConverter x:Key="CamelCaseConverter"/>
             
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="#000000"/>

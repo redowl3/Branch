@@ -1,6 +1,7 @@
 ﻿using IIAADataModels.Transfer.Survey;
 using LaunchPad.Mobile.Helpers;
 using LaunchPad.Mobile.Services;
+using LaunchPad.Mobile.Views;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -117,10 +118,47 @@ namespace LaunchPad.Mobile.ViewModels
             });
           
         });
+
+
         public HealthQuestionsSurveyViewModel()
         {
             GetConcernsQuestionsAsync();
+            SurveyPage.BackFromMedicalQuestionnare += BackFromMedicalQuestionnare;
         }
+
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+        private void BackFromMedicalQuestionnare()
+        {
+            if (IsBusy) return;
+            IsBusy = true;
+            try
+            {
+
+                if (IsDone && CanContinue)
+                {
+                    this.EditCommand.Execute(null);
+                }
+                else
+                {
+                    Application.Current.MainPage.Navigation.PopAsync();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        
+        }
+
         public void GetConcernsQuestionsAsync()
         {
             try

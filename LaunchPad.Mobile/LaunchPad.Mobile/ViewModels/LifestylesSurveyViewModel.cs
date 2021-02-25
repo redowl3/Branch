@@ -20,6 +20,11 @@ namespace LaunchPad.Mobile.ViewModels
 {
     public class LifestylesSurveyViewModel : ViewModelBase
     {
+        public static Action Next;
+        public static void OnNext()
+        {
+            Next?.Invoke();
+        }
         private int Counter { get; set; }
         private int MaxCounter { get; set; }
         private IDatabaseServices DatabaseServices => DependencyService.Get<IDatabaseServices>();
@@ -62,37 +67,21 @@ namespace LaunchPad.Mobile.ViewModels
             {
                 if (Counter < MaxCounter)
                 {
-                    LifeStylesQuestions = new ObservableCollection<IndexedQuestions>();
+                    LifeStylesQuestions[Counter].IsSelected = false;
                     ++Counter;
-                    foreach (var survey in App.surveyPageViewModelInstance.SurveyCollection.Where(a => a.Form.Title.ToLower() == "you + your lifestyle"))
-                    {
-                        foreach (var page in survey.Form.Pages.Skip(Counter).Take(1))
-                        {
-                            var questions = await DatabaseServices.Get<List<CustomFormQuestion>>("survey_page" + page.Id + "_" + survey.Form.Id);
-
-                            LifeStylesQuestions.Add(new IndexedQuestions
-                            {
-                                SurveyGuid = survey.Form.Id,
-                                PageGuid = page.Id,
-                                Questions = new ObservableCollection<CustomFormQuestion>(questions)
-                            });
-                        }
-                    }
-                    if (LifeStylesQuestions[0].Questions?.Count == 3)
+                    if (LifeStylesQuestions[Counter].Questions?.Count == 3)
                     {
                         Basis = new FlexBasis(0.333f, true);
                     }
-                    else if (LifeStylesQuestions[0].Questions?.Count == 2)
+                    else if (LifeStylesQuestions[Counter].Questions?.Count == 2)
                     {
                         Basis = new FlexBasis(0.5f, true);
                     }
-                    else if (LifeStylesQuestions[0].Questions?.Count == 1)
+                    else if (LifeStylesQuestions[Counter].Questions?.Count == 1)
                     {
                         Basis = new FlexBasis(1f, true);
                     }
-                    LifeStylesQuestions[0].IsSelected = true;
-
-                   
+                    LifeStylesQuestions[Counter].IsSelected = true;                   
                 }
                 else
                 {
@@ -107,7 +96,8 @@ namespace LaunchPad.Mobile.ViewModels
                             Answers = a.Distinct().Select(x => new FormQuestionResponse
                             {
                                 QuestionId = new Guid(a.Key),
-                                Answer = string.Join("|", param.Where(t => t.QuestionGuid == a.Key).Select(t => string.IsNullOrEmpty(t.SubAnswerText) ? t.AnswerText : string.IsNullOrEmpty(t.ConfigAnswerText) ? t.AnswerText + "-" + t.SubAnswerText : t.AnswerText + "-" + t.SubAnswerText + "-" + t.ConfigAnswerText))
+                                Answer = string.Join("|", param.Where(t => t.QuestionGuid == a.Key).Select(t => string.IsNullOrEmpty(t.SubAnswerText) ? t.AnswerText : string.IsNullOrEmpty(t.ConfigAnswerText) ? t.AnswerText + "-" + t.SubAnswerText : t.AnswerText + "-" + t.SubAnswerText + "-" + t.ConfigAnswerText)),
+                                Notes=x.Notes
                             }).ToList().Take(1).ToList()
                         });
 
@@ -115,7 +105,8 @@ namespace LaunchPad.Mobile.ViewModels
                         dbSurveyResponse.AddRange(surveResponse);
                         await DatabaseServices.InsertData<List<FormResponse>>("SurveyResponse", dbSurveyResponse);
                     });
-                    PostSurveyResponseAsync();
+                    //PostSurveyResponseAsync();
+                    Next?.Invoke();
                 }
             }
             catch (Exception)
@@ -123,82 +114,8 @@ namespace LaunchPad.Mobile.ViewModels
 
             }
         });
-        private IToastServices ToastServices => DependencyService.Get<IToastServices>();
-        private async void PostSurveyResponseAsync()
-        {
-            try
-            {
-                var dbSurveyResponse = await DatabaseServices.Get<List<FormResponse>>("SurveyResponse");
-                var consumer = await DatabaseServices.Get<Consumer>("current_consumer" + Settings.CurrentTherapistId);
-                if (consumer != null && consumer.Id != Guid.Empty)
-                {
-                    var list = new List<FormResponse>();
-                    foreach (var item in dbSurveyResponse)
-                    {
-                        if (list.Count(a => a.FormId == item.FormId) == 0)
-                        {
-                            var formResponse = new FormResponse
-                            {
-                                Id = Guid.NewGuid(),
-                                Created = DateTime.Now,
-                                Version = item.Version,
-                                FormId = item.FormId
-                            };
-                            formResponse.Answers = new List<FormQuestionResponse>();
-                            formResponse.Answers.AddRange(item.Answers);
-                            list.Add(formResponse);
-                        }
-                        else
-                        {
-                            list.Where(a => a.FormId == item.FormId).ForEach(x => x.Answers.AddRange(item.Answers));
-                        }
-                    }
-
-                    var currentTherapistJson = await SecureStorage.GetAsync("currentTherapist");
-                    var currentTherapist = JsonConvert.DeserializeObject<Therapist>(currentTherapistJson);
-                    var saloConsumer = new SalonConsumer
-                    {
-                        Id = consumer.Id,
-                        Firstname = consumer.Firstname,
-                        Lastname = consumer.Lastname,
-                        Email = consumer.Email,
-                        Mobile = consumer.Mobile,
-                        TherapistId = currentTherapist.Id,
-                        DateOfBirth = consumer.DateOfBirth,
-                        CurrentConsultation = new Consultation
-                        {
-                            Id = Guid.NewGuid(),
-                            SurveyResponses=new List<IIAADataModels.Transfer.Survey.FormResponse>(list)
-                        }
-                    };
-
-                    var isCompleted = await ApiServices.Client.PostAsync<bool>("salon/consumer/consultation/finalise", saloConsumer);
-                    if (isCompleted)
-                    {                        
-                        await Task.Run(async() =>
-                        {
-                            await DatabaseServices.InsertData<List<FormResponse>>("survey_response_" + consumer.Id + "_" + currentTherapist.Id, list);
-                            App.ConcernsAndSkinCareSurveyViewModel = new ConcernsAndSkinCareSurveyViewModel();
-                            App.HealthQuestionsSurveyViewModel = new HealthQuestionsSurveyViewModel();
-                            App.LifestylesSurveyViewModel = new LifestylesSurveyViewModel();
-
-                            Device.BeginInvokeOnMainThread(() =>
-                            {
-                                Application.Current.MainPage = new AnimationNavigationPage(new SalonProductsPage());
-                            });
-                        });
-                    }
-                    else
-                    {
-                        ToastServices.ShowToast("Order failed");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
+        
+       
 
         public LifestylesSurveyViewModel()
         {
@@ -214,7 +131,7 @@ namespace LaunchPad.Mobile.ViewModels
                     {
                         foreach (var survey in App.surveyPageViewModelInstance.SurveyCollection.Where(a => a.Form.Title.ToLower() == "you + your lifestyle"))
                         {
-                            foreach (var page in survey.Form.Pages.Take(1))
+                            foreach (var page in survey.Form.Pages)
                             {
                                 var questions = await DatabaseServices.Get<List<CustomFormQuestion>>("survey_page" + page.Id + "_" + survey.Form.Id);
 
@@ -228,11 +145,8 @@ namespace LaunchPad.Mobile.ViewModels
                             Counter = 0;
                             MaxCounter = survey.Form.Pages.Count - 1;
                         }
-                      
                     }
-
                     LifeStylesQuestions[0].IsSelected = true;
-                  
                 });
             }
             catch (Exception)

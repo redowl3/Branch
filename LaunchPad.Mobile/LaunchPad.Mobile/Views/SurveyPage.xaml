@@ -18,7 +18,7 @@
         <viewmodels:SurveyPageViewModel/>
     </ContentPage.BindingContext>
     <Grid RowDefinitions="75,*" HorizontalOptions="FillAndExpand">
-        <Grid RowDefinitions="70" ColumnDefinitions="*,*,*" ColumnSpacing="0">
+        <Grid RowDefinitions="70" ColumnDefinitions="*,*,*,*" ColumnSpacing="0">
             <Grid RowDefinitions="60,10" Grid.Column="0">
                 <Button Padding="0" CornerRadius="0" BackgroundColor="Transparent" Text="Health Questions" FontSize="24" TextTransform="None" Clicked="HealthButtonClicked" CommandParameter="{Binding .}" FontFamily="RegularFont"/>
                 <BoxView Grid.Row="1" BackgroundColor="#c7c9cb" HeightRequest="10" x:Name="HealthSurveyBoxView"/>
@@ -30,6 +30,10 @@
             <Grid RowDefinitions="60,10" Grid.Column="2">
                 <Button Padding="0" CornerRadius="0" BackgroundColor="Transparent" Text="You + your Lifestyle" FontSize="24" TextTransform="None" Clicked="LifeStyleButtonClicked" CommandParameter="{Binding .}" FontFamily="RegularFont"/>
                 <BoxView Grid.Row="1" BackgroundColor="#f4f4f5" HeightRequest="10" x:Name="LifeStyleSurveyBoxView"/>
+            </Grid>
+            <Grid RowDefinitions="60,10" Grid.Column="3">
+                <Button Padding="0" CornerRadius="0" BackgroundColor="Transparent" Text="Let's Recap" FontSize="24" TextTransform="None" Clicked="LetsRecapButtonClicked" CommandParameter="{Binding .}" FontFamily="RegularFont"/>
+                <BoxView Grid.Row="1" BackgroundColor="#f4f4f5" HeightRequest="10" x:Name="LetsRecapSurveyBoxView"/>
             </Grid>
         </Grid>
         <StackLayout Grid.Row="1" x:Name="MainContainer" Padding="15,10" CompressedLayout.IsHeadless="True">
@@ -48,6 +52,11 @@
                     <viewmodels:LifestylesSurveyViewModel/>
                 </customlayouts:LifeStylesQuestionContainerLayout.BindingContext>-->
             </customlayouts:LifeStylesQuestionContainerLayout>
+            <customlayouts:LetsRecapSurveyContainerLayout x:Name="LetsRecapSurveyContainer" IsVisible="False">
+                <!--<customlayouts:LifeStylesQuestionContainerLayout.BindingContext>
+                    <viewmodels:LifestylesSurveyViewModel/>
+                </customlayouts:LifeStylesQuestionContainerLayout.BindingContext>-->
+            </customlayouts:LetsRecapSurveyContainerLayout>
         </StackLayout>
         <!--<Grid Grid.Row="2" Padding="20,0">
             <Button BackgroundColor="#000" TextColor="#fff" BorderWidth="1" Text="Next" Clicked="NextButtonClicked" TextTransform="None" FontSize="20" Command="{Binding NextQuestionPageCommand}" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="400" HeightRequest="56"/>
