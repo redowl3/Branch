@@ -659,5 +659,6 @@ namespace LaunchPad.Mobile.ViewModels
         public string SubAnswerText { get; set; }
         public string ConfigAnswerText { get; set; }
         public string Notes { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

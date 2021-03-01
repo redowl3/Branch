@@ -1,5 +1,6 @@
 ﻿using IIAADataModels.Transfer.Survey;
 using LaunchPad.Mobile.Helpers;
+using LaunchPad.Mobile.Models;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.Views;
 using Newtonsoft.Json;
@@ -11,10 +12,17 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
+
 namespace LaunchPad.Mobile.ViewModels
 {
     public class HealthQuestionsSurveyViewModel :ViewModelBase
     {
+        public static Action UpdateSurveyReview;
+        public static void OnUpdateSurveyReview()
+        {
+            UpdateSurveyReview?.Invoke();
+        }
         public static Action Next;
         public static void OnNext()
         {
@@ -91,11 +99,29 @@ namespace LaunchPad.Mobile.ViewModels
                 });
 
                 await DatabaseServices.InsertData<List<FormResponse>>("SurveyResponse", surveResponse.ToList());
+                var surveyReviews = await DatabaseServices.Get<List<SurveyOverView>>("SurveyOverView" + Settings.ClientId);
+                if(surveyReviews.Count(a=>a.Title.ToLower() == "health") > 0)
+                {
+                    surveyReviews.Where(a => a.Title.ToLower() == "health").ForEach(x =>
+                    {
+                        x.SurveySummaries = new List<SurveySummary>(param);
+                    });
+                }
+                else
+                {
+                    var surveyOverView = new SurveyOverView();
+                    surveyOverView.Title = "Health";
+                    surveyOverView.SurveySummaries = new List<SurveySummary>(param);
+                    surveyReviews.Add(surveyOverView);
+                }
+               
+                await DatabaseServices.InsertData("SurveyOverView"+Settings.ClientId, surveyReviews);
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     SurveySummaries = new ObservableCollection<SurveySummary>(param);
                     IsDone = true;
                     CanContinue = true;
+                    UpdateSurveyReview?.Invoke();
                 });
             });
 
@@ -103,6 +129,7 @@ namespace LaunchPad.Mobile.ViewModels
         public ICommand ContinueCommand => new Command<List<SurveySummary>>(async(param) =>
         {
             Next?.Invoke();
+            UpdateSurveyReview?.Invoke();
         });
         public ICommand EditCommand => new Command(() =>
         {

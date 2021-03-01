@@ -1,4 +1,7 @@
-﻿using LaunchPad.Mobile.ViewModels;
+﻿using LaunchPad.Mobile.Helpers;
+using LaunchPad.Mobile.Models;
+using LaunchPad.Mobile.Services;
+using LaunchPad.Mobile.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +14,7 @@ namespace LaunchPad.Mobile.CustomLayouts
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LifeStylesQuestionContainerLayout : ContentView
     {
+        private IDatabaseServices DatabaseServices => DependencyService.Get<IDatabaseServices>();
         private List<SurveySummary> SurveySummaries = new List<SurveySummary>();
         public string QuestionGuid { get; set; }
         public string QuestionText { get; set; }
@@ -22,9 +26,66 @@ namespace LaunchPad.Mobile.CustomLayouts
             this.BindingContext = App.LifestylesSurveyViewModel;
         }
 
-        private void SaveAndContinue(object sender, EventArgs e)
+        private async void SaveAndContinue(object sender, EventArgs e)
         {
+            var bindingContext = (this.BindingContext as LifestylesSurveyViewModel);
+            if (bindingContext != null)
+            {
+                var surveyReviews = await DatabaseServices.Get<List<SurveyOverView>>("SurveyOverView" + Settings.ClientId);
+                if (bindingContext.Counter < bindingContext.MaxCounter)
+                {
+                    if (surveyReviews.Count(a => a.Title.ToLower() == "you and your lifestyle") > 0)
+                    {
+                        surveyReviews.Where(a => a.Title.ToLower() == "you and your lifestyle").ForEach(x =>
+                        {
+                            foreach (var item in SurveySummaries)
+                            {
+                                if (x.SurveySummaries.Count(t => t.AnswerText.ToLower() == item.AnswerText.ToLower()) == 0)
+                                {
+                                    x.SurveySummaries.Add(item);
+                                }
+                            }
+                            
+                        });
+                    }
+                    else
+                    {
+                        var surveyOverView = new SurveyOverView();
+                        surveyOverView.Title = "You and your lifestyle";
+                        surveyOverView.SurveySummaries = new List<SurveySummary>(SurveySummaries);
+                        surveyReviews.Add(surveyOverView);
+                    }
+
+                    await DatabaseServices.InsertData("SurveyOverView" + Settings.ClientId, surveyReviews);
+                }
+                else
+                {
+                    if (surveyReviews.Count(a => a.Title.ToLower() == "diet") > 0)
+                    {
+                        surveyReviews.Where(a => a.Title.ToLower() == "diet").ForEach(x =>
+                        {
+                            foreach (var item in SurveySummaries)
+                            {
+                                if (x.SurveySummaries.Count(t => t.AnswerText.ToLower() == item.AnswerText.ToLower()) == 0)
+                                {
+                                    x.SurveySummaries.Add(item);
+                                }
+                            }
+                        });
+                    }
+                    else
+                    {
+                        var surveyOverView = new SurveyOverView();
+                        surveyOverView.Title = "Diet";
+                        surveyOverView.SurveySummaries = new List<SurveySummary>(SurveySummaries);
+                        surveyReviews.Add(surveyOverView);
+                    }
+
+                    await DatabaseServices.InsertData("SurveyOverView" + Settings.ClientId, surveyReviews);
+                }
+            }
             (this.BindingContext as LifestylesSurveyViewModel).NextCommand.Execute(SurveySummaries);
+            SurveySummaries = new List<SurveySummary>();
         }
 
         private void OptionTapped(object sender, EventArgs e)
@@ -38,6 +99,7 @@ namespace LaunchPad.Mobile.CustomLayouts
                 var boxView = senderGrid.Children[1] as BoxView;
                 var optionParent =((StackLayout)((Grid)(senderGrid.Parent)).Parent);
                 QuestionGuid = ((Label)((StackLayout)(optionParent.Parent)).Children[0]).Text;
+                var imageUrl = ((Label)((StackLayout)(optionParent.Parent)).Children[4]).Text;
                 var topIIParent= ((StackLayout)((StackLayout)(optionParent.Parent)).Parent);
                 var topParent= (StackLayout)(topIIParent.Parent);
                 foreach (var item in optionParent.Children)
@@ -65,6 +127,7 @@ namespace LaunchPad.Mobile.CustomLayouts
                     SurveySummaries.Where(a => a.QuestionGuid == QuestionGuid).ForEach(a =>
                     {
                         a.AnswerText = AnswerText;
+                        a.ImageUrl = imageUrl;
                     });
                 }
                 else
@@ -72,8 +135,9 @@ namespace LaunchPad.Mobile.CustomLayouts
                     SurveySummaries.Add(new SurveySummary
                     {
                         QuestionGuid = QuestionGuid,
-                        AnswerText = AnswerText
-                    }); ;
+                        AnswerText = AnswerText,
+                        ImageUrl=imageUrl
+                    });
                 }
             }
             catch (Exception)
@@ -87,6 +151,7 @@ namespace LaunchPad.Mobile.CustomLayouts
             try
             {
                 QuestionGuid=((Label)((StackLayout)((Grid)((Button)sender).Parent).Parent).Children[0]).Text;
+                var imageUrl=((Label)((StackLayout)((Grid)((Button)sender).Parent).Parent).Children[1]).Text;
                 if (((Button)sender).BackgroundColor == Color.FromHex("#fff"))
                 {
                     ((Button)sender).BackgroundColor = Color.FromHex("#000");
@@ -94,7 +159,8 @@ namespace LaunchPad.Mobile.CustomLayouts
                     SurveySummaries.Add(new SurveySummary
                     {
                         QuestionGuid = QuestionGuid,
-                        AnswerText = ((Button)sender).Text
+                        AnswerText = ((Button)sender).Text,
+                        ImageUrl=imageUrl
                     });
                 }
                 else
@@ -123,6 +189,9 @@ namespace LaunchPad.Mobile.CustomLayouts
             {
                 var senderElement = (Entry)sender;
                 QuestionGuid=((Label)((StackLayout)((Grid)((Frame)((Grid)(senderElement.Parent)).Parent).Parent).Parent).Children[0]).Text;
+                var questionText = ((Label)((Grid)((Frame)((Grid)(senderElement.Parent)).Parent).Parent).Children[0]).Text;
+                var configText = ((Label)((Grid)((Frame)((Grid)(senderElement.Parent)).Parent).Parent).Children[2]).Text;
+                var imageUrl=((Label)((StackLayout)((Grid)((Frame)((Grid)(senderElement.Parent)).Parent).Parent).Parent).Children[1]).Text;
                 AnswerText = senderElement.Text;
                 if (SurveySummaries.Count(a => a.QuestionGuid == QuestionGuid) > 0)
                 {
@@ -136,8 +205,11 @@ namespace LaunchPad.Mobile.CustomLayouts
                     SurveySummaries.Add(new SurveySummary
                     {
                         QuestionGuid = QuestionGuid,
-                        AnswerText = AnswerText
-                    }); ;
+                        QuestionText=questionText,
+                        AnswerText = AnswerText,
+                        ConfigAnswerText=configText,
+                        ImageUrl=imageUrl
+                    });
                 }
             }
             catch (Exception)
@@ -151,6 +223,7 @@ namespace LaunchPad.Mobile.CustomLayouts
             try
             {
                 QuestionGuid=((Label)((StackLayout)((StackLayout)((Grid)((Button)sender).Parent).Parent).Parent).Children[0]).Text;
+                var imageUrl=((Label)((StackLayout)((StackLayout)((Grid)((Button)sender).Parent).Parent).Parent).Children[1]).Text;
                 if (((Button)sender).BackgroundColor == Color.FromHex("#fff"))
                 {
                     ((Button)sender).BackgroundColor = Color.FromHex("#000");
@@ -158,7 +231,8 @@ namespace LaunchPad.Mobile.CustomLayouts
                     SurveySummaries.Add(new SurveySummary
                     {
                         QuestionGuid = QuestionGuid,
-                        AnswerText = ((Button)sender).Text
+                        AnswerText = ((Button)sender).Text,
+                        ImageUrl=imageUrl
                     });
                 }
                 else

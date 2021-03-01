@@ -176,7 +176,7 @@ namespace LaunchPad.Mobile.ViewModels
 
             Application.Current.MainPage.Navigation.PopAsync();
         });
-        public ICommand HomeCommand => new Command(() => Application.Current.MainPage = new AnimationNavigationPage(new SalonClientsPage()));
+        public ICommand HomeCommand => new Command(() => Application.Current.MainPage.Navigation.PopToRootAsync());
         public ICommand UserHistoryCommand => new Command(() => Application.Current.MainPage.Navigation.PushAsync(new UserHistoryPage()));
         public ICommand SignOutCommand => new Command(() =>
         {

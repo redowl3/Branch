@@ -89,7 +89,7 @@ namespace LaunchPad.Mobile.ViewModels
         }
         public ICommand ContinueCommand => new Command(() => ComplateHelathPLanAsync());
         public ICommand GoBackCommand => new Command(() => Application.Current.MainPage.Navigation.PopAsync());
-        public ICommand HomeCommand => new Command(() => Application.Current.MainPage = new AnimationNavigationPage(new SalonClientsPage()));
+        public ICommand HomeCommand => new Command(() => Application.Current.MainPage.Navigation.PopToRootAsync());
         public ICommand SignOutCommand => new Command(() =>
         {
             try

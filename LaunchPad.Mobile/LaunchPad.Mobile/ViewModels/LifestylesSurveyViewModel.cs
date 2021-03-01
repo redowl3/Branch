@@ -3,6 +3,7 @@ using IIAADataModels.Transfer;
 using IIAADataModels.Transfer.Survey;
 using LaunchPad.Client;
 using LaunchPad.Mobile.Helpers;
+using LaunchPad.Mobile.Models;
 using LaunchPad.Mobile.Services;
 using LaunchPad.Mobile.Views;
 using Newtonsoft.Json;
@@ -20,13 +21,18 @@ namespace LaunchPad.Mobile.ViewModels
 {
     public class LifestylesSurveyViewModel : ViewModelBase
     {
+        public static Action UpdateSurveyReview;
+        public static void OnUpdateSurveyReview()
+        {
+            UpdateSurveyReview?.Invoke();
+        }
         public static Action Next;
         public static void OnNext()
         {
             Next?.Invoke();
         }
-        private int Counter { get; set; }
-        private int MaxCounter { get; set; }
+        public int Counter { get; set; }
+        public int MaxCounter { get; set; }
         private IDatabaseServices DatabaseServices => DependencyService.Get<IDatabaseServices>();
         private ObservableCollection<IndexedQuestions> _lifeStylesQuestions = new ObservableCollection<IndexedQuestions>();
         public ObservableCollection<IndexedQuestions> LifeStylesQuestions
@@ -81,13 +87,37 @@ namespace LaunchPad.Mobile.ViewModels
                     {
                         Basis = new FlexBasis(1f, true);
                     }
-                    LifeStylesQuestions[Counter].IsSelected = true;                   
+                    LifeStylesQuestions[Counter].IsSelected = true;
+                    
+
+                    if (SurveySummaries == null)
+                    {
+                        SurveySummaries = new ObservableCollection<SurveySummary>();
+                    }
+
+                    foreach (var item in param)
+                    {
+                        var surveySummary = SurveySummaries.First(a => a.QuestionGuid == item.QuestionGuid);
+                        if (surveySummary == null)
+                        {
+                            SurveySummaries.Add(item);
+                        }
+                        else
+                        {
+                            SurveySummaries.Where(a => a.QuestionGuid == item.QuestionGuid).ForEach(x =>
+                            {
+                                x.AnswerText = item.AnswerText;
+                                x.ConfigAnswerText = item.ConfigAnswerText;
+                            });
+                        }
+                        
+                    }
                 }
                 else
                 {
                     await Task.Run(async () =>
                     {
-                        var surveResponse = param.GroupBy(a => a.QuestionGuid).Select(a => new FormResponse
+                        var surveResponse = SurveySummaries.GroupBy(a => a.QuestionGuid).Select(a => new FormResponse
                         {
                             Id = Guid.NewGuid(),
                             Created = DateTime.Now,
@@ -104,10 +134,14 @@ namespace LaunchPad.Mobile.ViewModels
                         var dbSurveyResponse = await DatabaseServices.Get<List<FormResponse>>("SurveyResponse");
                         dbSurveyResponse.AddRange(surveResponse);
                         await DatabaseServices.InsertData<List<FormResponse>>("SurveyResponse", dbSurveyResponse);
+                        var surveyReview= await DatabaseServices.Get<SurveyOverView>("SurveyOverView" + Settings.ClientId);
                     });
-                    //PostSurveyResponseAsync();
+
+                    
                     Next?.Invoke();
                 }
+
+                UpdateSurveyReview?.Invoke();
             }
             catch (Exception)
             {

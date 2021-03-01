@@ -45,6 +45,7 @@
                                                                 <Grid Padding="10,0" HorizontalOptions="Center" IsVisible="{Binding IsHtml}">
                                                                     <Label Text="{Binding FormQuestionData.QuestionText}" HorizontalTextAlignment="Center" FontSize="28" TextType="Html" Style="{StaticResource ContentTitle}"/>
                                                                 </Grid>
+                                                                <Label Text="{Binding FormQuestionData.ImageUrl}" IsVisible="False" FontSize="28" TextType="Html" HorizontalTextAlignment="Center" VerticalTextAlignment="End" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                                                             </StackLayout>
                                                         </DataTemplate>
                                                     </BindableLayout.ItemTemplate>
@@ -66,6 +67,7 @@
                                                                                 <DataTemplate>
                                                                                     <StackLayout Spacing="20">
                                                                                         <Label Text="{Binding QuestionGuid}" IsVisible="False" FontSize="28" TextType="Html" HorizontalTextAlignment="Center" VerticalTextAlignment="End" TextColor="#000" Style="{StaticResource ContentTitle}"/>
+                                                                                        <Label Text="{Binding FormQuestionData.ImageUrl}" IsVisible="False" FontSize="28" TextType="Html" HorizontalTextAlignment="Center" VerticalTextAlignment="End" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                                                                                         <Label  IsVisible="{Binding IsHtml}" Text="{Binding FormQuestionData.QuestionText}" FontSize="28" TextType="Html" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="#000" Style="{StaticResource TabTitleLabelStyle}"/>
                                                                                         <Image Source="{Binding FormQuestionData.ImageUrl}" VerticalOptions="Start" HeightRequest="100"/>
                                                                                         

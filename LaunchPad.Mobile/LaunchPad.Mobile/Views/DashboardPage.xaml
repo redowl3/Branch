@@ -7,7 +7,7 @@
               NavigationPage.HasBackButton="False"
              BackgroundColor="#fff">
     <controls:AnimationPage.PageAnimation>
-        <controls:SlidePageAnimation Duration="Medium" Subtype="FromRight" />
+        <controls:PushPageAnimation Duration="Medium" Subtype="FromRight" />
     </controls:AnimationPage.PageAnimation>
     <NavigationPage.TitleView>
         <customlayouts:TitleBarLayoutV2/>

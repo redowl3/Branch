@@ -22,7 +22,7 @@ namespace LaunchPad.Mobile.ViewModels
             set => SetProperty(ref userActivities, value);
         }
         public ICommand GoBackCommand => new Command(() => Application.Current.MainPage.Navigation.PopAsync() );
-        public ICommand HomeCommand => new Command(() => Application.Current.MainPage = new AnimationNavigationPage(new SalonClientsPage()));
+        public ICommand HomeCommand => new Command(() => Application.Current.MainPage.Navigation.PopToRootAsync());
         public ICommand ViewConsultationCommand => new Command<UserActivity>((param) => Application.Current.MainPage.Navigation.PushAsync(new ConsultationSummaryPage(param)));
         public UserHistoryPageViewModel()
         {

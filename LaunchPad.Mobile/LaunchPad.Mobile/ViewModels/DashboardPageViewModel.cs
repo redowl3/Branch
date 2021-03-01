@@ -44,6 +44,7 @@ namespace LaunchPad.Mobile.ViewModels
         {
             Task.Run(() =>
             {
+                DatabaseServices.Delete<List<SurveyOverView>>("SurveyOverView" + Settings.ClientId);
                 Device.BeginInvokeOnMainThread(async() =>
                 {
                     await Application.Current.MainPage.Navigation.PushAsync(SurveyPageInstance);
@@ -61,7 +62,8 @@ namespace LaunchPad.Mobile.ViewModels
             });
         });
         public ICommand GoBackCommand => new Command(() => Application.Current.MainPage.Navigation.PopAsync());
-        public ICommand HomeCommand => new Command(() => Application.Current.MainPage = new AnimationNavigationPage(new SalonClientsPage()));
+        //public ICommand HomeCommand => new Command(() => Application.Current.MainPage = new AnimationNavigationPage(new SalonClientsPage()));
+        public ICommand HomeCommand => new Command(() => Application.Current.MainPage.Navigation.PopToRootAsync());
         public DashboardPageViewModel()
         {
             FetchUserActivities();
