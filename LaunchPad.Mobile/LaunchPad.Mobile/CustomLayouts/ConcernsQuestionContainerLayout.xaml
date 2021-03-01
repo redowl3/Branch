@@ -37,6 +37,7 @@
                                                                                     <TapGestureRecognizer Tapped="UnselectThis" CommandParameter="{Binding FormQuestionData.QuestionText}" NumberOfTapsRequired="2"/>
                                                                                 </Grid.GestureRecognizers>
                                                                                 <Label Text="{Binding QuestionGuid}" IsVisible="False" FontSize="28" TextType="Html" HorizontalTextAlignment="Center" VerticalTextAlignment="End" TextColor="#000" Style="{StaticResource ContentTitle}"/>
+                                                                                
                                                                                 <Label Text="{Binding FormQuestionData.QuestionText}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextType="Html" Style="{StaticResource ContentTitle}" Margin="0,0,20,0"/>
                                                                                 <Image Source="icon_down_arrow" WidthRequest="30" HeightRequest="30" HorizontalOptions="End"/>
                                                                             </Grid>
@@ -55,6 +56,7 @@
                                                                             </StackLayout>
                                                                         </Grid>
                                                                     </Frame>
+                                                                    <Label Text="{Binding FormQuestionData.ImageUrl}" IsVisible="False" FontSize="28" TextType="Html" HorizontalTextAlignment="Center" VerticalTextAlignment="End" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                                                                     <!--<customlayouts:YesNoWithTextAreaLayout  Padding="10,10"/>-->
                                                                     <Grid RowSpacing="0" IsVisible="{Binding IsYesNoWithTextArea}">
                                                                         <Grid.RowDefinitions>
@@ -74,6 +76,7 @@
                                                                             </Grid>
                                                                         </Frame>
                                                                     </Grid>
+                                                                    
                                                                 </StackLayout>
                                                             </DataTemplate>
                                                         </BindableLayout.ItemTemplate>

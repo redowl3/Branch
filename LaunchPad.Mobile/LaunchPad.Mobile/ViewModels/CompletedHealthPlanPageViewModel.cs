@@ -21,7 +21,7 @@ namespace LaunchPad.Mobile.ViewModels
     public class CompletedHealthPlanPageViewModel : ViewModelBase
     {
         public ICommand GoBackCommand => new Command(() => Application.Current.MainPage.Navigation.PopAsync());
-        public ICommand HomeCommand => new Command(() => Application.Current.MainPage = new AnimationNavigationPage(new SalonClientsPage()));
+        public ICommand HomeCommand => new Command(() => Application.Current.MainPage.Navigation.PopToRootAsync());
         private IToastServices ToastServices => DependencyService.Get<IToastServices>();
 
         private string _loggedInUserName;

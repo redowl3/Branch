@@ -37,14 +37,87 @@ namespace LaunchPad.Mobile.Views
         {
             if (LetsRecapSurveyContainer.IsVisible)
             {
-                LifeStyleButtonClicked(null, null);
+                var letsRecapSurveyViewModel = (LetsRecapSurveyContainer.BindingContext as LetsRecapSurveyPageViewModel);
+                if (letsRecapSurveyViewModel.Page3Visible)
+                {
+                    letsRecapSurveyViewModel.Page1CompletedCommand.Execute(null);
+                }else if (letsRecapSurveyViewModel.Page2Visible)
+                {
+                    letsRecapSurveyViewModel.Page1Visible = true;
+                    letsRecapSurveyViewModel.Page2Visible = false;
+                    letsRecapSurveyViewModel.Page3Visible = false;
+                }
+                else
+                {
+                    LifeStyleButtonClicked(null, null);
+                }
             }
             else if (LifestylesSurveyContainer.IsVisible)
             {
-                ConcernsButtonClicked(null, null);
+                var lifestylesurveyViewModel = (LifestylesSurveyContainer.BindingContext as LifestylesSurveyViewModel);
+                if (lifestylesurveyViewModel != null)
+                {
+                    if (lifestylesurveyViewModel.Counter > 0)
+                    {
+                        lifestylesurveyViewModel.LifeStylesQuestions[lifestylesurveyViewModel.Counter].IsSelected = false;
+                        --(lifestylesurveyViewModel.Counter);
+                        if (lifestylesurveyViewModel.LifeStylesQuestions[lifestylesurveyViewModel.Counter].Questions?.Count == 3)
+                        {
+                            lifestylesurveyViewModel.Basis = new FlexBasis(0.333f, true);
+                        }
+                        else if (lifestylesurveyViewModel.LifeStylesQuestions[lifestylesurveyViewModel.Counter].Questions?.Count == 2)
+                        {
+                            lifestylesurveyViewModel.Basis = new FlexBasis(0.5f, true);
+                        }
+                        else if (lifestylesurveyViewModel.LifeStylesQuestions[lifestylesurveyViewModel.Counter].Questions?.Count == 1)
+                        {
+                            lifestylesurveyViewModel.Basis = new FlexBasis(1f, true);
+                        }
+                        lifestylesurveyViewModel.LifeStylesQuestions[lifestylesurveyViewModel.Counter].IsSelected = true;
+                    }
+                    else
+                    {
+                        ConcernsButtonClicked(null, null);
+                    }
+                }
+                else
+                {
+                    ConcernsButtonClicked(null, null);
+                }
+                
             }else if (ConcernPageSurveyContainer.IsVisible)
             {
-                HealthButtonClicked(null, null);
+                var concernPageSurveyViewModel = (ConcernPageSurveyContainer.BindingContext as ConcernsAndSkinCareSurveyViewModel);
+                if (concernPageSurveyViewModel != null)
+                {
+                    if (concernPageSurveyViewModel.Counter > 0)
+                    {
+                        concernPageSurveyViewModel.ConcernAndSkinCareQuestions[concernPageSurveyViewModel.Counter].IsSelected = false;
+                        --(concernPageSurveyViewModel.Counter);
+                        if (concernPageSurveyViewModel.ConcernAndSkinCareQuestions[concernPageSurveyViewModel.Counter].Questions?.Count == 3)
+                        {
+                            concernPageSurveyViewModel.Basis = new FlexBasis(0.333f, true);
+                        }
+                        else if (concernPageSurveyViewModel.ConcernAndSkinCareQuestions[concernPageSurveyViewModel.Counter].Questions?.Count == 2)
+                        {
+                            concernPageSurveyViewModel.Basis = new FlexBasis(0.5f, true);
+                        }
+                        else if (concernPageSurveyViewModel.ConcernAndSkinCareQuestions[concernPageSurveyViewModel.Counter].Questions?.Count == 1)
+                        {
+                            concernPageSurveyViewModel.Basis = new FlexBasis(1f, true);
+                        }
+                        concernPageSurveyViewModel.ConcernAndSkinCareQuestions[concernPageSurveyViewModel.Counter].IsSelected = true;
+                    }
+                    else
+                    {
+                        HealthButtonClicked(null, null);
+                    }
+                }
+                else
+                {
+                    HealthButtonClicked(null, null);
+                }
+                
             }
             else
             {
@@ -88,7 +161,7 @@ namespace LaunchPad.Mobile.Views
             LifestylesSurveyContainer.IsVisible = false;
             LetsRecapSurveyContainer.IsVisible = false;
             ConcernSurveyBoxView.BackgroundColor = ActiveColor;
-            HealthSurveyBoxView.BackgroundColor = LifeStyleSurveyBoxView.BackgroundColor=LetsRecapSurveyContainer.BackgroundColor = DisableColor;
+            HealthSurveyBoxView.BackgroundColor = LifeStyleSurveyBoxView.BackgroundColor= LetsRecapSurveyBoxView.BackgroundColor = DisableColor;
         }
         private void HealthButtonClicked(object sender, System.EventArgs e)
         {
@@ -102,7 +175,7 @@ namespace LaunchPad.Mobile.Views
             LifestylesSurveyContainer.IsVisible = false;
             LetsRecapSurveyContainer.IsVisible = false;
             HealthSurveyBoxView.BackgroundColor = ActiveColor;
-            ConcernSurveyBoxView.BackgroundColor = LifeStyleSurveyBoxView.BackgroundColor=LetsRecapSurveyContainer.BackgroundColor = DisableColor;
+            ConcernSurveyBoxView.BackgroundColor = LifeStyleSurveyBoxView.BackgroundColor= LetsRecapSurveyBoxView.BackgroundColor = DisableColor;
         }
         private void LifeStyleButtonClicked(object sender, System.EventArgs e)
         {
@@ -116,7 +189,7 @@ namespace LaunchPad.Mobile.Views
             LifestylesSurveyContainer.IsVisible = true;
             LetsRecapSurveyContainer.IsVisible = false;
             LifeStyleSurveyBoxView.BackgroundColor = ActiveColor;
-            ConcernSurveyBoxView.BackgroundColor = HealthSurveyBoxView.BackgroundColor=LetsRecapSurveyContainer.BackgroundColor = DisableColor;
+            ConcernSurveyBoxView.BackgroundColor = HealthSurveyBoxView.BackgroundColor= LetsRecapSurveyBoxView.BackgroundColor = DisableColor;
         }
 
         private void NextButtonClicked(object sender, System.EventArgs e)

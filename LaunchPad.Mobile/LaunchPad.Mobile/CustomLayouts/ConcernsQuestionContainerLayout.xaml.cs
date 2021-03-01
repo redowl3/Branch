@@ -1,4 +1,7 @@
-﻿using LaunchPad.Mobile.ViewModels;
+﻿using LaunchPad.Mobile.Helpers;
+using LaunchPad.Mobile.Models;
+using LaunchPad.Mobile.Services;
+using LaunchPad.Mobile.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +15,7 @@ namespace LaunchPad.Mobile.CustomLayouts
     public partial class ConcernsQuestionContainerLayout : ContentView
     {
         private List<SurveySummary> SurveySummaries = new List<SurveySummary>();
+        private IDatabaseServices DatabaseServices => DependencyService.Get<IDatabaseServices>();
         public string QuestionGuid { get; set; }
         public string QuestionText { get; set; }
         public string AnswerText { get; set; }
@@ -24,56 +28,75 @@ namespace LaunchPad.Mobile.CustomLayouts
 
         private void ToggleContainer(object sender, EventArgs e)
         {
-            var toggleContainerParent = ((StackLayout)((StackLayout)((Frame)((Grid)((Grid)sender).Parent).Parent).Parent).Parent);
-            var senderParent = (Grid)sender;
-            var parentOfSenderParent = (Grid)senderParent.Parent;
-            (parentOfSenderParent.Children[1] as StackLayout).IsVisible = !(parentOfSenderParent.Children[1] as StackLayout).IsVisible;
-            if((parentOfSenderParent.Children[1] as StackLayout).IsVisible)
+            try
             {
-                senderParent.BackgroundColor = Color.FromHex("#000");
-                ((Label)senderParent.Children[1]).TextColor = Color.FromHex("#fff");
-                ((Image)senderParent.Children[2]).Source = "icon_arrow_top";
-            }
-            else
-            {
-                ((Image)senderParent.Children[1]).Source = "icon_down_arrow";
-            }
-            QuestionText = (e as TappedEventArgs)?.Parameter as string;
-            QuestionGuid = ((Label)senderParent.Children[0]).Text;
-            foreach (var item in toggleContainerParent.Children)
-            {
-                var child1 = item as StackLayout;
-                var child2 = child1.Children[2] as Frame;
-                var child3 = child2.Content as Grid;
-                var grid = child3.Children[0] as Grid;
-                var label = grid.Children[1] as Label;
-                if (label?.Text?.ToLower() != QuestionText.ToLower())
+                var toggleContainerParent = ((StackLayout)((StackLayout)((Frame)((Grid)((Grid)sender).Parent).Parent).Parent).Parent);
+                var senderParent = (Grid)sender;
+                var parentOfSenderParent = (Grid)senderParent.Parent;
+                (parentOfSenderParent.Children[1] as StackLayout).IsVisible = !(parentOfSenderParent.Children[1] as StackLayout).IsVisible;
+                if ((parentOfSenderParent.Children[1] as StackLayout).IsVisible)
                 {
-                    ((StackLayout)child3.Children[1]).IsVisible = false ;
+                    senderParent.BackgroundColor = Color.FromHex("#000");
+                    ((Label)senderParent.Children[1]).TextColor = Color.FromHex("#fff");
+                    ((Image)senderParent.Children[2]).Source = "icon_arrow_top";
+                    ((Image)senderParent.Children[2]).WidthRequest = 30;
+                    ((Image)senderParent.Children[2]).HeightRequest = 30;
+                }
+                else
+                {
+                    ((Image)senderParent.Children[2]).Source = "icon_down_arrow_white";
+                    ((Image)senderParent.Children[2]).WidthRequest = 30;
+                    ((Image)senderParent.Children[2]).HeightRequest = 30;
+                }
+                QuestionText = (e as TappedEventArgs)?.Parameter as string;
+                QuestionGuid = ((Label)senderParent.Children[0]).Text;
+                foreach (var item in toggleContainerParent.Children)
+                {
+                    var child1 = item as StackLayout;
+                    var child2 = child1.Children[2] as Frame;
+                    var child3 = child2.Content as Grid;
+                    var grid = child3.Children[0] as Grid;
+                    var label = grid.Children[1] as Label;
+                    if (label?.Text?.ToLower() != QuestionText.ToLower())
+                    {
+                        ((StackLayout)child3.Children[1]).IsVisible = false;
+                    }
                 }
             }
+            catch (Exception)
+            {
+
+            }
+            
         }
 
         private void editor_unfocused(object sender, FocusEventArgs e)
         {
-            var topParent = (StackLayout)((Grid)((Frame)((Grid)((Editor)sender).Parent).Parent).Parent).Parent;
-            if (topParent != null)
+            try
             {
-                QuestionText = ((topParent.Children[0] as Grid)?.Children[0] as Label)?.Text;
-                SubAnswerText = ((Editor)sender).Text;
-                QuestionGuid = (((Grid)((Editor)sender).Parent).Children[0] as Label).Text;
-                if (!string.IsNullOrEmpty(SubAnswerText))
+                var topParent = (StackLayout)((Grid)((Frame)((Grid)((Editor)sender).Parent).Parent).Parent).Parent;
+                if (topParent != null)
                 {
-                    SurveySummaries.Add(new SurveySummary
+                    QuestionText = ((topParent.Children[0] as Grid)?.Children[0] as Label)?.Text;
+                    SubAnswerText = ((Editor)sender).Text;
+                    QuestionGuid = (((Grid)((Editor)sender).Parent).Children[0] as Label).Text;
+                    if (!string.IsNullOrEmpty(SubAnswerText))
                     {
-                        QuestionGuid=QuestionGuid,
-                        AnswerText=SubAnswerText
-                    });
+                        SurveySummaries.Add(new SurveySummary
+                        {
+                            QuestionGuid = QuestionGuid,
+                            AnswerText = SubAnswerText
+                        });
+                    }
+                    else
+                    {
+                        SurveySummaries.Remove(SurveySummaries.FirstOrDefault(a => a.QuestionGuid == QuestionGuid));
+                    }
                 }
-                else
-                {
-                    SurveySummaries.Remove(SurveySummaries.FirstOrDefault(a=>a.QuestionGuid==QuestionGuid));
-                }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
@@ -82,8 +105,49 @@ namespace LaunchPad.Mobile.CustomLayouts
 
         }
 
-        private void SaveAndContinue(object sender, EventArgs e)
+        private async void SaveAndContinue(object sender, EventArgs e)
         {
+            var bindingContext = this.BindingContext as ConcernsAndSkinCareSurveyViewModel;
+            if (bindingContext != null)
+            {
+                var surveyReviews = await DatabaseServices.Get<List<SurveyOverView>>("SurveyOverView" + Settings.ClientId);
+                if (bindingContext.Counter == bindingContext.MaxCounter)
+                {
+                    if (surveyReviews.Count(a => a.Title.ToLower() == "skin type") > 0)
+                    {
+                        surveyReviews.Where(a => a.Title.ToLower() == "skin type").ForEach(x =>
+                        {                           
+                            x.SurveySummaries = new List<SurveySummary>(SurveySummaries);
+                        });
+                    }
+                    else
+                    {
+                        var surveyOverView = new SurveyOverView();
+                        surveyOverView.Title = "Skin Type";
+                        surveyOverView.SurveySummaries = new List<SurveySummary>(SurveySummaries);
+                        surveyReviews.Add(surveyOverView);
+                    }
+
+                    await DatabaseServices.InsertData("SurveyOverView" + Settings.ClientId, surveyReviews);
+                    //if (surveyReviews.Count(a => a.Title.ToLower() == "you and your lifestyle") > 0)
+                    //{
+                    //    surveyReviews.Where(a => a.Title.ToLower() == "you and your lifestyle").ForEach(x =>
+                    //    {
+                    //        x.SurveySummaries.AddRange(SurveySummaries);
+                    //    });
+                    //}
+                    //else
+                    //{
+                    //    var surveyOverView = new SurveyOverView();
+                    //    surveyOverView.Title = "You and your lifestyle";
+                    //    surveyOverView.SurveySummaries = new List<SurveySummary>(SurveySummaries);
+                    //    surveyReviews.Add(surveyOverView);
+                    //}
+
+                    //await DatabaseServices.InsertData("SurveyOverView" + Settings.ClientId, surveyReviews);
+                }
+            }
+
             (this.BindingContext as ConcernsAndSkinCareSurveyViewModel)?.ContinueCommand.Execute(SurveySummaries);            
         }
 
@@ -94,6 +158,7 @@ namespace LaunchPad.Mobile.CustomLayouts
                 var senderParent = ((Grid)sender).Parent as StackLayout;
                 SubAnswerText = (((Grid)sender).Children[0] as Label).Text;
                 QuestionGuid=((Label)((Grid)((Grid)(senderParent.Parent)).Children[0]).Children[0]).Text;
+                var imageUrl =((Label)((StackLayout)((StackLayout)((StackLayout)((Frame)((Grid)(senderParent.Parent)).Parent).Parent).Parent).Children[0]).Children[3]).Text;
                 AnswerText=((Label)((Grid)((Grid)(senderParent.Parent)).Children[0]).Children[1]).Text;
                 if (((Grid)sender).BackgroundColor != Color.FromHex("#000"))
                 {
@@ -106,7 +171,8 @@ namespace LaunchPad.Mobile.CustomLayouts
                     {
                         SurveySummaries.Where(a => a.QuestionGuid == QuestionGuid).ForEach(a =>
                         {
-                            a.AnswerText = AnswerText;
+                            if (a.AnswerText == AnswerText && a.SubAnswerText == SubAnswerText) return;
+                            a.AnswerText = a.AnswerText;
                             a.SubAnswerText = SubAnswerText;
                         });
                     }
@@ -116,7 +182,8 @@ namespace LaunchPad.Mobile.CustomLayouts
                         {
                             QuestionGuid = QuestionGuid,
                             AnswerText = AnswerText,
-                            SubAnswerText = SubAnswerText
+                            SubAnswerText = SubAnswerText,
+                            ImageUrl=imageUrl
                         });
                     }
                 }
@@ -137,8 +204,6 @@ namespace LaunchPad.Mobile.CustomLayouts
                         label.TextColor = Color.FromHex("#000");
                     }
                 }
-
-                
             }
             catch (Exception)
             {
@@ -220,8 +285,9 @@ namespace LaunchPad.Mobile.CustomLayouts
                 var senderParent = (Grid)sender;
                 var parentOfSenderParent = (Grid)senderParent.Parent;
                 (parentOfSenderParent.Children[1] as StackLayout).IsVisible = false;
-                senderParent.BackgroundColor = Color.FromHex("#000");
-                ((Label)senderParent.Children[1]).TextColor = Color.FromHex("#fff");
+                senderParent.BackgroundColor = Color.FromHex("#fff");
+                ((Frame)((Grid)((Grid)sender).Parent).Parent).BorderColor = Color.FromHex("#000");
+                ((Label)senderParent.Children[1]).TextColor = Color.FromHex("#000");
                 ((Image)senderParent.Children[2]).Source = "icon_down_arrow";
                 QuestionGuid = ((Label)senderParent.Children[0]).Text;
                 SurveySummaries.Remove(SurveySummaries.FirstOrDefault(a => a.QuestionGuid == QuestionGuid));
@@ -231,7 +297,6 @@ namespace LaunchPad.Mobile.CustomLayouts
 
             }
         }
-
         private void AllowNotes(object sender, EventArgs e)
         {
             try

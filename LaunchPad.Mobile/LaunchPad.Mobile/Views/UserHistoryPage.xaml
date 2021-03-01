@@ -9,7 +9,7 @@
              BackgroundColor="#fff"
                          x:Name="View1">
     <controls:AnimationPage.PageAnimation>
-        <controls:SlidePageAnimation Duration="Medium" Subtype="FromRight" />
+        <controls:PushPageAnimation Duration="Medium" Subtype="FromRight" />
     </controls:AnimationPage.PageAnimation>
     <NavigationPage.TitleView>
         <customlayouts:TitleBarLayoutV2/>
@@ -85,9 +85,9 @@
                 
             </StackLayout>
 
-            <Grid Grid.Row="1" RowDefinitions="46">
+            <!--<Grid Grid.Row="1" RowDefinitions="46">
                 <Button x:Name="SaveButton" IsEnabled="False" BackgroundColor="WhiteSmoke" TextColor="#fff" Padding="0" Text="Save &amp; Continue" TextTransform="None" FontSize="20" HorizontalOptions="Center" WidthRequest="400"/>
-            </Grid>
+            </Grid>-->
         </Grid>
     </ContentPage.Content>
 </controls:AnimationPage>

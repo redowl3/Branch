@@ -10,17 +10,24 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
+
 namespace LaunchPad.Mobile.ViewModels
 {
     public class ConcernsAndSkinCareSurveyViewModel : ViewModelBase
     {
+        public static Action UpdateSurveyReview;
+        public static void OnUpdateSurveyReview()
+        {
+            UpdateSurveyReview?.Invoke();
+        }
         public static Action Next;
         public static void OnNext()
         {
             Next?.Invoke();
         }
-        private int Counter { get; set; }
-        private int MaxCounter { get; set; }
+        public int Counter { get; set; }
+        public int MaxCounter { get; set; }
         private IDatabaseServices DatabaseServices => DependencyService.Get<IDatabaseServices>();
         private ObservableCollection<IndexedQuestions> _concernAndSkinCareQuestions = new ObservableCollection<IndexedQuestions>();
         public ObservableCollection<IndexedQuestions> ConcernAndSkinCareQuestions
@@ -43,11 +50,17 @@ namespace LaunchPad.Mobile.ViewModels
             get => _surveyIndexList;
             set => SetProperty(ref _surveyIndexList, value);
         }
-
+        private ObservableCollection<SurveySummary> surveySummaries = new ObservableCollection<SurveySummary>();
+        public ObservableCollection<SurveySummary> SurveySummaries
+        {
+            get => surveySummaries;
+            set => SetProperty(ref surveySummaries, value);
+        }
         public ICommand ContinueCommand => new Command<List<SurveySummary>>(async(param) =>
           {
               try
               {
+                  UpdateSurveyReview?.Invoke();
                   if (Counter < MaxCounter)
                   {
                       ConcernAndSkinCareQuestions[Counter].IsSelected = false;
@@ -65,7 +78,30 @@ namespace LaunchPad.Mobile.ViewModels
                           Basis = new FlexBasis(1f, true);
                       }
                       ConcernAndSkinCareQuestions[Counter].IsSelected = true;
-                     
+                      if (SurveySummaries == null)
+                      {
+                          SurveySummaries = new ObservableCollection<SurveySummary>();
+                      }
+
+                      foreach (var item in param)
+                      {
+                          var surveySummary = SurveySummaries.First(a => a.QuestionGuid == item.QuestionGuid);
+                          if (surveySummary == null)
+                          {
+                              SurveySummaries.Add(item);
+                          }
+                          else
+                          {
+                              SurveySummaries.Where(a => a.QuestionGuid == item.QuestionGuid).ForEach(x =>
+                              {
+                                  x.AnswerText = item.AnswerText;
+                                  x.ConfigAnswerText = item.ConfigAnswerText;
+                                  x.ImageUrl = item.ImageUrl;
+                                  x.QuestionText = item.QuestionText;
+                              });
+                          }
+
+                      }
                   }
                   else
                   {
@@ -135,6 +171,18 @@ namespace LaunchPad.Mobile.ViewModels
                         MaxCounter = survey.Form.Pages.Count - 1;
                     }
 
+                    if (ConcernAndSkinCareQuestions[0].Questions?.Count == 3)
+                    {
+                        Basis = new FlexBasis(0.333f, true);
+                    }
+                    else if (ConcernAndSkinCareQuestions[0].Questions?.Count == 2)
+                    {
+                        Basis = new FlexBasis(0.5f, true);
+                    }
+                    else if (ConcernAndSkinCareQuestions[0].Questions?.Count == 1)
+                    {
+                        Basis = new FlexBasis(1f, true);
+                    }
                     ConcernAndSkinCareQuestions[0].IsSelected = true;
                   
                 });
