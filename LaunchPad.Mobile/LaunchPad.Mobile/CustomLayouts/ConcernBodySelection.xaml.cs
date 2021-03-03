@@ -5,10 +5,11 @@ using LaunchPad.Mobile.Models;
 using SkiaSharp;
 using SkiaSharp.Views.Forms;
 using Xamarin.Forms;
+using FormsControls.Base;
 
 namespace LaunchPad.Mobile.CustomLayouts
 {
-    public partial class ConcernBodySelection : ContentPage
+    public partial class ConcernBodySelection : AnimationPage
     {
         private SKColor brushColourToUse;
         private string brushType;

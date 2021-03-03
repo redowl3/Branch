@@ -5943,24 +5943,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Amit Kumar\\.nuget\\packages\\": {},
+    "E:\\asuresh2\\.nuget\\packages\\": {},
     "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
+      "projectUniqueName": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
       "projectName": "LaunchPad.Mobile.iOS",
-      "projectPath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
-      "packagesPath": "C:\\Users\\Amit Kumar\\.nuget\\packages\\",
-      "outputPath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\obj\\",
+      "projectPath": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
+      "packagesPath": "E:\\asuresh2\\.nuget\\packages\\",
+      "outputPath": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\Amit Kumar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "E:\\asuresh2\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -5974,8 +5974,8 @@
       "frameworks": {
         "xamarinios10": {
           "projectReferences": {
-            "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj": {
-              "projectPath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj"
+            "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj": {
+              "projectPath": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj"
             }
           }
         }

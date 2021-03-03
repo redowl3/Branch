@@ -6,10 +6,11 @@ using LaunchPad.Mobile.Models;
 using SkiaSharp;
 using SkiaSharp.Views.Forms;
 using Xamarin.Forms;
+using FormsControls.Base;
 
 namespace LaunchPad.Mobile.CustomLayouts
 {
-    public partial class ConcernBodyAnnotation : ContentPage
+    public partial class ConcernBodyAnnotation : AnimationPage
     {
         Dictionary<long, SKPath> inProgressPaths = new Dictionary<long, SKPath>();
         List<DrawItem> completedPaths = new List<DrawItem>();

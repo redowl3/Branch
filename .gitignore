@@ -24,3 +24,7 @@ LaunchPad.Mobile/LaunchPad.Mobile.iOS/obj/project.assets.json
 LaunchPad.Mobile/LaunchPad.Mobile.iOS/obj/project.nuget.cache
 LaunchPad.Mobile/LaunchPad.Mobile.iOS/obj/iPhone/Debug/LaunchPad.Mobile.iOS.csprojAssemblyReference.cache
 *.cache
+*.user
+*.cache
+*.json
+*.props

@@ -5,10 +5,10 @@ using LaunchPad.Mobile.Enums;
 using LaunchPad.Mobile.Models;
 using SkiaSharp.Views.Forms;
 using Xamarin.Forms;
-
+using FormsControls.Base;
 namespace LaunchPad.Mobile.CustomLayouts
 {
-    public partial class ConcernAnnotationSummary : ContentPage
+    public partial class ConcernAnnotationSummary : AnimationPage
     {
         private ImageSource _src1;
         private ImageSource _src2;

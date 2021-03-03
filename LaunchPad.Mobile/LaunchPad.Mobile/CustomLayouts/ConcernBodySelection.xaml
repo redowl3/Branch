@@ -1,11 +1,18 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
-             BackgroundColor="White"
-             Title="Concern Body Area Selection"
-             x:Class="LaunchPad.Mobile.CustomLayouts.ConcernBodySelection">
-
+<controls:AnimationPage xmlns="http://xamarin.com/schemas/2014/forms"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:controls="clr-namespace:FormsControls.Base;assembly=FormsControls.Base"
+                        xmlns:customlayouts="clr-namespace:LaunchPad.Mobile.CustomLayouts"
+                        xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+                        BackgroundColor="#ffffff"
+                        NavigationPage.HasBackButton="False"
+                        x:Class="LaunchPad.Mobile.CustomLayouts.ConcernBodySelection">
+    <controls:AnimationPage.PageAnimation>
+        <controls:PushPageAnimation Duration="Medium" Subtype="FromRight" />
+    </controls:AnimationPage.PageAnimation>
+    <NavigationPage.TitleView>
+        <customlayouts:TitleBarLayoutV2/>
+    </NavigationPage.TitleView>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="3*"></RowDefinition>
@@ -191,4 +198,4 @@
           
     </Grid>
 
-</ContentPage>
+</controls:AnimationPage>
