@@ -43,7 +43,12 @@ namespace LaunchPad.Mobile.ViewModels
             set => SetProperty(ref _basis, value);
         }
 
-
+        private bool _page1;
+        public bool Page1
+        {
+            get => _page1;
+            set => SetProperty(ref _page1, value);
+        }
         private List<IndexModel> _surveyIndexList = new List<IndexModel>();
         public List<IndexModel> SurveyIndexList
         {
@@ -77,6 +82,7 @@ namespace LaunchPad.Mobile.ViewModels
                       {
                           Basis = new FlexBasis(1f, true);
                       }
+                      Page1 = false;
                       ConcernAndSkinCareQuestions[Counter].IsSelected = true;
                       if (SurveySummaries == null)
                       {
@@ -170,7 +176,7 @@ namespace LaunchPad.Mobile.ViewModels
                         Counter = 0;
                         MaxCounter = survey.Form.Pages.Count - 1;
                     }
-
+                    Page1 = true;
                     if (ConcernAndSkinCareQuestions[0].Questions?.Count == 3)
                     {
                         Basis = new FlexBasis(0.333f, true);

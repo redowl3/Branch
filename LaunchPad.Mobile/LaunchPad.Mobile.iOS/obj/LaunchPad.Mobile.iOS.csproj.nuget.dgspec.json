@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj": {}
+    "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj": {}
   },
   "projects": {
-    "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Client\\LaunchPad.Client.csproj": {
+    "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Client\\LaunchPad.Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Client\\LaunchPad.Client.csproj",
+        "projectUniqueName": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Client\\LaunchPad.Client.csproj",
         "projectName": "LaunchPad.Client",
-        "projectPath": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Client\\LaunchPad.Client.csproj",
-        "packagesPath": "E:\\asuresh2\\.nuget\\packages\\",
-        "outputPath": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Client\\obj\\",
+        "projectPath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Client\\LaunchPad.Client.csproj",
+        "packagesPath": "C:\\Users\\Amit Kumar\\.nuget\\packages\\",
+        "outputPath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Client\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "E:\\asuresh2\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Amit Kumar\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -32,8 +32,8 @@
           "netstandard2.0": {
             "targetAlias": "netstandard2.0",
             "projectReferences": {
-              "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Model\\LaunchPad.Model.csproj": {
-                "projectPath": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Model\\LaunchPad.Model.csproj"
+              "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Model\\LaunchPad.Model.csproj": {
+                "projectPath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Model\\LaunchPad.Model.csproj"
               }
             }
           }
@@ -77,21 +77,21 @@
         }
       }
     },
-    "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj": {
+    "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
+        "projectUniqueName": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
         "projectName": "LaunchPad.Mobile.iOS",
-        "projectPath": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
-        "packagesPath": "E:\\asuresh2\\.nuget\\packages\\",
-        "outputPath": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\obj\\",
+        "projectPath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\LaunchPad.Mobile.iOS.csproj",
+        "packagesPath": "C:\\Users\\Amit Kumar\\.nuget\\packages\\",
+        "outputPath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile.iOS\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "E:\\asuresh2\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Amit Kumar\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -105,8 +105,8 @@
         "frameworks": {
           "xamarinios10": {
             "projectReferences": {
-              "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj": {
-                "projectPath": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj"
+              "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj": {
+                "projectPath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj"
               }
             }
           }
@@ -166,20 +166,20 @@
         }
       }
     },
-    "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj": {
+    "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj",
+        "projectUniqueName": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj",
         "projectName": "LaunchPad.Mobile",
-        "projectPath": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj",
-        "packagesPath": "E:\\asuresh2\\.nuget\\packages\\",
-        "outputPath": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Mobile\\LaunchPad.Mobile\\obj\\",
+        "projectPath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\LaunchPad.Mobile.csproj",
+        "packagesPath": "C:\\Users\\Amit Kumar\\.nuget\\packages\\",
+        "outputPath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Mobile\\LaunchPad.Mobile\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "E:\\asuresh2\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Amit Kumar\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -194,8 +194,8 @@
           "netstandard2.0": {
             "targetAlias": "netstandard2.0",
             "projectReferences": {
-              "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Client\\LaunchPad.Client.csproj": {
-                "projectPath": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Client\\LaunchPad.Client.csproj"
+              "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Client\\LaunchPad.Client.csproj": {
+                "projectPath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Client\\LaunchPad.Client.csproj"
               }
             }
           }
@@ -291,20 +291,20 @@
         }
       }
     },
-    "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Model\\LaunchPad.Model.csproj": {
+    "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Model\\LaunchPad.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Model\\LaunchPad.Model.csproj",
+        "projectUniqueName": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Model\\LaunchPad.Model.csproj",
         "projectName": "LaunchPad.Model",
-        "projectPath": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Model\\LaunchPad.Model.csproj",
-        "packagesPath": "E:\\asuresh2\\.nuget\\packages\\",
-        "outputPath": "E:\\projects\\repo\\LocalSamples\\Xam.Sample\\LaunchPad.Model\\obj\\",
+        "projectPath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Model\\LaunchPad.Model.csproj",
+        "packagesPath": "C:\\Users\\Amit Kumar\\.nuget\\packages\\",
+        "outputPath": "F:\\Projects\\locals\\LaunchPad\\Repo\\v1\\LaunchPad\\LaunchPad.Model\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "E:\\asuresh2\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Amit Kumar\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],

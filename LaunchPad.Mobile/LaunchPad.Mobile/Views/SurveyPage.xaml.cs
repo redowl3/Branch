@@ -106,6 +106,11 @@ namespace LaunchPad.Mobile.Views
                         {
                             concernPageSurveyViewModel.Basis = new FlexBasis(1f, true);
                         }
+
+                        if (concernPageSurveyViewModel.Counter==0)
+                        {
+                            concernPageSurveyViewModel.Page1 = true;
+                        }
                         concernPageSurveyViewModel.ConcernAndSkinCareQuestions[concernPageSurveyViewModel.Counter].IsSelected = true;
                     }
                     else

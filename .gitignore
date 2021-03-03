@@ -28,3 +28,10 @@ LaunchPad.Mobile/LaunchPad.Mobile.iOS/obj/iPhone/Debug/LaunchPad.Mobile.iOS.cspr
 *.cache
 *.json
 *.props
+LaunchPad.Mobile/LaunchPad.Mobile.iOS/obj/iPhone/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+LaunchPad.Mobile/LaunchPad.Mobile.iOS/obj/iPhone/Debug/LaunchPad.Mobile.iOS.csprojAssemblyReference.cache
+LaunchPad.Mobile/LaunchPad.Mobile.iOS/obj/iPhoneSimulator/Release/LaunchPad.Mobile.iOS.csprojAssemblyReference.cache
+LaunchPad.Mobile/LaunchPad.Mobile.iOS/obj/LaunchPad.Mobile.iOS.csproj.nuget.dgspec.json
+LaunchPad.Mobile/LaunchPad.Mobile.iOS/obj/LaunchPad.Mobile.iOS.csproj.nuget.g.props
+LaunchPad.Mobile/LaunchPad.Mobile.iOS/obj/project.assets.json
+LaunchPad.Mobile/LaunchPad.Mobile.iOS/obj/project.nuget.cache
