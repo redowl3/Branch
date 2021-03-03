@@ -21,6 +21,8 @@
   <ItemGroup>
     <None Remove="Resources\Fonts\UniNeueBook.ttf" />
     <None Remove="Resources\Fonts\UniNeueRegular.ttf" />
+    <None Remove="Vectors\back.svg" />
+    <None Remove="Vectors\front.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,11 +32,15 @@
     <EmbeddedResource Include="Resources\Fonts\UniNeueRegular.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Vectors\back.svg" />
+    <EmbeddedResource Include="Vectors\front.svg" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AiForms.Layouts" Version="1.1.0" />
     <PackageReference Include="akavache" Version="7.1.1" />
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="2.80.2" />
+    <PackageReference Include="Svg.Skia" Version="0.5.0" />
     <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
     <PackageReference Include="Xam.TabView" Version="1.0.5" />
     <PackageReference Include="Xamarin.Controls.SignaturePad.Forms" Version="3.0.0" />
@@ -100,6 +106,15 @@
     </EmbeddedResource>
     <EmbeddedResource Update="CustomLayouts\ConcernAndSkinCareQuestionsLayout.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="CustomLayouts\ConcernAnnotationSummary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="CustomLayouts\ConcernBodyAnnotation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="CustomLayouts\ConcernBodySelection.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="CustomLayouts\ConcernsQuestionContainerLayout.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>

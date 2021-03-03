@@ -168,9 +168,11 @@ namespace LaunchPad.Client
 
         private HttpClient CreateHttpClient(string token = "")
         {
+            string devApi = "http://iiaaadmin.bitmuseum.com/iiaaapi/";
+            string stagingApi = "https://iiaacc.thinkology.co.uk/iiaaapi/";
             var httpClient = new HttpClient
             {
-                BaseAddress= new Uri("http://iiaaadmin.bitmuseum.com/iiaaapi/")
+                BaseAddress= new Uri(stagingApi)
             };
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 

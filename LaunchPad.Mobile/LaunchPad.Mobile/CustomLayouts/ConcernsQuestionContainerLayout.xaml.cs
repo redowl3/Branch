@@ -5,10 +5,10 @@ using LaunchPad.Mobile.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Xaml;
-
 namespace LaunchPad.Mobile.CustomLayouts
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -20,10 +20,15 @@ namespace LaunchPad.Mobile.CustomLayouts
         public string QuestionText { get; set; }
         public string AnswerText { get; set; }
         public string SubAnswerText { get; set; }
+        private List<SvgData> _body_svg_data = new List<SvgData>();
         public ConcernsQuestionContainerLayout()
         {
             InitializeComponent();
             this.BindingContext = App.ConcernsAndSkinCareSurveyViewModel;
+            MessagingCenter.Subscribe<List<SvgData>>(this, "svg_data", (svgdata) =>
+            {
+                _body_svg_data = svgdata;
+            });
         }
 
         private void ToggleContainer(object sender, EventArgs e)
@@ -107,6 +112,21 @@ namespace LaunchPad.Mobile.CustomLayouts
 
         private async void SaveAndContinue(object sender, EventArgs e)
         {
+            // Use rich path data from '_body_svg_data' posted back from Warpaint section
+            if (_body_svg_data != null && _body_svg_data.Count > 0)
+            {
+                int frontActions = _body_svg_data.Where(x => x.IsFront).Count();
+                int backActions = _body_svg_data.Where(x => x.IsFront == false).Count();
+
+                int frontConcerns = _body_svg_data.Where(x => x.IsFront).Select(y => y.ConcernName).Distinct().Count();
+                int backConcerns = _body_svg_data.Where(x => x.IsFront == false).Select(y => y.ConcernName).Distinct().Count();
+
+                int totalActions = _body_svg_data.Where(x => x.IsFront).Count();
+                int totalConcernsCount = _body_svg_data.Select(x => x.ConcernName).Distinct().Count();
+
+                string pathValuesFront = DrawHelper.GetStringBasedSvgPathData(_body_svg_data, true);
+                string pathValuesBack = DrawHelper.GetStringBasedSvgPathData(_body_svg_data, false);
+            }
             var bindingContext = this.BindingContext as ConcernsAndSkinCareSurveyViewModel;
             if (bindingContext != null)
             {
@@ -150,7 +170,21 @@ namespace LaunchPad.Mobile.CustomLayouts
 
             (this.BindingContext as ConcernsAndSkinCareSurveyViewModel)?.ContinueCommand.Execute(SurveySummaries);            
         }
+        private void GetSvgPathsFromData(out string frontSvgPaths, out string backSvgPaths)
+        {
+            StringBuilder sbFront = new StringBuilder();
+            StringBuilder sbBack = new StringBuilder();
+            foreach (SvgData item in _body_svg_data)
+            {
+                if (item.IsFront)
+                    sbFront.Append(item.SvgPath);
+                else
+                    sbBack.Append(item.SvgPath);
+            }
 
+            frontSvgPaths = sbFront.ToString();
+            backSvgPaths = sbBack.ToString();
+        }
         private void OptionTapped(object sender, EventArgs e)
         {
             try
@@ -343,6 +377,17 @@ namespace LaunchPad.Mobile.CustomLayouts
             catch (Exception)
             {
 
+            }
+        }
+
+        private async void ConcernTypeSelected(object sender, EventArgs e)
+        {
+            List<Answer> concernSelection = sender is ImageButton ? (sender as ImageButton).CommandParameter as List<Answer> : (sender as Button).CommandParameter as List<Answer>;
+            if (concernSelection != null && concernSelection.Count == 1)
+            {
+                string concernText = concernSelection[0].ResponseText;
+                ConcernItem concernItem = ConcernHelper.GetConcernDetailsByText(concernText);
+                await Navigation.PushAsync(new ConcernBodySelection(concernItem));
             }
         }
     }

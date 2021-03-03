@@ -20,6 +20,21 @@
                                                         <Label Text="{Binding QuestionGuid}" IsVisible="False" FontSize="28" TextType="Html" HorizontalTextAlignment="Center" VerticalTextAlignment="End" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                                                         <Label Text="{Binding FormQuestionData.QuestionText}" FontSize="28" TextType="Html" HorizontalTextAlignment="Center" VerticalTextAlignment="End" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                                                     </Grid>
+                                                    <FlexLayout BindableLayout.ItemsSource="{Binding ChildQuestions}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Margin="50,0,50,0" 
+                                                                Direction="Row" JustifyContent="SpaceAround" Wrap="Wrap" WidthRequest="800">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <StackLayout Orientation="Vertical" IsVisible="{Binding FormQuestionData.ImageUrl,Converter={StaticResource StringToVisibilityConverter}}" 
+                                                                                 VerticalOptions="Center" Margin="0,0,0,50" WidthRequest="250">
+                                                                    <ImageButton Source="{Binding FormQuestionData.ImageUrl}" VerticalOptions="Center" HeightRequest="100" BackgroundColor="Transparent"
+                                                                            CommandParameter="{Binding FormQuestionData.Answers}" Clicked="ConcernTypeSelected" Margin="0,0,0,5"/>
+                                                                    <Button Text="{Binding FormQuestionData.Answers[0].ResponseText}" FontSize="Micro" BorderColor="Black" 
+                                                                            BackgroundColor="Transparent" TextColor="Black" BorderWidth="1" CornerRadius="20" WidthRequest="200" HeightRequest="35"
+                                                                            CommandParameter="{Binding FormQuestionData.Answers}" Clicked="ConcernTypeSelected"></Button>
+                                                                </StackLayout>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </FlexLayout>
                                                     <StackLayout BindableLayout.ItemsSource="{Binding ChildQuestions}" VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="2,0">
                                                         <BindableLayout.ItemTemplate>
                                                             <DataTemplate>
@@ -28,7 +43,9 @@
                                                                         <Label Text="{Binding QuestionGuid}" IsVisible="False" FontSize="28" TextType="Html" HorizontalTextAlignment="Center" VerticalTextAlignment="End" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                                                                         <Label Text="{Binding FormQuestionData.QuestionText}" FontSize="28" TextType="Html" HorizontalTextAlignment="Center" TextColor="#000" Style="{StaticResource ContentTitle}"/>
                                                                     </Grid>
-                                                                    <Image Source="{Binding FormQuestionData.ImageUrl}" VerticalOptions="Start" HeightRequest="100" IsVisible="{Binding FormQuestionData.ImageUrl,Converter={StaticResource StringToVisibilityConverter}}"/>
+                                                                    <ImageButton Source="{Binding FormQuestionData.ImageUrl}" VerticalOptions="Start" HeightRequest="100" BackgroundColor="Transparent"
+                                                                           IsVisible="{Binding FormQuestionData.ImageUrl,Converter={StaticResource StringToVisibilityConverter}}"
+                                                                                 CommandParameter="{Binding FormQuestionData.Answers}" Clicked="ConcernTypeSelected"/>                                                                   
                                                                     <Frame CornerRadius="23" Padding="0" BorderColor="#000" HorizontalOptions="Center" IsVisible="{Binding IsDropdown}" Margin="0,5">
                                                                         <Grid RowDefinitions="46,Auto" RowSpacing="0" WidthRequest="250">
                                                                             <Grid Padding="20,0">
@@ -37,7 +54,7 @@
                                                                                     <TapGestureRecognizer Tapped="UnselectThis" CommandParameter="{Binding FormQuestionData.QuestionText}" NumberOfTapsRequired="2"/>
                                                                                 </Grid.GestureRecognizers>
                                                                                 <Label Text="{Binding QuestionGuid}" IsVisible="False" FontSize="28" TextType="Html" HorizontalTextAlignment="Center" VerticalTextAlignment="End" TextColor="#000" Style="{StaticResource ContentTitle}"/>
-                                                                                
+
                                                                                 <Label Text="{Binding FormQuestionData.QuestionText}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextType="Html" Style="{StaticResource ContentTitle}" Margin="0,0,20,0"/>
                                                                                 <Image Source="icon_down_arrow" WidthRequest="30" HeightRequest="30" HorizontalOptions="End"/>
                                                                             </Grid>
@@ -76,7 +93,7 @@
                                                                             </Grid>
                                                                         </Frame>
                                                                     </Grid>
-                                                                    
+
                                                                 </StackLayout>
                                                             </DataTemplate>
                                                         </BindableLayout.ItemTemplate>
