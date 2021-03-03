@@ -171,5 +171,10 @@ namespace LaunchPad.Mobile.CustomLayouts
                     break;
             }
         }
+
+        private void btnExit_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PopAsync();
+        }
     }
 }

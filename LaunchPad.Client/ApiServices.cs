@@ -168,7 +168,7 @@ namespace LaunchPad.Client
 
         private HttpClient CreateHttpClient(string token = "")
         {
-            string devApi = "http://iiaaadmin.bitmuseum.com/iiaaapi/";
+            string devApi = "http://iiaacc-dev.thinkology.co.uk/iiaaapi/";
             string stagingApi = "https://iiaacc.thinkology.co.uk/iiaaapi/";
             var httpClient = new HttpClient
             {
